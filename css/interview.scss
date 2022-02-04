@@ -18,11 +18,13 @@ h1{
 
 .modal{
     display: none;
-    height: 100vh;
     position: fixed;
+    height: 100vh;
     top: 0;
     width: 100%;
     text-align: center;
+    overflow: auto;
+    overflow: scroll;
 
     h2{
         font-size: 25px;
@@ -34,6 +36,11 @@ h1{
         height: 40px;
         margin: 0 20px;
         font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 20px;
     }
 
     form{
@@ -53,7 +60,7 @@ h1{
 }
 .modal__bg{
     background: rgba(0,0,0,0.8);
-    height: 100vh;
+    height: 100%;
     position: absolute;
     width: 100%;
 }
@@ -65,4 +72,32 @@ h1{
     top: 50%;
     transform: translate(-50%,-50%);
     width: 60%;
+}
+
+table{
+    border: none;
+    th,td{
+        font-size: 15px;
+    }
+
+    th{
+        min-width: 5em;
+    }
+
+    td{
+        min-width:  5em;
+    }
+
+    .notice{
+        text-align: center;
+    }
+}
+
+.table>tbody>tr>td{
+    border: none;
+}
+
+.table-title{
+    margin-top: 3%;
+    margin-bottom: 0;
 }

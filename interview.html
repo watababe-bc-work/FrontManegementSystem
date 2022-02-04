@@ -26,25 +26,6 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap" rel="stylesheet">
-    <script>
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "firebase/app";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-        apiKey: "AIzaSyDJQ534D9SszcYEt8m4KzRMDEPx1sWJf8M",
-        authDomain: "watanabe-bc-work.firebaseapp.com",
-        projectId: "watanabe-bc-work",
-        storageBucket: "watanabe-bc-work.appspot.com",
-        messagingSenderId: "299351282418",
-        appId: "1:299351282418:web:348999f1df61b69917366b"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-    </script>
 </head>
 <body>
     <h1>面接受付</h1>
@@ -57,15 +38,16 @@
                 <h2>面接受付新規登録</h2>
                 <form action="interview.html" method="POST">
                 <div class="edit">
-                    <label for="">状態:</label>
-                    <select id="status">
-                        <option value="">状態を選択する</option>
-                        <option value="">面接前</option>
-                        <option value="">面接済み</option>
-                        <option value="">来社せず</option>
-                        <option value="">採用</option>
-                        <option value="">不採用</option>
-                    </select>
+                    <label for="status_choice">状態:</label>
+                    <input list="status" id="status_input" name="status_choice" placeholder="テキスト入力or選択">
+                    <datalist id="status">
+                        <option value="面接前">面接前</option>
+                        <option value="面接済み">面接済み</option>
+                        <option value="来社せず">来社せず</option>
+                        <option value="採用">採用</option>
+                        <option value="不採用">不採用</option>
+                        <option value="キャンセル">キャンセル</option>
+                    </datalist>
                 </div>
                 <div class="edit">
                     <label for="">受付者:</label>
@@ -73,26 +55,26 @@
                 </div>
                 <div class="edit">
                     <label for="">応募媒体:</label>
-                    <select id="application_media">
-                        <option value="">応募媒体を選択する</option>
-                        <option value="">紹介</option>
-                        <option value="">バイトル</option>
-                        <option value="">フロムA</option>
-                        <option value="">POP</option>
-                        <option value="">HP</option>
-                        <option value="">はたらいく</option>
-                        <option value="">タウンワーク</option>
-                        <option value="">Web</option>
-                        <option value="">an</option>
-                        <option value="">アップステージ</option>
-                        <option value="">再入社</option>
-                        <option value="">ジョブポスト</option>
-                        <option value="">インディード</option>
-                        <option value="">ホテジョブ</option>
-                        <option value="">ジモティー</option>
-                        <option value="">レジャーホテル</option>
-                        <option value="">エンゲージ</option>
-                    </select>
+                    <input type="text" id="media_input" list="application_media" placeholder="テキスト入力or選択">
+                    <datalist id="application_media">
+                        <option value="紹介">紹介</option>
+                        <option value="バイトル">バイトル</option>
+                        <option value="フロムA">フロムA</option>
+                        <option value="POP">POP</option>
+                        <option value="HP">HP</option>
+                        <option value="はたらいく">はたらいく</option>
+                        <option value="タウンワーク">タウンワーク</option>
+                        <option value="Web">Web</option>
+                        <option value="an">an</option>
+                        <option value="アップステージ">アップステージ</option>
+                        <option value="再入社">再入社</option>
+                        <option value="ジョブポスト">ジョブポスト</option>
+                        <option value="インディード">インディード</option>
+                        <option value="ホテジョブ">ホテジョブ</option>
+                        <option value="ジモティー">ジモティー</option>
+                        <option value="レジャーホテル">レジャーホテル</option>
+                        <option value="エンゲージ">エンゲージ</option>
+                    </datalist>
                 </div>
                 <div class="edit">
                     <label for="">自宅最寄駅:</label>
@@ -114,7 +96,13 @@
                 </div>
                 <div class="edit">
                     <label for="">国籍:</label>
-                    <input type="text" name="" id="nationality_input">       
+                    <input type="text" name="" id="nationality_input" list="nationality" placeholder="テキスト入力or選択">    
+                    <datalist id="nationality">
+                        <option value="日本">日本</option>
+                        <option value="フィリピン">フィリピン</option>
+                        <option value="ベトナム">ベトナム</option>
+                        <option value="ネパール">ネパール</option>
+                    </datalist>   
                 </div>
                 <div class="edit">
                     <label for="">連絡先</label>
@@ -130,17 +118,17 @@
                     <select id="interview_place">
                         <option value="">本部or現地</option>
                         <option value="">本部</option>
-                        <option value="">現地</option>
+                        <option value="">現地:</option>
                     </select>
-                    <input type="text" name="" id="subject_input">       
+                    <input type="text" name="" id="place_input">       
                 </div>
                 <div class="edit">
                     <label for="">寮希望:</label>
-                    <input type="checkbox" name="agree_privacy" id="agree" value=""/>   
+                    <input type="checkbox" name="agree_privacy" id="dormitory" value=""/>   
                 </div>
                 <div class="edit">
                     <label for="">特記事項:</label>
-                    <input type="text" name="" id="subject_input">   
+                    <input type="text" name="" id="notice_input">   
                 </div>
                 </form>
                 <br>
@@ -170,11 +158,39 @@
             </div>
         </div>  
     </div>
+    <div class="container">
+        <table class="table table-title">
+            <thead class="thead-dark">
+            <tr>
+                <th>状態</th>
+                <th>番号</th>
+                <th>受付日</th>
+                <th>受付者</th>
+                <th>応募媒体</th>
+                <th>最寄駅</th>
+                <th>氏名</th>
+                <th>性別</th>
+                <th>年齢</th>
+                <th>国籍</th>
+                <th>連絡先</th>
+                <th>面接日時</th>
+                <th>面接場所</th>
+                <th>寮希望</th>
+                <th>編集</th>
+            </tr>
+            <tr><th colspan="15" class="notice">特記事項</th></tr>
+            </thead>
+        </table>
+        </div>
+    <div id="interview_list">
+        <!-- テーブル表示 -->
+    </div>
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
     <!-- bootstrapの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
