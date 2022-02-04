@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Front Manegement System ~面接受付~</title>
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@300&display=swap" rel="stylesheet">
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/interview.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kaisei+Tokumin&display=swap" rel="stylesheet">
+    <script>
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "firebase/app";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+        apiKey: "AIzaSyDJQ534D9SszcYEt8m4KzRMDEPx1sWJf8M",
+        authDomain: "watanabe-bc-work.firebaseapp.com",
+        projectId: "watanabe-bc-work",
+        storageBucket: "watanabe-bc-work.appspot.com",
+        messagingSenderId: "299351282418",
+        appId: "1:299351282418:web:348999f1df61b69917366b"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+    </script>
+</head>
+<body>
+    <h1>面接受付</h1>
+    <div class="new_registration">
+        <a class="js-modal-open"><button class="btn btn-outline-info">新規登録する</button></a>
+         <!-- モーダルウィンドウ内容 -->
+         <div class="modal js-modal">
+            <div class="modal__bg js-modal-close"></div>
+            <div class="modal__content">
+                <h2>面接受付新規登録</h2>
+                <form action="interview.html" method="POST">
+                <div class="edit">
+                    <label for="">状態:</label>
+                    <select id="status">
+                        <option value="">状態を選択する</option>
+                        <option value="">面接前</option>
+                        <option value="">面接済み</option>
+                        <option value="">来社せず</option>
+                        <option value="">採用</option>
+                        <option value="">不採用</option>
+                    </select>
+                </div>
+                <div class="edit">
+                    <label for="">受付者:</label>
+                    <input type="text" name="" id="receiver_input">
+                </div>
+                <div class="edit">
+                    <label for="">応募媒体:</label>
+                    <select id="application_media">
+                        <option value="">応募媒体を選択する</option>
+                        <option value="">紹介</option>
+                        <option value="">バイトル</option>
+                        <option value="">フロムA</option>
+                        <option value="">POP</option>
+                        <option value="">HP</option>
+                        <option value="">はたらいく</option>
+                        <option value="">タウンワーク</option>
+                        <option value="">Web</option>
+                        <option value="">an</option>
+                        <option value="">アップステージ</option>
+                        <option value="">再入社</option>
+                        <option value="">ジョブポスト</option>
+                        <option value="">インディード</option>
+                        <option value="">ホテジョブ</option>
+                        <option value="">ジモティー</option>
+                        <option value="">レジャーホテル</option>
+                        <option value="">エンゲージ</option>
+                    </select>
+                </div>
+                <div class="edit">
+                    <label for="">自宅最寄駅:</label>
+                    <input type="text" name="" id="station_input">
+                </div>
+                <div class="edit">
+                    <label for="">お名前(カナ):</label>
+                    <input type="text" name="" id="name_input">       
+                </div>
+                <div class="edit">
+                    <label for="">性別:</label>
+                    <input type="radio" name="sex" value="men">男性
+                    <input type="radio" name="sex" value="woman">女性
+                    <input type="radio" name="sex" value="other">その他
+                </div>
+                <div class="edit">
+                    <label for="">年齢:</label>
+                    <select id="age_input"></select>
+                </div>
+                <div class="edit">
+                    <label for="">国籍:</label>
+                    <input type="text" name="" id="nationality_input">       
+                </div>
+                <div class="edit">
+                    <label for="">連絡先</label>
+                    <input id="tel_input" type="tel" name="tel" value="" inputmode="tel" placeholder="080-1234-5678">
+                </div>
+                <div class="edit">
+                    <label for="">面接日時</label>
+                    <input type="date" name="" id="interview_date_input">
+                    <input type="time" id="interview_time_input">
+                </div>
+                <div class="edit">
+                    <label for="">面接場所:</label>
+                    <select id="interview_place">
+                        <option value="">本部or現地</option>
+                        <option value="">本部</option>
+                        <option value="">現地</option>
+                    </select>
+                    <input type="text" name="" id="subject_input">       
+                </div>
+                <div class="edit">
+                    <label for="">寮希望:</label>
+                    <input type="checkbox" name="agree_privacy" id="agree" value=""/>   
+                </div>
+                <div class="edit">
+                    <label for="">特記事項:</label>
+                    <input type="text" name="" id="subject_input">   
+                </div>
+                </form>
+                <br>
+                <div id="collectAlert">
+                    <!-- 編集完了のAlert -->
+                </div>
+                <button type="submit" class="btn btn-success" onclick="InterviewUpdate()">送信する</button>
+                <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+           </div> 
+        <a class="js-modal-open1"><button class="btn btn-outline-secondary">特記事項の確認をする</button></a>
+        <!-- モーダルウィンドウ内容 -->
+        <div class="modal js-modal1">
+            <div class="modal__bg js-modal-close1"></div>
+            <div class="modal__content">
+                <h2>特記事項</h2>
+                <p>月~土曜11:00~19:00 日曜13:00~19:00</p>
+                <p>面接は30分の間隔でお願いいたします</p>
+                <p>募集地域　全エリア</p>
+                <p>千葉・新横浜・岩槻の面接希望者はスカイプで面接。</p>
+                <p>※面接前の確認※</p>
+                <p>外国人：土曜・日曜どちらか出れるなら予定を受けてください。</p>
+                <p>日本人：平日のみでも予定を入れてください</p>
+                <p>※面接時に必要なもの※</p>
+                <p>履歴書と身分証、外国籍の方は在留カード・パスポート</p>
+                <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+        </div>  
+    </div>
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/interview.js"></script>
+</body>
+</html>
