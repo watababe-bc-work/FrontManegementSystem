@@ -38,6 +38,8 @@ h1 {
     font-size: 15px; }
   .modal form input, .modal form select {
     font-size: 15px; }
+  .modal .alert {
+    font-size: 15px; }
 
 .modal__bg {
   background: rgba(0, 0, 0, 0.8);
@@ -59,11 +61,30 @@ table {
   table th, table td {
     font-size: 15px; }
   table th {
-    min-width: 5em; }
+    min-width: 5em;
+    text-align: center; }
   table td {
     min-width: 5em; }
   table .notice {
     text-align: center; }
+  table button {
+    margin: 5px 0;
+    font-size: 15px;
+    width: 50px;
+    height: 30px;
+    text-align: center; }
+  table .Already_back {
+    background: #E1DBCD; }
+  table .notcome_back {
+    background: #DBB2A2; }
+  table .recruit_back {
+    background: #91B87E;
+    color: white; }
+  table .norecruit_back {
+    background: #5188AD;
+    color: white; }
+  table .cancel_back {
+    background: #92BEC3; }
 
 .table > tbody > tr > td {
   border: none; }

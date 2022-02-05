@@ -31,8 +31,8 @@
     <h1>面接受付</h1>
     <div class="new_registration">
         <a class="js-modal-open"><button class="btn btn-outline-info">新規登録する</button></a>
-         <!-- モーダルウィンドウ内容 -->
-         <div class="modal js-modal">
+         <!-- 新規登録モーダルウィンドウ内容 -->
+        <div class="modal js-modal">
             <div class="modal__bg js-modal-close"></div>
             <div class="modal__content">
                 <h2>面接受付新規登録</h2>
@@ -138,9 +138,9 @@
                 <button type="submit" class="btn btn-success" onclick="InterviewUpdate()">送信する</button>
                 <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
             </div>
-           </div> 
+        </div> 
         <a class="js-modal-open1"><button class="btn btn-outline-secondary">特記事項の確認をする</button></a>
-        <!-- モーダルウィンドウ内容 -->
+        <!-- 特記事項モーダルウィンドウ内容 -->
         <div class="modal js-modal1">
             <div class="modal__bg js-modal-close1"></div>
             <div class="modal__content">
@@ -156,7 +156,8 @@
                 <p>履歴書と身分証、外国籍の方は在留カード・パスポート</p>
                 <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
             </div>
-        </div>  
+        </div> 
+        <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の内容を表示する</button></a> 
     </div>
     <div class="container">
         <table class="table table-title">
@@ -185,6 +186,114 @@
     <div id="interview_list">
         <!-- テーブル表示 -->
     </div>
+    <!-- 変更用モーダルウィンドウ内容 -->
+    <div class="modal js-modal2">
+        <div class="modal__bg js-modal-close2"></div>
+        <div class="modal__content">
+            <h2>面接受付内容変更</h2>
+            <form action="interview.html" method="POST">
+            <div class="edit">
+                <label for="status_choice_edit">状態:</label>
+                <input list="status_edit" id="status_input_edit" name="status_choice_edit" placeholder="テキスト入力or選択">
+                <datalist id="status_edit">
+                    <option value="面接前">面接前</option>
+                    <option value="面接済み">面接済み</option>
+                    <option value="来社せず">来社せず</option>
+                    <option value="採用">採用</option>
+                    <option value="不採用">不採用</option>
+                    <option value="キャンセル">キャンセル</option>
+                </datalist>
+            </div>
+            <div class="edit">
+                <label for="">受付者:</label>
+                <input type="text" name="" id="receiver_input_edit">
+            </div>
+            <div class="edit">
+                <label for="">応募媒体:</label>
+                <input type="text" id="media_input_edit" list="application_media_edit" placeholder="テキスト入力or選択">
+                <datalist id="application_media_edit">
+                    <option value="紹介">紹介</option>
+                    <option value="バイトル">バイトル</option>
+                    <option value="フロムA">フロムA</option>
+                    <option value="POP">POP</option>
+                    <option value="HP">HP</option>
+                    <option value="はたらいく">はたらいく</option>
+                    <option value="タウンワーク">タウンワーク</option>
+                    <option value="Web">Web</option>
+                    <option value="an">an</option>
+                    <option value="アップステージ">アップステージ</option>
+                    <option value="再入社">再入社</option>
+                    <option value="ジョブポスト">ジョブポスト</option>
+                    <option value="インディード">インディード</option>
+                    <option value="ホテジョブ">ホテジョブ</option>
+                    <option value="ジモティー">ジモティー</option>
+                    <option value="レジャーホテル">レジャーホテル</option>
+                    <option value="エンゲージ">エンゲージ</option>
+                </datalist>
+            </div>
+            <div class="edit">
+                <label for="">自宅最寄駅:</label>
+                <input type="text" name="" id="station_input_edit">
+            </div>
+            <div class="edit">
+                <label for="">お名前(カナ):</label>
+                <input type="text" name="" id="name_input_edit">       
+            </div>
+            <div class="edit">
+                <label for="">性別:</label>
+                <input type="radio" name="sex_edit" value="men">男性
+                <input type="radio" name="sex_edit" value="woman">女性
+                <input type="radio" name="sex_edit" value="other">その他
+            </div>
+            <div class="edit">
+                <label for="">年齢:</label>
+                <select id="age_input_edit"></select>
+            </div>
+            <div class="edit">
+                <label for="">国籍:</label>
+                <input type="text" name="" id="nationality_input_edit" list="nationality_edit" placeholder="テキスト入力or選択">    
+                <datalist id="nationality_edit">
+                    <option value="日本">日本</option>
+                    <option value="フィリピン">フィリピン</option>
+                    <option value="ベトナム">ベトナム</option>
+                    <option value="ネパール">ネパール</option>
+                </datalist>   
+            </div>
+            <div class="edit">
+                <label for="">連絡先</label>
+                <input id="tel_input_edit" type="tel" name="tel" value="" inputmode="tel" placeholder="080-1234-5678">
+            </div>
+            <div class="edit">
+                <label for="">面接日時</label>
+                <input type="date" name="" id="interview_date_input_edit">
+                <input type="time" id="interview_time_input_edit">
+            </div>
+            <div class="edit">
+                <label for="">面接場所:</label>
+                <select id="interview_place_edit">
+                    <option value="">本部or現地</option>
+                    <option value="">本部</option>
+                    <option value="">現地:</option>
+                </select>
+                <input type="text" name="" id="place_input_edit">       
+            </div>
+            <div class="edit">
+                <label for="">寮希望:</label>
+                <input type="checkbox" name="agree_privacy" id="dormitory_edit" value=""/>   
+            </div>
+            <div class="edit">
+                <label for="">特記事項:</label>
+                <input type="text" name="" id="notice_input_edit">   
+            </div>
+            </form>
+            <br>
+            <div id="collectAlert1">
+                <!-- 編集完了のAlert -->
+            </div>
+            <div id="edit_submit_button"></div>
+            <a class="js-modal-close2" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
