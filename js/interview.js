@@ -352,6 +352,7 @@ function DeleteContent(id,index){
 
 //今日の面接のみ表示
 function TodayInterview(){
+    document.getElementById('title').innerHTML = "<p>本日の面接</p>";
     (async () => {
         try {
           // 省略 
@@ -393,6 +394,109 @@ function TodayInterview(){
           stocklist += '</table></div>';
           document.getElementById('interview_list').innerHTML = stocklist;
     
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
+
+//検索
+function search(){
+    var title = document.getElementById('title');
+    var StartDate_search = document.getElementById('StartDate_search').value;
+    var EndDate_search = document.getElementById('EndDate_search').value;
+    var InterviewDay_search = document.getElementById('InterviewDay_search').value;
+    var media_search = document.getElementById('media_search').value;
+    var place_obj = document.getElementById('interview_place_search');
+    var place_idx = place_obj.selectedIndex;
+    var interview_place_search = place_obj.options[place_idx].text;
+    var place_input_search = document.getElementById('place_input_search').value;
+    (async () => {
+        try {
+            //面接日での範囲検索
+            if(StartDate_search != ""){
+                if(EndDate_search != ""){
+                    //からまで
+                    title.innerHTML = '<p>検索範囲:' + StartDate_search + 'から' + EndDate_search + 'まで</p>';
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).where('InterviewDate','<',EndDate_search + 1).limit(20).get();
+                }else{
+                    //から
+                    title.innerHTML = '<p>検索範囲:' + StartDate_search + 'から</p>';
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).limit(20).get();
+                }
+            }else{
+                if(EndDate_search != ""){
+                    //まで
+                    title.innerHTML = '<p>検索範囲:' + EndDate_search + 'まで</p>';
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','<',EndDate_search + 1).limit(20).get();
+                }else{
+                    //検索なし
+                }
+            }
+
+            //面接日での検索
+            if(InterviewDay_search != ""){
+                title.innerHTML = '<p>検索日:' + InterviewDay_search + '</p>';
+                var querySnapshot = await db.collection('interview').where('InterviewDate','==',InterviewDay_search).limit(20).get();
+            }else{
+                //検索なし
+            }
+
+            //応募媒体での検索
+            if(media_search != ""){
+                title.innerHTML = '<p>応募媒体:' + media_search + 'での検索</p>';
+                var querySnapshot = await db.collection('interview').orderBy('Media').startAt(media_search).endAt(media_search + '\uf8ff').limit(20).get();
+            }else{
+                //検索なし
+            }
+
+            //面接場所
+            if(interview_place_search != "本部or現地"){
+                if(interview_place_search == "本部"){
+                    title.innerHTML = '<p>面接場所:本部での検索</p>';
+                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','本部').limit(20).get();
+                }else{
+                    title.innerHTML = '<p>面接場所: 現地:'+ place_input_search +'での検索</p>';
+                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','現地:' + place_input_search).limit(20).get();
+                }
+            }else{
+                //検索なし
+            }
+
+            var i = 0;
+            var stocklist = '<div class="container"><table class="table">';
+
+            querySnapshot.forEach((postDoc) => {
+                i += 1;
+                switch(postDoc.get('Status')){
+                    case '面接済み':
+                        stocklist += '<tbody class="Already_back"><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>';
+                        break;
+        
+                    case '来社せず':
+                        stocklist += '<tbody class="notcome_back"><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>'; 
+                        break;
+        
+                    case '採用':
+                        stocklist += '<tbody class="recruit_back"><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>';  
+                        break; 
+                    
+                    case '不採用':
+                        stocklist += '<tbody class="norecruit_back"><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>'; 
+                        break;
+                    
+                    case 'キャンセル':
+                        stocklist += '<tbody class="cancel_back"><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>';
+                        break;
+        
+                    default:    
+                        stocklist += '<tbody><tr><td>'+ postDoc.get('Status') + '</td><td>' + i + '</td><td>' + postDoc.get('ReceptionDate').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('Receiver') + '</td><td>' + postDoc.get('Media') + '</td><td>' + postDoc.get('Station') + '</td><td>' + postDoc.get('Name') + '</td><td>' + postDoc.get('Sex') + '</td><td>' + postDoc.get('Age') + '</td><td>' + postDoc.get('Nationality') + '</td><td>' + postDoc.get('Tel') + '</td><td>' + postDoc.get('InterviewDate') + '<br>' + postDoc.get('InterviewTime') + '</td><td>' + postDoc.get('InterviewPlace') + '</td><td>' + postDoc.get('Dormitory') + '</td><td>' + '<a class="js-modal-open2"><button class="btn btn-success" onclick="EditContent(\''+postDoc.id+'\')">変更</button></a><button class="btn btn-danger" onClick="DeleteContent(\''+postDoc.id+'\',\''+ i +'\')">削除</button>' +'</td></tr><tr><td colspan="15" class="notice">' + postDoc.get('Notice') + '</td></tr><tr><td colspan="15"></td></tr></tbody>';
+                }
+            });
+        
+            stocklist += '</table></div>';
+            document.getElementById('interview_list').innerHTML = stocklist;
+
         } catch (err) {
             console.log(err);
         }

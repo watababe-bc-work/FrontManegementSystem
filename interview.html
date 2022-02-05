@@ -157,7 +157,39 @@
                 <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
             </div>
         </div> 
-        <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の内容を表示する</button></a> 
+        <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の一覧を表示する</button></a>
+        <a href=""><button class="btn btn-secondary">全表示にする</button></a>  
+    </div>
+    <div class="search">
+        <h3>検索</h3>
+        <div>
+            <label for="">面接日での範囲検索(開始日のみ、終了日のみも可):</label>
+            <input type="date" name="" id="StartDate_search">から
+            <input type="date" id="EndDate_search">まで 
+        </div>  
+        <div>
+            <label for="">面接日での検索:</label>
+            <input type="date" name="" id="InterviewDay_search">
+        </div>  
+        <div>
+            <label for="">応募媒体(前方一致も可):</label>
+            <input type="text" name="" id="media_search">
+        </div>
+        <div>
+            <label for="">面接場所:</label>
+            <select id="interview_place_search">
+                <option value="">本部or現地</option>
+                <option value="">本部</option>
+                <option value="">現地:</option>
+            </select>
+            <input type="text" name="" id="place_input_search">
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
+        <button type="submit" class="btn btn-secondary" onclick="location.reload()">検索リセット</button>
+    </div>
+    <div id="title">
+        <p>全表示</p>  
     </div>
     <div class="container">
         <table class="table table-title">
