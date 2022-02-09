@@ -15,6 +15,25 @@ db.settings({
   timestampsInSnapshots: true
 });
 
+$(function(){
+    // #で始まるリンクをクリックした場合
+    $('a[href^="#"]').click(function() {
+      // スクロールの速度
+      let speed = 500;
+      // スクロールタイプ
+      let type = 'swing';
+      // href属性の取得
+      let href= $(this).attr("href");
+      // 移動先の取得（hrefが#indexならトップ$(html)に、）
+      let target = $(href == "#index" ? 'html' : href);
+      // 移動先のポジション取得
+      let position = target.offset().top;
+      // animateでスムーススクロール
+      $('body,html').animate({scrollTop:position}, speed, type);
+      return false;
+    });
+  });
+
 //年齢のselectBox用
 (function() {
     var selectBox = document.getElementById('age_input');
@@ -42,9 +61,9 @@ db.settings({
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
   
-      const querySnapshot = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(20).get() // firebase.firestore.QuerySnapshotのインスタンスを取得
+      const querySnapshot = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(2).get() // firebase.firestore.QuerySnapshotのインスタンスを取得
       var i = 0;
-      var stocklist = '<div class="container"><table class="table">'
+      var stocklist = '<table class="table">'
       querySnapshot.forEach((postDoc) => {
         i += 1;
         switch(postDoc.get('Status')){
@@ -73,7 +92,7 @@ db.settings({
         }
       })
 
-      stocklist += '</table></div>';
+      stocklist += '</table>';
       document.getElementById('interview_list').innerHTML = stocklist;
 
     } catch (err) {
@@ -418,17 +437,17 @@ function search(){
                 if(EndDate_search != ""){
                     //からまで
                     title.innerHTML = '<p>検索範囲:' + StartDate_search + 'から' + EndDate_search + 'まで</p>';
-                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).where('InterviewDate','<',EndDate_search + 1).limit(20).get();
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).where('InterviewDate','<',EndDate_search + 1).orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(20).get();
                 }else{
                     //から
                     title.innerHTML = '<p>検索範囲:' + StartDate_search + 'から</p>';
-                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).limit(20).get();
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','>',StartDate_search).orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(20).get();
                 }
             }else{
                 if(EndDate_search != ""){
                     //まで
                     title.innerHTML = '<p>検索範囲:' + EndDate_search + 'まで</p>';
-                    var querySnapshot = await db.collection('interview').where('InterviewDate','<',EndDate_search + 1).limit(20).get();
+                    var querySnapshot = await db.collection('interview').where('InterviewDate','<',EndDate_search + 1).orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(20).get();
                 }else{
                     //検索なし
                 }
@@ -437,7 +456,7 @@ function search(){
             //面接日での検索
             if(InterviewDay_search != ""){
                 title.innerHTML = '<p>検索日:' + InterviewDay_search + '</p>';
-                var querySnapshot = await db.collection('interview').where('InterviewDate','==',InterviewDay_search).limit(20).get();
+                var querySnapshot = await db.collection('interview').where('InterviewDate','==',InterviewDay_search).orderBy('InterviewTime','desc').limit(20).get();
             }else{
                 //検索なし
             }
@@ -445,7 +464,7 @@ function search(){
             //応募媒体での検索
             if(media_search != ""){
                 title.innerHTML = '<p>応募媒体:' + media_search + 'での検索</p>';
-                var querySnapshot = await db.collection('interview').orderBy('Media').startAt(media_search).endAt(media_search + '\uf8ff').limit(20).get();
+                var querySnapshot = await db.collection('interview').orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').orderBy('Media').startAt(media_search).endAt(media_search + '\uf8ff').limit(20).get();
             }else{
                 //検索なし
             }
@@ -454,10 +473,10 @@ function search(){
             if(interview_place_search != "本部or現地"){
                 if(interview_place_search == "本部"){
                     title.innerHTML = '<p>面接場所:本部での検索</p>';
-                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','本部').limit(20).get();
+                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','本部').orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(20).get();
                 }else{
                     title.innerHTML = '<p>面接場所: 現地:'+ place_input_search +'での検索</p>';
-                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','現地:' + place_input_search).limit(20).get();
+                    var querySnapshot = await db.collection('interview').where('InterviewPlace','==','現地:' + place_input_search).orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(20).get();
                 }
             }else{
                 //検索なし
