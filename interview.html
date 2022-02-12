@@ -35,7 +35,7 @@
     <div class="container">
         <h1>面接受付</h1>
         <div class="new_registration">
-            <a class="js-modal-open"><button class="btn btn-outline-info">新規登録する</button></a>
+            <a class="js-modal-open"><button class="btn btn-info">新規登録する</button></a>
             <!-- 新規登録モーダルウィンドウ内容 -->
             <div class="modal js-modal">
                 <div class="modal__bg js-modal-close"></div>
@@ -144,26 +144,30 @@
                     <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
                 </div>
             </div> 
-            <a class="js-modal-open1"><button class="btn btn-outline-secondary">特記事項の確認をする</button></a>
-            <!-- 特記事項モーダルウィンドウ内容 -->
+            <button class="btn btn-outline-secondary" onclick="NoticeDisplay()">特記事項を表示する</button>
+            <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の一覧を表示する</button></a>
+            <a href=""><button class="btn btn-secondary">全表示にする</button></a>  
+            <div id="NoticeContent">
+                <h2>特記事項</h2>
+                <div id="NoticeShow">
+                    <!-- 特記事項DB取得 -->
+                </div>
+                <a class="js-modal-open1"><button class="btn btn-success">編集する</button></a>
+                <button class="btn btn-outline-info" onclick="NoticeDisplay()">閉じる</button>
+            </div>
+            <!-- 特記事項編集用モーダルウィンドウ内容 -->
             <div class="modal js-modal1">
                 <div class="modal__bg js-modal-close1"></div>
                 <div class="modal__content">
-                    <h2>特記事項</h2>
-                    <p>月~土曜11:00~19:00 日曜13:00~19:00</p>
-                    <p>面接は30分の間隔でお願いいたします</p>
-                    <p>募集地域　全エリア</p>
-                    <p>千葉・新横浜・岩槻の面接希望者はスカイプで面接。</p>
-                    <p>※面接前の確認※</p>
-                    <p>外国人：土曜・日曜どちらか出れるなら予定を受けてください。</p>
-                    <p>日本人：平日のみでも予定を入れてください</p>
-                    <p>※面接時に必要なもの※</p>
-                    <p>履歴書と身分証、外国籍の方は在留カード・パスポート</p>
+                    <h2>特記事項編集</h2>
+                    <textarea name="" id="NoticeTextArea" cols="50" rows="10"></textarea><br>
+                    <div id="collectAlert2">
+                        <!-- 編集完了のAlert -->
+                    </div>
+                    <button class="btn btn-success" onclick="NoticeUpdate()">更新する</button>
                     <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
                 </div>
             </div> 
-            <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の一覧を表示する</button></a>
-            <a href=""><button class="btn btn-secondary">最新情報にする</button></a>  
         </div>
         <div class="search">
             <h3>検索</h3>
@@ -194,7 +198,7 @@
             <button type="submit" class="btn btn-secondary" onclick="location.reload()">検索リセット</button>
         </div>
         <div id="title">
-            <p>最新情報</p>  
+            <p>全表示</p>  
         </div>
         <table class="table table-title">
             <thead class="thead-dark">

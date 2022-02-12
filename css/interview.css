@@ -131,6 +131,23 @@ h1 {
   .modal .alert {
     font-size: 15px; }
 
+#NoticeContent {
+  padding: 0.5em 1em;
+  margin: 2em 0;
+  color: #232323;
+  background: #fff8e8;
+  border-left: solid 10px #ffc06e; }
+  #NoticeContent p {
+    font-size: 15px;
+    margin: 20px; }
+  #NoticeContent button {
+    width: 100px;
+    height: 30px;
+    font-size: 10px; }
+
+textarea {
+  font-size: 15px; }
+
 #title {
   text-align: center;
   font-size: 20px; }

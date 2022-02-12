@@ -33,7 +33,54 @@ $(function(){
       $('body,html').animate({scrollTop:position}, speed, type);
       return false;
     });
-  });
+});
+
+//特記事項表示
+(async () => {
+    try {
+      // 省略 
+      // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+  
+      querySnapshot = await db.collection('interview').doc('notice').get() // firebase.firestore.QuerySnapshotのインスタンスを取得
+      var stocklist = "";
+      var content = querySnapshot.get('content');
+      stocklist += '<p>' + content + '</p>';
+      document.getElementById('NoticeShow').innerHTML = stocklist;
+      var stocklistReplace = content.replace(/<br>/g, "\n");
+      document.getElementById('NoticeTextArea').innerHTML = stocklistReplace;
+    } catch (err) {
+        console.log(err);
+    }
+})();
+
+//特記事項の表示非表示
+document.getElementById("NoticeContent").style.display ="none";
+function NoticeDisplay(){
+    const noticeContent = document.getElementById("NoticeContent");
+    if(noticeContent.style.display=="block"){
+		// noneで非表示
+		noticeContent.style.display ="none";
+	}else{
+		// blockで表示
+        noticeContent.style.display ="block";
+	}
+}
+
+//特記事項の編集
+function NoticeUpdate(){
+    let textarea = document.getElementById('NoticeTextArea');
+    let text = textarea.value;
+    let textArray = text.split('\n');
+    let newText = textArray.join('<br>');
+    //DBへ送信
+    db.collection('interview').doc('notice').update({
+        content:newText,
+    });
+    console.log('ok');
+    var collectAlert = document.getElementById('collectAlert2');
+    collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+    setTimeout("location.reload()",2000);
+}
 
 //年齢のselectBox用
 (function() {
