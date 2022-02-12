@@ -81,7 +81,7 @@ $breakpoint-down: (
 
 h1{
     text-align: center;
-    padding: 3% 0;
+    padding: 20px 0;
     font-size: 30px;
 }
 
@@ -228,7 +228,7 @@ textarea{
     margin: 2% 0;
     div{
         display: inline-block;
-        margin: 2% 20px;
+        margin: 10px 20px;
         font-size: 15px;
     }
 }
@@ -262,6 +262,10 @@ table{
             max-width: 6em;
             min-width: 5em;
         }
+    }
+
+    .bigTh{
+        min-width: 6em;
     }
 
     td{
@@ -305,6 +309,18 @@ table{
     .cancel_back{
         background: #92BEC3;
     }
+}
+
+.noticeLabel{
+    vertical-align: top;
+}
+
+#status_input_edit :hover{
+    content: '';
+}
+
+.center{
+    text-align: center;
 }
 
 .table>tbody>tr>td{

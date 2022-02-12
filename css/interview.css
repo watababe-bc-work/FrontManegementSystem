@@ -48,7 +48,7 @@
 
 h1 {
   text-align: center;
-  padding: 3% 0;
+  padding: 20px 0;
   font-size: 30px; }
 
 .new_registration {
@@ -157,7 +157,7 @@ textarea {
   margin: 2% 0; }
   .search div {
     display: inline-block;
-    margin: 2% 20px;
+    margin: 10px 20px;
     font-size: 15px; }
 
 .modal__bg {
@@ -186,6 +186,8 @@ table {
       table th {
         max-width: 6em;
         min-width: 5em; } }
+  table .bigTh {
+    min-width: 6em; }
   table td {
     min-width: 5em; }
     @media screen and (max-width: 576px) {
@@ -212,6 +214,15 @@ table {
     color: white; }
   table .cancel_back {
     background: #92BEC3; }
+
+.noticeLabel {
+  vertical-align: top; }
+
+#status_input_edit :hover {
+  content: ''; }
+
+.center {
+  text-align: center; }
 
 .table > tbody > tr > td {
   border: none; }

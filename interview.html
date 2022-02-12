@@ -91,9 +91,12 @@
                     </div>
                     <div class="edit">
                         <label for="">性別:</label>
-                        <input type="radio" name="sex" value="men">男性
-                        <input type="radio" name="sex" value="woman">女性
-                        <input type="radio" name="sex" value="other">その他
+                        <select name="" id="sex">
+                            <option value="">性別を選択する</option>
+                            <option value="男性">男性</option>
+                            <option value="女性">女性</option>
+                            <option value="その他">その他</option>
+                        </select>
                     </div>
                     <div class="edit">
                         <label for="">年齢:</label>
@@ -116,24 +119,25 @@
                     <div class="edit">
                         <label for="">面接日時</label>
                         <input type="date" name="" id="interview_date_input">
-                        <input type="time" id="interview_time_input">
+                        <input type="time" step="1800" id="interview_time_input">
                     </div>
                     <div class="edit">
                         <label for="">面接場所:</label>
                         <select id="interview_place">
-                            <option value="">本部or現地</option>
-                            <option value="">本部</option>
-                            <option value="">現地:</option>
-                        </select>
-                        <input type="text" name="" id="place_input">       
+                            <option value="">面接場所を選択する</option>
+                            <option value="本部">本部</option>
+                            <option value="渋谷">渋谷</option>
+                            <option value="千葉">千葉</option>
+                            <option value="横浜">横浜</option>
+                        </select>     
                     </div>
                     <div class="edit">
                         <label for="">寮希望:</label>
                         <input type="checkbox" name="agree_privacy" id="dormitory" value=""/>   
-                    </div>
+                    </div><br>
                     <div class="edit">
-                        <label for="">特記事項:</label>
-                        <input type="text" name="" id="notice_input">   
+                        <label for="" class="noticeLabel">特記事項:</label>
+                        <textarea name="" id="notice_input" cols="30" rows="2"></textarea>
                     </div>
                     </form>
                     <br>
@@ -187,11 +191,12 @@
             <div>
                 <label for="">面接場所:</label>
                 <select id="interview_place_search">
-                    <option value="">本部or現地</option>
-                    <option value="">本部</option>
-                    <option value="">現地:</option>
+                    <option value="">面接場所を選択する</option>
+                    <option value="本部">本部</option>
+                    <option value="渋谷">渋谷</option>
+                    <option value="千葉">千葉</option>
+                    <option value="横浜">横浜</option>
                 </select>
-                <input type="text" name="" id="place_input_search">
             </div>
             <br>
             <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
@@ -207,15 +212,15 @@
                 <th>番号</th>
                 <th>受付日</th>
                 <th>受付者</th>
-                <th>応募媒体</th>
+                <th class="bigTh">応募媒体</th>
                 <th>最寄駅</th>
                 <th>氏名</th>
                 <th>性別</th>
                 <th>年齢</th>
                 <th>国籍</th>
                 <th>連絡先</th>
-                <th>面接日時</th>
-                <th>面接場所</th>
+                <th class="bigTh">面接日時</th>
+                <th class="bigTh">面接場所</th>
                 <th>寮希望</th>
                 <th>編集</th>
             </tr>
@@ -284,9 +289,12 @@
             </div>
             <div class="edit">
                 <label for="">性別:</label>
-                <input type="radio" name="sex_edit" value="men">男性
-                <input type="radio" name="sex_edit" value="woman">女性
-                <input type="radio" name="sex_edit" value="other">その他
+                <select name="" id="sex_edit">
+                    <option value="">性別を選択する</option>
+                    <option value="男性">男性</option>
+                    <option value="女性">女性</option>
+                    <option value="その他">その他</option>
+                </select>
             </div>
             <div class="edit">
                 <label for="">年齢:</label>
@@ -314,19 +322,20 @@
             <div class="edit">
                 <label for="">面接場所:</label>
                 <select id="interview_place_edit">
-                    <option value="">本部or現地</option>
-                    <option value="">本部</option>
-                    <option value="">現地:</option>
-                </select>
-                <input type="text" name="" id="place_input_edit">       
+                    <option value="">面接場所を選択する</option>
+                    <option value="本部">本部</option>
+                    <option value="渋谷">渋谷</option>
+                    <option value="千葉">千葉</option>
+                    <option value="横浜">横浜</option>
+                </select>     
             </div>
             <div class="edit">
                 <label for="">寮希望:</label>
                 <input type="checkbox" name="agree_privacy" id="dormitory_edit" value=""/>   
             </div>
             <div class="edit">
-                <label for="">特記事項:</label>
-                <input type="text" name="" id="notice_input_edit">   
+                <label for="" class="noticeLabel">特記事項:</label> 
+                <textarea name="" id="notice_input_edit" cols="30" rows="2"></textarea> 
             </div>
             </form>
             <br>
