@@ -163,7 +163,7 @@
                 </div>
             </div> 
             <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の一覧を表示する</button></a>
-            <a href=""><button class="btn btn-secondary">全表示にする</button></a>  
+            <a href=""><button class="btn btn-secondary">最新情報にする</button></a>  
         </div>
         <div class="search">
             <h3>検索</h3>
@@ -194,7 +194,7 @@
             <button type="submit" class="btn btn-secondary" onclick="location.reload()">検索リセット</button>
         </div>
         <div id="title">
-            <p>全表示</p>  
+            <p>最新情報</p>  
         </div>
         <table class="table table-title">
             <thead class="thead-dark">
@@ -220,6 +220,10 @@
         </table>
         <div id="interview_list">
             <!-- テーブル表示 -->
+        </div>
+        <div class="nextButton">
+            <a href="javascript:void(0);" class="btn btn-radius-solid" onclick="nextPegination();">更に表示する<i class="fas fa-angle-right fa-position-right"></i></a>
+            <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
         </div>
     <!-- 変更用モーダルウィンドウ内容 -->
     <div class="modal js-modal2">
