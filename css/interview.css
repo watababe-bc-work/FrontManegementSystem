@@ -1,3 +1,18 @@
+@media screen and (min-width: 1401px) {
+  .Page_title {
+    display: flex;
+    justify-content: center;
+    position: relative; }
+    .Page_title a {
+      position: absolute;
+      right: 0;
+      top: 30px;
+      font-size: 15px; } }
+    @media screen and (min-width: 1401px) and (max-width: 576px) {
+      .Page_title a {
+        font-size: 10px;
+        text-align: center; } }
+
 #page_top {
   width: 90px;
   height: 90px;
@@ -180,7 +195,7 @@ table {
   table th, table td {
     font-size: 15px; }
   table th {
-    min-width: 5em;
+    min-width: 6em;
     text-align: center; }
     @media screen and (max-width: 576px) {
       table th {
@@ -188,8 +203,12 @@ table {
         min-width: 5em; } }
   table .bigTh {
     min-width: 6em; }
+  table .bigTh_name {
+    min-width: 7em;
+    font-weight: 600; }
   table td {
-    min-width: 5em; }
+    min-width: 6em;
+    margin: 0; }
     @media screen and (max-width: 576px) {
       table td {
         max-width: 6em;
@@ -230,5 +249,11 @@ table {
 .table-title {
   margin-top: 3%;
   margin-bottom: 0; }
+
+.notice_button {
+  margin-bottom: 20px;
+  text-align: center; }
+  .notice_button button {
+    font-size: 15px; }
 
 /*# sourceMappingURL=interview.css.map */
