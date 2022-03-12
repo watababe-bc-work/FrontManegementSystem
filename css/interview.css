@@ -1,3 +1,18 @@
+@media screen and (min-width: 1401px) {
+  .Page_title {
+    display: flex;
+    justify-content: center;
+    position: relative; }
+    .Page_title a {
+      position: absolute;
+      right: 0;
+      top: 30px;
+      font-size: 15px; } }
+    @media screen and (min-width: 1401px) and (max-width: 576px) {
+      .Page_title a {
+        font-size: 10px;
+        text-align: center; } }
+
 #page_top {
   width: 90px;
   height: 90px;
@@ -48,7 +63,7 @@
 
 h1 {
   text-align: center;
-  padding: 3% 0;
+  padding: 20px 0;
   font-size: 30px; }
 
 .new_registration {
@@ -64,6 +79,60 @@ h1 {
         width: 150px;
         height: 25px;
         margin: 10px 0; } }
+
+.button-19 {
+  appearance: button;
+  background-color: #1899D6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: din-round,sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  overflow: visible;
+  padding: 13px 16px;
+  text-align: center;
+  text-transform: uppercase;
+  touch-action: manipulation;
+  transform: translateZ(0);
+  transition: filter .2s;
+  user-select: none;
+  -webkit-user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 30%; }
+
+.button-19:after {
+  background-clip: padding-box;
+  background-color: #1CB0F6;
+  border: solid transparent;
+  border-radius: 16px;
+  border-width: 0 0 4px;
+  bottom: -4px;
+  content: "";
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: -1; }
+
+.button-19:main,
+.button-19:focus {
+  user-select: auto; }
+
+.button-19:hover:not(:disabled) {
+  filter: brightness(1.1); }
+
+.button-19:disabled {
+  cursor: auto; }
 
 .nextButton .btn,
 .nextButton a.btn,
@@ -157,7 +226,7 @@ textarea {
   margin: 2% 0; }
   .search div {
     display: inline-block;
-    margin: 2% 20px;
+    margin: 10px 20px;
     font-size: 15px; }
 
 .modal__bg {
@@ -180,14 +249,23 @@ table {
   table th, table td {
     font-size: 15px; }
   table th {
-    min-width: 5em;
+    min-width: 6em;
     text-align: center; }
     @media screen and (max-width: 576px) {
       table th {
         max-width: 6em;
         min-width: 5em; } }
+  table .bigTh {
+    min-width: 6em; }
+  table .bigTh_name {
+    min-width: 7em;
+    font-weight: 600; }
+  table .bigTh_interviewDate {
+    font-weight: 600;
+    text-align: center; }
   table td {
-    min-width: 5em; }
+    min-width: 6em;
+    margin: 0; }
     @media screen and (max-width: 576px) {
       table td {
         max-width: 6em;
@@ -213,11 +291,26 @@ table {
   table .cancel_back {
     background: #92BEC3; }
 
+.noticeLabel {
+  vertical-align: top; }
+
+#status_input_edit :hover {
+  content: ''; }
+
+.center {
+  text-align: center; }
+
 .table > tbody > tr > td {
   border: none; }
 
 .table-title {
   margin-top: 3%;
   margin-bottom: 0; }
+
+.notice_button {
+  margin-bottom: 20px;
+  text-align: center; }
+  .notice_button button {
+    font-size: 15px; }
 
 /*# sourceMappingURL=interview.css.map */
