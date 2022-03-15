@@ -21,7 +21,147 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    
+    <h1>POP・Web要望 新規作成</h1>
+    <a href="popDemandList.html"><button class="btn btn-info">要望一覧へ</button></a>
+    <div class="backwhite">
+        <form action="PopDemand.html" method="POST">
+            <div class="edit">
+                <label for="">依頼区分：</label>
+                <select name="" id="order_category" onchange="change();">
+                    <option value="">区分を選択する</option>
+                    <option value="POP">POP</option>
+                    <option value="Web">Web</option>
+                </select>
+            </div>
+            <div class="edit">
+                <label for="">依頼日：</label>
+                <input type="date" id="order_date">
+            
+            
+                <label for="">納品日：</label>
+                <input type="date" id="preferred_date">
+            
+            
+                <label for="">店舗名:</label>
+                <input type="text" id="store_name" list="stores" placeholder="テキスト入力or検索">
+                <datalist id="stores">
+                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                    <option value="池袋グランド">池袋グランド</option>
+                    <option value="アトランタ">アトランタ</option>
+                    <option value="池袋セントラル">池袋セントラル</option>
+                    <option value="パークサイド">パークサイド</option>
+                    <option value="ウエストワン">ウエストワン</option>
+                    <option value="サード">サード</option>
+                    <option value="アメジスト">アメジスト</option>
+                    <option value="ロックス新宿">ロックス新宿</option>
+                    <option value="ブレス">ブレス</option>
+                    <option value="ラフェスタ新宿">ラフェスタ新宿</option>
+                    <option value="エルメ">エルメ</option>
+                    <option value="エイジア">エイジア</option>
+                    <option value="パリス">パリス</option>
+                    <option value="ダイヤモンド">ダイヤモンド</option>
+                    <option value="オニキス">オニキス</option>
+                    <option value="アモーレ">アモーレ</option>
+                    <option value="エメラルド">エメラルド</option>
+                    <option value="五反田バリバリ">五反田バリバリ</option>
+                    <option value="松戸グランド">松戸グランド</option>
+                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                    <option value="トニーワン">トニーワン</option>
+                    <option value="センチュリー">センチュリー</option>
+                    <option value="ガーネット">ガーネット</option>
+                    <option value="リトルバリ">リトルバリ</option>
+                    <option value="アジアンリゾート">アジアンリゾート</option>
+                    <option value="サーティワン">サーティワン</option>
+                    <option value="ブルゾン">ブルゾン</option>
+                    <option value="チェルシー">チェルシー</option>
+                    <option value="ココバリ">ココバリ</option>
+                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                    <option value="IF">IF</option>
+                    <option value="グランヴィラ">グランヴィラ</option>
+                    <option value="池袋バリバリ">池袋バリバリ</option>
+                    <option value="クイーン">クイーン</option>
+                    <option value="ピュア">ピュア</option>
+                    <option value="ZALA">ZALA</option>
+                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                    <option value="バリバリANNEX">バリバリANNEX</option>
+                </datalist>
+            
+            
+                <label for="">依頼者氏名：</label>
+                <input type="text" id="requester_name">
+            </div>
+        
+            <div class="edit">
+                <label for="">件名：</label>
+                <input type="text" id="subject">
+            </div>
+        
+            <div class="edit" id="pops">
+                <label for="" id="outputs">出力：</label>
+                <select name="" id="output">
+                    <option value="">出力を選択する</option>
+                    <option value="塩ビシート(看板)">塩ビシート(看板)</option>
+                    <option value="内照シート(看板)">内照シート(看板)</option>
+                    <option value="普通紙">普通紙</option>
+                    <option value="内照紙">内照紙</option>
+                    <option value="シール紙">シール紙</option>
+                </select>
+            
+            
+                <label for="" id="processings">加工：</label>
+                <select name="" id="processing">
+                    <option value="">加工を選択する</option>
+                    <option value="グロス">グロス</option>
+                    <option value="マット">マット</option>
+                </select>
+
+                <label for="" id="numbers">枚数：</label>
+                <input type="text" id="number">
+            </div>
+
+            <div class="edit">
+                <div id="web">
+                    <label for="">Webサイト</label>
+                    <select name="" id="website">
+                        <option value="">-</option>
+                        <option value="公式HP">公式HP</option>
+                        <option value="ハピホテ">ハピホテ</option>
+                        <option value="カップルズ">カップルズ</option>
+                        <option value="予約サイト">予約サイト</option>
+                        <option value="Twitter">Twitter</option>
+                    </select>
+                </div>
+            </div>
+        
+            <div class="edit" id="sizes">
+                <label for="">サイズ：</label>
+                <select name="" id="size_checkBox">
+                    <option value="">サイズを選択・記入する</option>
+                    <option value="名刺サイズ">名刺サイズ</option>
+                    <option value="A6">A6</option>
+                    <option value="A5">A5</option>
+                    <option value="A4">A4</option>
+                    <option value="A3">A3</option>
+                    <option value="A1">A1</option>
+                </select>
+                <select name="" id="size_derection">
+                    <option value="">向きを選択</option>
+                    <option value="縦">縦</option>
+                    <option value="横">横</option>
+                </select>
+                横<input type="text" id="horizontal">mm × 縦<input type="text" id="vertical">mm + 貼り代<input type="text" id="covering_fare">mm
+            </div>    
+            <div class="edit">
+                <label for="" id="demand_detail_label">要望詳細：</label>
+                <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
+            </div>
+        </form>
+        <div id="collectAlert"></div>
+        <div class="buttons">
+            <button type="submit" class="btn btn-success" onclick="POPDemandUpdate()">保存する</button>
+            <button class="btn btn-primary" onclick="createPDF()">PDFで印刷する</button>
+        </div>
+    </div>
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -32,5 +172,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="js/popDemand.js"></script>
+    <script src="js/pdfmake/pdfmake.min.js"></script>
+    <script src="js/pdfmake/vfs_fonts.js"></script>
 </body>
 </html>
