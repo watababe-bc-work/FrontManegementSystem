@@ -1,0 +1,149 @@
+body{
+    text-align: center;
+    background: #d3d3d3;
+}
+
+h1{
+    margin: 30px 0;
+    color: #696969;
+}
+
+.youbouTable{
+    background: white;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 20px 0;
+    border-radius: 20px;
+
+    th,td{
+        font-size: 15px;
+    }
+
+    button{
+        margin: 0 5px;
+    }
+
+    .collectBack{
+        background: #91B87E;
+        color: white;
+    }
+
+    .orderBack{
+        background: #E1DBCD;
+    }
+}
+
+.modal{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+    overflow: scroll;
+
+    h2{
+        font-size: 25px;
+        margin: 20px 0;
+    }
+
+    button{
+        width: 150px;
+        height: 40px;
+        margin: 5px 20px;
+        font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 20px;
+    }
+
+    form{
+        .edit{
+            margin: 3% 5px;
+            display: inline-block;
+        }
+
+        label{
+            font-size: 15px;
+        }
+
+        input,select{
+            font-size: 15px;
+        }
+    }
+
+    .alert{
+        font-size: 15px;
+    }
+
+    .modal__bg{
+        background: rgba(0,0,0,0.8);
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+    .modal__content{
+        background: #fff;
+        left: 50%;
+        padding: 40px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 60%;
+    }
+}
+
+.nextButton{
+    text-align: left;
+    margin-left: 5%;
+    .btn,
+    a.btn,
+    button.btn {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.5;
+      position: relative;
+      display: inline-block;
+      padding: 1rem 4rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      color: #212529;
+      border-radius: 0.5rem;
+      margin-bottom: 3%;
+    }
+
+    a.btn-radius-solid {
+        border: 1px solid #ccc;
+        background: #f1e767;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+        -webkit-box-shadow: inset 1px 1px 1px #fff;
+        box-shadow: inset 1px 1px 1px #fff;
+      }
+      
+      a.btn-radius-solid:hover {
+        background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+    }
+}
+
+.jump{
+    font-size: 15px;
+    margin: 0 5px;
+}
