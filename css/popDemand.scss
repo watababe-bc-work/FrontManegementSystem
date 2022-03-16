@@ -26,7 +26,7 @@ form{
         }
     }
     #subject{
-        width: 800px;
+        width: 50%;
     }
 
     #horizontal,#vertical,#covering_fare{
@@ -36,6 +36,10 @@ form{
 
     #demand_detail_label{
         vertical-align: top;
+    }
+
+    #demand_detail{
+        max-width: 50%;
     }
 }
 

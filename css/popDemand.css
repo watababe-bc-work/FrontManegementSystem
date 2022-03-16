@@ -20,12 +20,14 @@ form {
     form .edit label {
       margin-left: 20px; }
   form #subject {
-    width: 800px; }
+    width: 50%; }
   form #horizontal, form #vertical, form #covering_fare {
     width: 100px;
     text-align: right; }
   form #demand_detail_label {
     vertical-align: top; }
+  form #demand_detail {
+    max-width: 50%; }
 
 .btn {
   font-size: 15px;
