@@ -33,7 +33,7 @@
         <div class="modal__bg js-modal-close"></div>
         <div class="modal__content">
             <h2>状況変更</h2>
-            <form action="interview.html" method="POST">
+            <form action="popDemand.html" method="POST">
                 <div class="edit">
                     <label for="">状況:</label>
                     <select name="" id="status">
@@ -42,6 +42,10 @@
                         <option value="完了">完了</option>
                         <option value="依頼中">依頼中</option>
                     </select>
+                </div>
+                <div class="edit">
+                    <label for="">対応者:</label>
+                    <input type="text" id="supportPerson">
                 </div>
             </form>
             <br>
@@ -66,8 +70,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="js/popDemandList.js"></script>
-    <script src="js/pdfmake/pdfmake.min.js"></script>
-    <script src="js/pdfmake/vfs_fonts.js"></script>
+    <script src="js/pdfMake/pdfmake.min.js"></script>
+    <script src="js/pdfMake/vfs_fonts.js"></script>
     <script src="js/modal.js"></script>
 </body>
 </html>
