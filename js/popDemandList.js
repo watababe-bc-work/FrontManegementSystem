@@ -36,17 +36,17 @@ document.getElementById('prevButton').style.visibility = 'hidden';
 
       var i = 0;
       var stocklist = '<table class="table table-striped">'
-      stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>編集</th></tr>';
+      stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>対応者</th><th>編集</th></tr>';
       querySnapshot.forEach((postDoc) => {
         switch(postDoc.get('status')){
           case '完了':
-              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
               break;
           case '依頼中':
-              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
               break;
           default:
-              stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+              stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
               break;        
         }
       })
@@ -68,7 +68,7 @@ function editStatus(id){
   (async () => {
     try {
         const carrentpopDemandDB = await db.collection('POPDemands').doc(id).get();
-        //性別
+
         var status_elements = document.getElementById('status');
 
         switch(carrentpopDemandDB.get('status')){
@@ -114,17 +114,17 @@ function nextPegination(){
 
           var i = 0;
           var stocklist = '<table class="table table-striped">'
-          stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>編集</th></tr>';
+          stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>対応者</th><th>編集</th></tr>';
           querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
               case '完了':
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
                   break;
               case '依頼中':
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
                   break;
               default:
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
                   break;        
             }
           })
@@ -144,17 +144,17 @@ function returnTable(){
 
   var i = 0;
   var stocklist = '<table class="table table-striped">'
-  stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>編集</th></tr>';
+  stocklist += '<tr><th>区分</th><th>依頼日</th><th>納品日</th><th>店舗名</th><th>件名</th><th>状況</th><th>対応者</th><th>編集</th></tr>';
   querySnapshot.forEach((postDoc) => {
     switch(postDoc.get('status')){
       case '完了':
-          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
           break;
       case '依頼中':
-          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
           break;
       default:
-          stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
+          stocklist += '<tbody><tr><td>'+ postDoc.get('orderCategory') +'</td><td>' + postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) + '</td><td>' + postDoc.get('orderDate') + '</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('subject') + '</td><td>'+ postDoc.get('status') +'</td><td>'+ postDoc.get('supportPerson') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状況を変更する</button></a></td></tr></tbody>';
           break;        
     }
   })
@@ -171,9 +171,11 @@ function returnTable(){
 function EditUpdate(id){
     //status
     var status = document.getElementById('status').value;
+    var supportPerson = document.getElementById('supportPerson').value;
     //DBへ送信
     db.collection('POPDemands').doc(id).update({
       status:status,
+      supportPerson:supportPerson
   });
   var collectAlert = document.getElementById('collectAlert');
   collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';

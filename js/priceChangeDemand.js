@@ -162,6 +162,7 @@ function priceChangeUpdate(){
         receptionDate_change4:receptionDate_change4,
         price_change4:price_change4,
         status:'未完了',
+        supportPerson:'',
         CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     var collectAlert = document.getElementById('collectAlert');

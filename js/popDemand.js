@@ -104,6 +104,7 @@ function POPDemandUpdate(){
             coveringFare:coveringFare,
             demandDetail:demandDetail,
             status:'未完了',
+            supportPerson:'',
             CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
         });
     }else{

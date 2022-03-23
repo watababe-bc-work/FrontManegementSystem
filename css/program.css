@@ -1,0 +1,93 @@
+@charset "UTF-8";
+.attendance_management {
+  text-align: center;
+  padding-top: 2%;
+  /*全体*/
+  /*カレンダー*/
+  /*日曜日*/
+  /*土曜日*/
+  /*前後月の日付*/
+  /*本日*/
+  /*ボタン*/ }
+  .attendance_management h1 {
+    margin: 1%; }
+  .attendance_management .wrapper {
+    max-width: 90%;
+    margin: 0 auto;
+    color: #666; }
+  .attendance_management .wrapper a {
+    color: #666; }
+  .attendance_management #header {
+    text-align: center;
+    font-size: 24px;
+    width: 100%;
+    margin: 1rem 0 0; }
+  .attendance_management #calendar {
+    text-align: center;
+    width: 100%; }
+  .attendance_management table {
+    outline: 2px solid #ddd;
+    border-collapse: collapse;
+    width: 100%;
+    height: 10px; }
+  .attendance_management th {
+    color: #000; }
+  .attendance_management th, .attendance_management td {
+    outline: 1px solid #ddd;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center; }
+  .attendance_management td:first-child {
+    color: red; }
+  .attendance_management td:last-child {
+    color: blue; }
+  .attendance_management td.disabled {
+    color: #ccc; }
+  .attendance_management td.today {
+    background-color: #D65E72; }
+    .attendance_management td.today button {
+      background-color: #D65E72;
+      color: #fff;
+      border: solid 2px #fff; }
+  .attendance_management td.today a {
+    color: #fff; }
+  .attendance_management button {
+    border: solid 2px #666; }
+  .attendance_management #next-prev-button {
+    position: relative; }
+  .attendance_management #next-prev-button button {
+    cursor: pointer;
+    background: #B78D4A;
+    color: #fff;
+    border: 1px solid #B78D4A;
+    border-radius: 4px;
+    font-size: 1rem;
+    padding: 0.5rem 2rem;
+    margin: 1rem 0; }
+  .attendance_management #next-prev-button button:hover {
+    background-color: #D4BB92;
+    border-color: #D4BB92; }
+  .attendance_management #prev {
+    float: left; }
+  .attendance_management #next {
+    float: right; }
+  .attendance_management .todaysContent {
+    width: 45%;
+    height: 30em;
+    border: solid 2px black;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px; }
+  .attendance_management .Allmemo {
+    width: 45%;
+    height: 30em;
+    border: solid 2px black;
+    border-radius: 10px;
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 10px;
+    padding: 10px; }
+
+/*# sourceMappingURL=program.css.map */
