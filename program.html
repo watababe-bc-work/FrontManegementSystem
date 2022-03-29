@@ -25,37 +25,6 @@
         <div class="bbs_titles">
             <h1>予定表</h1>
         </div>
-            <!-- モーダルウィンドウ内容 -->
-            <div class="modal js-modal1">
-                <div class="modal__bg js-modal-close1"></div>
-                <div class="modal__content">
-                    <h2><span id="attendance_month"></span>月<span id="attendance_day"></span>日の投稿可否入力</h2>
-                    <!-- 詳細テーブル -->
-                    <div id="attendancedetail_input"></div>
-                    <label for="all"><input type="checkbox" name="allChecked" id="all">全選択</label><br>
-                    <label for="">1時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_first">
-                    <label for="">2時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_second">
-                    <label for="">3時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_third">
-                    <label for="">4時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_fourth">
-                    <label for="">5時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_fifth">
-                    <label for="">6時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_sixth">
-                    <label for="">7時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_seventh">
-                    <label for="">8時間目</label>
-                    <input type="checkbox" name="attend_input" id="attend_eighth"><br>
-                    <div id="collectAlert">
-                        <!-- 編集完了のAlert -->
-                    </div>
-                    <button type="submit" class="btn btn-success" onclick="attendance_manage_Update()">送信する</button>
-                    <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
-                </div>
-            </div>  
             <div class="wrapper">
                 <!-- xxxx年xx月を表示 -->
                 <h1 id="header"></h1>
@@ -81,6 +50,103 @@
                         <!-- DBに追加された内容が入る -->
                     </div>
                 </div>
+                <!-- 日付別日程モーダルウィンドウ内容 -->
+                <div class="modal js-modal">
+                    <div class="modal__bg js-modal-close"></div>
+                    <div class="modal__content">
+                        <h2 id="AdddairyTitle"></h2>
+                        <form action="program.html" method="POST">
+                        <div class="edit">
+                            <label for="">担当者:</label>
+                            <input type="text" name="" id="rep_input">
+                        </div>
+                        <div class="edit">
+                            <label for="">店舗名:</label>
+                            <input type="text" id="storename_input" list="stores" placeholder="テキスト入力or検索">
+                            <datalist id="stores">
+                                <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                                <option value="池袋グランド">池袋グランド</option>
+                                <option value="アトランタ">アトランタ</option>
+                                <option value="アメジスト">アメジスト</option>
+                                <option value="池袋バリバリ">池袋バリバリ</option>
+                                <option value="ウエストワン">ウエストワン</option>
+                                <option value="サード">サード</option>
+                                <option value="クイーン">クイーン</option>
+                                <option value="池袋セントラル">池袋セントラル</option>
+                                <option value="パークサイド">パークサイド</option>
+                                <option value="グランヴィラ">グランヴィラ</option>
+                                <option value="ブルゾン">ブルゾン</option>
+                                <option value="ピュア">ピュア</option>
+                                <option value="松戸グランド">松戸グランド</option>
+                                <option value="カップルズインハッピー">カップルズインハッピー</option>
+                                <option value="トニーワン">トニーワン</option>
+                                <option value="サーティワン">サーティワン</option>
+                                <option value="センチュリー">センチュリー</option>
+                                <option value="ガーネット">ガーネット</option>
+                                <option value="リトルバリ">リトルバリ</option>
+                                <option value="アジアンリゾート">アジアンリゾート</option>
+                                <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                                <option value="ロックス新宿">ロックス新宿</option>
+                                <option value="ブレス">ブレス</option>
+                                <option value="チェルシー">チェルシー</option>
+                                <option value="エルメ">エルメ</option>
+                                <option value="パリス">パリス</option>
+                                <option value="ダイヤモンド">ダイヤモンド</option>
+                                <option value="エイジア">エイジア</option>
+                                <option value="オニキス">オニキス</option>
+                                <option value="アモーレ">アモーレ</option>
+                                <option value="IF">IF</option>
+                                <option value="ココバリ">ココバリ</option>
+                                <option value="エメラルド">エメラルド</option>
+                                <option value="五反田バリバリ">五反田バリバリ</option>
+                                <option value="バリバリANNEX">バリバリANNEX</option>
+                                <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                                <option value="ZALA">ZALA</option>
+                            </datalist>
+                        </div>
+                        <br>
+                        <div class="edit">
+                            <label for="">時間:</label>
+                            <input type="date" id="date_input">
+                            <input type="time" id="time_input">
+                        </div>
+                        <div class="edit">
+                            <label for="">項目:</label>
+                            <input type="text" name="" id="item_input">
+                        </div>
+                        <br>
+                        <div class="edit">
+                            <label for="">フリー:</label><br>
+                            <textarea name="" id="content_input" cols="50" rows="4"></textarea>
+                        </div>
+                        </form>
+                        <br>
+                        <div id="collectAlert">
+                            <!-- 編集完了のAlert -->
+                        </div>
+                        <div id="AdddairyButton" class="modalButton"></div>
+                        <a class="js-modal-close" href="" class="modalButton"><button class="btn btn-outline-info">閉じる</button></a>
+                    </div>
+                </div> 
+                <!-- 全体メモ用モーダルウィンドウ内容 -->
+                <div class="modal js-modal1">
+                    <div class="modal__bg js-modal-close"></div>
+                    <div class="modal__content">
+                        <h2>全体メモ新規登録</h2>
+                        <form action="program.html" method="POST">
+                            <div class="edit">
+                                <label for="">内容:</label><br>
+                                <textarea name="" id="AllmemoContent_input" cols="50" rows="4"></textarea>
+                            </div>
+                        </form>
+                        <br>
+                        <div id="collectAlert1">
+                            <!-- 編集完了のAlert -->
+                        </div>
+                        <div id="AddAllmemoButton" class="modalButton"></div>
+                        <a class="js-modal-close1" href="" class="modalButton"><button class="btn btn-outline-info">閉じる</button></a>
+                    </div>
+                </div> 
             </div>
     </div> 
     <!-- jqueryの読み込み -->
@@ -92,5 +158,6 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="js/program.js"></script>
+    <script src="js/modal.js"></script>
 </body>
 </html>

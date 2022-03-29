@@ -25,6 +25,8 @@
   .attendance_management #calendar {
     text-align: center;
     width: 100%; }
+    .attendance_management #calendar button {
+      border: solid 2px #666; }
   .attendance_management table {
     outline: 2px solid #ddd;
     border-collapse: collapse;
@@ -51,8 +53,6 @@
       border: solid 2px #fff; }
   .attendance_management td.today a {
     color: #fff; }
-  .attendance_management button {
-    border: solid 2px #666; }
   .attendance_management #next-prev-button {
     position: relative; }
   .attendance_management #next-prev-button button {
@@ -73,21 +73,94 @@
     float: right; }
   .attendance_management .todaysContent {
     width: 45%;
-    height: 30em;
+    min-height: 30em;
     border: solid 2px black;
     border-radius: 10px;
     display: inline-block;
     margin-top: 20px;
     margin-right: 10px;
-    padding: 10px; }
+    padding: 10px;
+    vertical-align: top; }
+    .attendance_management .todaysContent button {
+      border: none;
+      font-size: 15px; }
+    .attendance_management .todaysContent .btn-secondary {
+      font-size: 10px;
+      position: absolute;
+      right: 0; }
+    .attendance_management .todaysContent p {
+      font-size: 15px; }
+  .attendance_management .insertContents {
+    display: flex;
+    justify-content: center;
+    position: relative; }
   .attendance_management .Allmemo {
     width: 45%;
-    height: 30em;
+    min-height: 30em;
     border: solid 2px black;
     border-radius: 10px;
     display: inline-block;
     margin-top: 20px;
     margin-left: 10px;
-    padding: 10px; }
+    padding: 10px;
+    vertical-align: top; }
+    .attendance_management .Allmemo button {
+      border: none;
+      font-size: 15px; }
+    .attendance_management .Allmemo .btn-secondary {
+      font-size: 10px;
+      position: absolute;
+      right: 0; }
+    .attendance_management .Allmemo p {
+      font-size: 15px; }
+
+.modal {
+  display: none;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  overflow: auto;
+  overflow: scroll; }
+  .modal h2 {
+    font-size: 25px;
+    margin: 20px 0; }
+  .modal button {
+    width: 150px;
+    height: 40px;
+    margin: 0 20px;
+    font-size: 15px; }
+  .modal p {
+    font-size: 15px;
+    margin: 20px; }
+  .modal form .edit {
+    margin: 3% 5px;
+    display: inline-block; }
+  .modal form label {
+    font-size: 15px; }
+  .modal form input, .modal form select, .modal form textarea {
+    font-size: 15px; }
+  .modal form #item_input {
+    width: 400px; }
+  .modal .alert {
+    font-size: 15px; }
+
+.modal__bg {
+  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  position: absolute;
+  width: 100%; }
+
+.modal__content {
+  background: #fff;
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%; }
+  .modal__content .modalButton {
+    display: inline-block; }
 
 /*# sourceMappingURL=program.css.map */

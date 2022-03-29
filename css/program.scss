@@ -27,6 +27,10 @@
     #calendar {
         text-align: center;
         width: 100%;
+
+        button{
+            border: solid 2px #666;
+        }
     }
     table {
         outline: 2px solid #ddd;
@@ -69,10 +73,6 @@
         color: #fff;
     }
 
-    button{
-        border: solid 2px #666;
-    }
-
     /*ボタン*/
     #next-prev-button {
         position: relative;
@@ -100,23 +100,133 @@
 
     .todaysContent{
         width: 45%;
-        height: 30em;
+        min-height: 30em;
         border: solid 2px black;
         border-radius: 10px;
         display: inline-block;
         margin-top: 20px;
         margin-right: 10px;
         padding: 10px;
+        vertical-align: top;
+
+        button{
+            border: none;
+            font-size: 15px;
+        }
+
+        .btn-secondary{
+            font-size: 10px;
+            position: absolute;  // 追記
+            right: 0;  
+        }
+
+        p{
+            font-size: 15px;
+        }
+    }
+
+    .insertContents{
+        display: flex;
+        justify-content: center;
+        position: relative;
     }
 
     .Allmemo{
         width: 45%;
-        height: 30em;
+        min-height: 30em;
         border: solid 2px black;
         border-radius: 10px;
         display: inline-block;
         margin-top: 20px;
         margin-left: 10px;
         padding: 10px;
+        vertical-align: top;
+
+        button{
+            border: none;
+            font-size: 15px;
+        }
+
+        .btn-secondary{
+            font-size: 10px;
+            position: absolute;  // 追記
+            right: 0;  
+        }
+
+        p{
+            font-size: 15px;
+        }
+    }
+}
+
+//モーダルウィンドウ用
+.modal{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+    overflow: scroll;
+
+    h2{
+        font-size: 25px;
+        margin: 20px 0;
+    }
+
+    button{
+        width: 150px;
+        height: 40px;
+        margin: 0 20px;
+        font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 20px;
+    }
+
+    form{
+        .edit{
+            margin: 3% 5px;
+            display: inline-block;
+        }
+
+        label{
+            font-size: 15px;
+        }
+
+        input,select,textarea{
+            font-size: 15px;
+        }
+
+        #item_input{
+            width: 400px;
+        }
+    }
+
+    .alert{
+        font-size: 15px;
+    }
+}
+
+.modal__bg{
+    background: rgba(0,0,0,0.8);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.modal__content{
+    background: #fff;
+    left: 50%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 60%;
+
+    .modalButton{
+        display: inline-block;
     }
 }
