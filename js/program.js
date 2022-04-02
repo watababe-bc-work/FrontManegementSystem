@@ -106,18 +106,18 @@ function createProcess(year, month) {
             var daylyDB = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc('firstData').get();
             if(daylyDB.exists){
                 //データを取得して表示
-                querySnapshot = await await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).get();
-                var stocklist = '<div>';
+                querySnapshot = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).get();
+                var stocklist = '<table><tr><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th><th>編集</th></tr>';
                 var i = 0;
                 querySnapshot.forEach((postDoc) => {
                     if(postDoc.id == "firstData"){
-                        stocklist += '<p>' + postDoc.get('rep') + ' ' + postDoc.get('storename') + ' ' + postDoc.get('time') + ' ' + postDoc.get('item') + ' ' + postDoc.get('content') + '</p>';
+                        //表示しない
                     }else{
-                        stocklist += '<div class="insertContents"><p>' + postDoc.get('rep') + ' ' + postDoc.get('storename') + ' ' + postDoc.get('time') + ' ' + postDoc.get('item') + '<br>' + postDoc.get('content') + '</p><button class="btn btn-secondary" onClick="DeletedairyContent(\''+day+'\',\''+ month +'\',\''+ postDoc.id +'\')">削除する</button></div>';
+                        stocklist += '<tr><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td><td><a class="js-modal-open1"><button class="btn btn-primary" onClick="EditdairyContent(\''+day+'\',\''+ month +'\',\''+ postDoc.id +'\')">編集</button></a><button class="btn btn-secondary" onClick="DeletedairyContent(\''+day+'\',\''+ month +'\',\''+ postDoc.id +'\')">削除</button></td></tr>';
                     }
                     i++;
                 })
-                stocklist += '</div>';
+                stocklist += '</table>';
                 if(i == 1){
                     document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
                 }else{
@@ -129,41 +129,76 @@ function createProcess(year, month) {
                 db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc('firstData').set({
                     storename:'',
                     item:'',
-                    time:'',
+                    startTimeInput:'',
+                    endTimeInput:'',
                     rep:'',
-                    content:'',
+                    important:'',
                 });
                 document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
                 document.getElementById('dairyTitle').textContent = "本日の内容";
             }
 
-            //全体メモを表示
-            querySnapshot1 = await db.collection('program').doc(year + '-' + (month)).collection('Allmemo').get();
-            var stocklist1 = '<div>';
-            var i = 0;
-            querySnapshot1.forEach((postDoc) => {
-                if(postDoc.id == "firstdata"){
-                    stocklist1 += '<p>' + postDoc.get('content') + '</p>';
-                }else{
-                    stocklist1 += '<div class="insertContents"><p>' + postDoc.get('content') + '</p><button class="btn btn-secondary" onClick="DeleteAllmemoContent(\''+month+'\',\''+ postDoc.id +'\')">削除する</button></div>';
-                }
-                i++;
-            })
-            stocklist1 += '</div>';
-            if(i == 1){
-                document.getElementById('AllmemoContent').innerHTML = "<p>全体メモはありません</p>" + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ month +'\')">追加する</button></a>';
+            //今週の予定を表示
+            var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+            var k = 0;
+            var nextmonthList = [];
+            var nextdayList = [];
+            for(var i = 1;i < 8; i++){
+                date.setDate(date.getDate() + 1);
+                var nextmonth = date.getMonth() + 1;
+                var nextday = date.getDate();
+                nextmonthList.push(nextmonth);
+                nextdayList.push(nextday);
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                querySnapshot1.forEach((postDoc) => {
+                    if(postDoc.id == "firstData"){
+
+                    }else{
+                        stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                        k++;
+                    }
+                })
+            }
+            stocklist1 += '</table>';
+            document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+            if(k == 0){
+                document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
             }else{
-                document.getElementById('AllmemoContent').innerHTML = stocklist1 + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ month +'\')">追加する</button></a>';
+                document.getElementById('AllmemoContent').innerHTML = stocklist1;
             }
         }else{
             //ドキュメントを作成
             db.collection('program').doc(year + '-' + (month + 1)).set({});
-            db.collection('program').doc(year + '-' + (month + 1)).collection('Allmemo').doc('firstdata').set({
-                content:'',
-            });
             document.getElementById('dairyContent').innerHTML = '<p>予定はありません。</p>' + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
             document.getElementById('dairyTitle').textContent = "本日の内容";
-            document.getElementById('AllmemoContent').innerHTML = '<p>全体メモはありません。</p>' + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ month +'\')">追加する</button></a>';
+            //今週の予定を表示
+            var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+            var k = 0;
+            var nextmonthList = [];
+            var nextdayList = [];
+            for(var i = 1;i < 8; i++){
+                date.setDate(date.getDate() + 1);
+                var nextmonth = date.getMonth() + 1;
+                var nextday = date.getDate();
+                nextmonthList.push(nextmonth);
+                nextdayList.push(nextday);
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                querySnapshot1.forEach((postDoc) => {
+                    if(postDoc.id == "firstData"){
+
+                    }else{
+                        stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                        k++;
+                    }
+                })
+            }
+            stocklist1 += '</table>';
+            document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+            if(k == 0){
+                document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
+            }else{
+                document.getElementById('AllmemoContent').innerHTML = stocklist1;
+            }
         }
     } catch (err) {
     console.log(`Error: ${JSON.stringify(err)}`)
@@ -186,65 +221,100 @@ function dairyShow(day,month){
                 if(daylyDB.exists){
                     //データを取得して表示
                     querySnapshot = await await db.collection('program').doc(year + '-' + (monthTrue)).collection('Day' + day).get();
-                    var stocklist = '<div>';
+                    var stocklist = '<table><tr><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th><th>編集</th></tr>';
                     var i = 0;
                     querySnapshot.forEach((postDoc) => {
                         if(postDoc.id == "firstData"){
-                            stocklist += '<p>' + postDoc.get('rep') + ' ' + postDoc.get('storename') + ' ' + postDoc.get('time') + ' ' + postDoc.get('item') + ' ' + postDoc.get('content') + '</p>';
+                            //表示しない
                         }else{
-                            stocklist += '<div class="insertContents"><p>' + postDoc.get('rep') + ' ' + postDoc.get('storename') + ' ' + postDoc.get('time') + ' ' + postDoc.get('item') + ' ' + postDoc.get('content') + '</p><button class="btn btn-secondary" onClick="DeletedairyContent(\''+day+'\',\''+ monthTrue +'\',\''+ postDoc.id +'\')">削除する</button></div>';
+                            stocklist += '<tr><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td><td><a class="js-modal-open1"><button class="btn btn-primary" onClick="EditdairyContent(\''+day+'\',\''+ monthTrue +'\',\''+ postDoc.id +'\')">編集</button><button class="btn btn-secondary" onClick="DeletedairyContent(\''+day+'\',\''+ monthTrue +'\',\''+ postDoc.id +'\')">削除</button></td></tr>';
                         }
                         i++;
                     })
-                    stocklist += '</div>';
+                    stocklist += '</table>';
                     if(i == 1){
                         document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
                     }else{
                         document.getElementById('dairyContent').innerHTML = stocklist + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
                     }
-                    document.getElementById('dairyTitle').textContent = day + "日の内容";
+                    document.getElementById('dairyTitle').textContent = monthTrue + "月" +  day + "日の内容";
                 }else{
                     //コレクションを作成(同時に存在可否を調べるためのFirstDataドキュメントを新規作成)
                     db.collection('program').doc(year + '-' + (monthTrue)).collection('Day' + day).doc('firstData').set({
                         storename:'',
                         item:'',
-                        time:'',
+                        startTimeInput:'',
+                        endTimeInput:'',
                         rep:'',
-                        content:'',
+                        important:'',
                     });
                     document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
-                    document.getElementById('dairyTitle').textContent = day + "日の内容";
+                    document.getElementById('dairyTitle').textContent = monthTrue + "月" +  day + "日の内容";
                 }
 
-                //全体メモを表示
-                querySnapshot1 = await db.collection('program').doc(year + '-' + (monthTrue)).collection('Allmemo').get();
-                var stocklist1 = '<div>';
-                var i = 0;
-                querySnapshot1.forEach((postDoc) => {
-                    if(postDoc.id == "firstdata"){
-                        stocklist1 += '<p>' + postDoc.get('content') + '</p>';
-                    }else{
-                        stocklist1 += '<div class="insertContents"><p>' + postDoc.get('content') + '</p><button class="btn btn-secondary" onClick="DeleteAllmemoContent(\''+monthTrue+'\',\''+ postDoc.id +'\')">削除する</button></div>';
-                    }
-                    i++;
-                })
-                stocklist1 += '</div>';
-                if(i == 1){
-                    console.log(i);
-                    document.getElementById('AllmemoContent').innerHTML = "<p>全体メモはありません</p>" + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
+                //今週の予定を表示
+                var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+                var k = 0;
+                var nextmonthList = [];
+                var nextdayList = [];
+                for(var i = 1;i < 8; i++){
+                    date.setDate(date.getDate() + 1);
+                    var nextmonth = date.getMonth() + 1;
+                    var nextday = date.getDate();
+                    nextmonthList.push(nextmonth);
+                    nextdayList.push(nextday);
+                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                    querySnapshot1.forEach((postDoc) => {
+                        if(postDoc.id == "firstData"){
+
+                        }else{
+                            stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                            k++;
+                        }
+                    })
+                }
+                stocklist1 += '</table>';
+                document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+                if(k == 0){
+                    document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
                 }else{
-                    console.log(i);
-                    document.getElementById('AllmemoContent').innerHTML = stocklist1 + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
+
+                    document.getElementById('AllmemoContent').innerHTML = stocklist1;
                 }
             }else{
                 //ドキュメントを作成
                 db.collection('program').doc(year + '-' + (monthTrue)).set({});
-                db.collection('program').doc(year + '-' + (monthTrue)).collection('Allmemo').doc('firstdata').set({
-                    content:'',
-                });
                 document.getElementById('dairyContent').innerHTML = '<p>予定はありません。</p>' + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
-                document.getElementById('dairyTitle').textContent = day + "日の内容";
-                document.getElementById('AllmemoContent').innerHTML = '<p>全体メモはありません。</p>' + '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemo(\''+day+'\',\''+ monthTrue +'\')">追加する</button></a>';
+                document.getElementById('dairyTitle').textContent = monthTrue + "月" +  day + "日の内容";
+                //今週の予定を表示
+                var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+                var k = 0;
+                var nextmonthList = [];
+                var nextdayList = [];
+                for(var i = 1;i < 8; i++){
+                    date.setDate(date.getDate() + 1);
+                    var nextmonth = date.getMonth() + 1;
+                    var nextday = date.getDate();
+                    nextmonthList.push(nextmonth);
+                    nextdayList.push(nextday);
+                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                    querySnapshot1.forEach((postDoc) => {
+                        if(postDoc.id == "firstData"){
+
+                        }else{
+                            stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                            k++;
+                        }
+                    })
+                }
+                stocklist1 += '</table>';
+                document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+                if(k == 0){
+                    document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
+                }else{
+
+                    document.getElementById('AllmemoContent').innerHTML = stocklist1;
+                }
             }
 
             if(TodaysDay == day && TodaysMonth == monthTrue){
@@ -262,42 +332,96 @@ function AdddairyContent(day,month){
     document.getElementById('AdddairyButton').innerHTML = '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContentDB(\''+day+'\',\''+ month +'\')">追加する</button></a>';
 }
 
-//全体メモモーダルウィンドウ
-function AddAllmemo(day,month){
-    document.getElementById('AddAllmemoButton').innerHTML = '<a class="js-modal-open1"><button class="btn btn-success" onClick="AddAllmemoDB(\''+day+'\',\''+ month +'\')">追加する</button></a>';
-}
-
 //日付別日程追加
 function AdddairyContentDB(day,month){
     const rep = document.getElementById('rep_input').value;
     const storename = document.getElementById('storename_input').value;
-    const date = document.getElementById('date_input').value;
-    const time = document.getElementById('time_input').value;
+    const start = document.getElementById('start_time_input').value;
+    const end = document.getElementById('end_time_input').value;
     const item = document.getElementById('item_input').value;
-    const content = document.getElementById('content_input').value;
+    const important = document.getElementById('important_input').value;
 
     //DBへ送信
     db.collection('program').doc(year + '-' + (month)).collection('Day' + day).add({
         storename:storename,
         item:item,
-        date:date,
-        time:time,
+        startTimeInput:start,
+        endTimeInput:end,
         rep:rep,
-        content:content,
+        important:important,
     });
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
     setTimeout("location.reload()",2000);
 }
 
-//全体メモ追加
-function AddAllmemoDB(day,month){
-    const content = document.getElementById('AllmemoContent_input').value;
+//formクリア
+function dairyFormClear(){
+    document.dairyContents.reset();
+}
 
-    //DBへ送信
-    db.collection('program').doc(year + '-' + (month)).collection('Allmemo').add({
-        content:content,
-    });
+//日付別日程編集モーダルウィンドウ
+function EditdairyContent(day,month,id){
+    document.getElementById('EditdairyTitle').textContent = month + "月" + day + "日の内容編集";
+    (async () => {
+        var editDairyDB = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc(id).get();
+        //店舗名
+        document.getElementById('storename_edit').value = editDairyDB.get('storename');
+        //項目
+        document.getElementById('item_edit').value = editDairyDB.get('item');
+        //重要事項
+        document.getElementById('important_edit').value = editDairyDB.get('important');
+        //時間
+        month = month.padStart(2, '0');
+        day = day.padStart(2, '0');
+        document.getElementById('date_edit').value = year + '-' + month + '-' + day;
+        document.getElementById('start_time_edit').value = editDairyDB.get('startTimeInput');
+        document.getElementById('end_time_edit').value = editDairyDB.get('endTimeInput');
+        //担当者
+        document.getElementById('rep_edit').value = editDairyDB.get('rep');
+
+        document.getElementById('EditdairyButton').innerHTML = '<button class="btn btn-success" onClick="EditdairyContentDB(\''+day+'\',\''+ month +'\',\''+ id +'\')">編集する</button>'
+    })();
+}
+
+//日付別日程編集
+function EditdairyContentDB(day,month,id){
+    const rep = document.getElementById('rep_edit').value;
+    const storename = document.getElementById('storename_edit').value;
+    const date = document.getElementById('date_edit').value;
+    const start = document.getElementById('start_time_edit').value;
+    const end = document.getElementById('end_time_edit').value;
+    const item = document.getElementById('item_edit').value;
+    const important = document.getElementById('important_edit').value;
+
+    if(date == year + "-" + month + "-" + day){
+        //update
+        const newmonth = Number(month);
+        const newday = Number(day);
+        db.collection('program').doc(year + '-' + (newmonth)).collection('Day' + newday).doc(id).update({
+            storename:storename,
+            item:item,
+            startTimeInput:start,
+            endTimeInput:end,
+            rep:rep,
+            important:important,
+        });
+    }else{
+        //新規登録して古い方を削除
+        const newMonth = Number(date.substr(5,2));
+        const newDay = Number(date.substr(8));
+        db.collection('program').doc(year + '-' + (newMonth)).collection('Day' + newDay).add({
+            storename:storename,
+            item:item,
+            startTimeInput:start,
+            endTimeInput:end,
+            rep:rep,
+            important:important,
+        });
+        month = Number(month);
+        day = Number(day);
+        db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc(id).delete();
+    }
     var collectAlert = document.getElementById('collectAlert1');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
     setTimeout("location.reload()",2000);
@@ -317,16 +441,31 @@ function DeletedairyContent(day,month,id){
     } 
 }
 
-//全体メモ削除
-function DeleteAllmemoContent(month,id){
-    var res = window.confirm("全体メモの指定項目を削除しますか？");
-    if( res ) {
-        db.collection('program').doc(year + '-' + (month)).collection('Allmemo').doc(id).delete();
-        alert("削除されました。");
-        setTimeout("location.reload()",500);
-    }
-    else {
-        // キャンセルならアラートボックスを表示
-        alert("キャンセルしました。");
-    } 
+//検索
+function search(){
+    const storename = document.getElementById('storename_search').value;
+    const item = document.getElementById('item_search').value;
+
+    (async () => {
+        try {
+            //プログラムDBを呼び出す
+            query = await db.collection('program').get();
+            //プログラムDB内にあるドキュメントを全て呼び出す
+            query.forEach(async(postDoc) => {
+                console.log(postDoc.id);
+                //呼び出したドキュメント内のコレクションも全て呼び出す。
+                // const subCollection = await db.collection('program').doc(postDoc.id).collection('Day30').get();
+                // subCollection.forEach(async (postDoc) => {
+                //     console.log('Found subcollection with id:', postDoc.id);
+                // });
+                for(var i = 1;i < 31;i++){
+                    const subCollection = await db.collection('program').doc(postDoc.id).collection('Day' + i).get();
+                    console
+                }
+            });
+
+        } catch (err) {
+            console.log(err);
+        }
+    })();
 }

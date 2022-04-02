@@ -4,9 +4,6 @@
   padding-top: 2%;
   /*全体*/
   /*カレンダー*/
-  /*日曜日*/
-  /*土曜日*/
-  /*前後月の日付*/
   /*本日*/
   /*ボタン*/ }
   .attendance_management h1 {
@@ -16,15 +13,40 @@
     margin: 0 auto;
     color: #666; }
   .attendance_management .wrapper a {
-    color: #666; }
+    color: #666;
+    font-size: 15px; }
   .attendance_management #header {
     text-align: center;
     font-size: 24px;
     width: 100%;
     margin: 1rem 0 0; }
+  .attendance_management .tops {
+    display: flex;
+    justify-content: center;
+    position: relative; }
+    .attendance_management .tops .title {
+      min-width: 300px; }
+    .attendance_management .tops .searchForm {
+      position: absolute;
+      right: 3%;
+      font-size: 15px;
+      border: double 2px black;
+      padding: 5px; }
+      .attendance_management .tops .searchForm button {
+        margin-top: 5px; }
   .attendance_management #calendar {
     text-align: center;
-    width: 100%; }
+    width: 100%;
+    /*日曜日*/
+    /*土曜日*/
+    /*前後月の日付*/ }
+    .attendance_management #calendar td:first-child {
+      color: red; }
+    .attendance_management #calendar td:last-child {
+      color: blue; }
+    .attendance_management #calendar td.disabled {
+      color: #ccc;
+      font-size: 15px; }
     .attendance_management #calendar button {
       border: solid 2px #666; }
   .attendance_management table {
@@ -36,15 +58,9 @@
     color: #000; }
   .attendance_management th, .attendance_management td {
     outline: 1px solid #ddd;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     text-align: center; }
-  .attendance_management td:first-child {
-    color: red; }
-  .attendance_management td:last-child {
-    color: blue; }
-  .attendance_management td.disabled {
-    color: #ccc; }
   .attendance_management td.today {
     background-color: #D65E72; }
     .attendance_management td.today button {
@@ -73,46 +89,44 @@
     float: right; }
   .attendance_management .todaysContent {
     width: 45%;
-    min-height: 30em;
-    border: solid 2px black;
+    min-height: 40em;
     border-radius: 10px;
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-right: 10px;
     padding: 10px;
     vertical-align: top; }
     .attendance_management .todaysContent button {
       border: none;
-      font-size: 15px; }
-    .attendance_management .todaysContent .btn-secondary {
+      font-size: 15px;
+      margin-top: 10px; }
+    .attendance_management .todaysContent .btn {
       font-size: 10px;
-      position: absolute;
-      right: 0; }
-    .attendance_management .todaysContent p {
-      font-size: 15px; }
-  .attendance_management .insertContents {
-    display: flex;
-    justify-content: center;
-    position: relative; }
+      margin: 0 5px; }
+    .attendance_management .todaysContent td {
+      font-size: 12px;
+      padding: 5px 10px; }
+    .attendance_management .todaysContent td:nth-child(3) {
+      color: red;
+      font-weight: bold; }
   .attendance_management .Allmemo {
     width: 45%;
-    min-height: 30em;
-    border: solid 2px black;
+    min-height: 40em;
     border-radius: 10px;
     display: inline-block;
-    margin-top: 20px;
+    margin-top: 40px;
     margin-left: 10px;
     padding: 10px;
     vertical-align: top; }
     .attendance_management .Allmemo button {
       border: none;
-      font-size: 15px; }
+      font-size: 15px;
+      margin-top: 10px; }
     .attendance_management .Allmemo .btn-secondary {
-      font-size: 10px;
-      position: absolute;
-      right: 0; }
-    .attendance_management .Allmemo p {
-      font-size: 15px; }
+      font-size: 10px; }
+    .attendance_management .Allmemo td:nth-child(4) {
+      color: red;
+      font-weight: bold; }
 
 .modal {
   display: none;

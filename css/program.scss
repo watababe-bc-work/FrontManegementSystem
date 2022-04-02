@@ -15,6 +15,7 @@
 
     .wrapper a{
         color: #666;
+        font-size: 15px;
     }
     #header {
         text-align: center;
@@ -23,10 +24,46 @@
         margin: 1rem 0 0;
     }
 
+    .tops{
+        display: flex;
+        justify-content: center;
+        position: relative;
+
+        .title{
+            min-width: 300px;
+        }
+
+        .searchForm{
+            position: absolute;  // 追記
+            right: 3%;  
+            font-size: 15px;
+            border: double 2px black;
+            padding: 5px;
+
+            button{
+                margin-top: 5px;
+            }
+        }
+    }
+
     /*カレンダー*/
     #calendar {
         text-align: center;
         width: 100%;
+
+        /*日曜日*/
+        td:first-child {
+            color: red;
+        }
+        /*土曜日*/
+        td:last-child {
+            color: blue;
+        }
+        /*前後月の日付*/
+        td.disabled{
+            color: #ccc;
+            font-size: 15px;
+        }
 
         button{
             border: solid 2px #666;
@@ -43,21 +80,9 @@
     }
     th, td {
         outline: 1px solid #ddd;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         text-align: center;
-    }
-    /*日曜日*/
-    td:first-child {
-        color: red;
-    }
-    /*土曜日*/
-    td:last-child {
-        color: blue;
-    }
-    /*前後月の日付*/
-    td.disabled{
-        color: #ccc;
     }
     /*本日*/
     td.today {
@@ -100,11 +125,10 @@
 
     .todaysContent{
         width: 45%;
-        min-height: 30em;
-        border: solid 2px black;
+        min-height: 40em;
         border-radius: 10px;
         display: inline-block;
-        margin-top: 20px;
+        margin-top: 40px;
         margin-right: 10px;
         padding: 10px;
         vertical-align: top;
@@ -112,32 +136,33 @@
         button{
             border: none;
             font-size: 15px;
+            margin-top: 10px;
         }
 
-        .btn-secondary{
+
+
+        .btn{
             font-size: 10px;
-            position: absolute;  // 追記
-            right: 0;  
+            margin: 0 5px;
         }
 
-        p{
-            font-size: 15px;
+        td{
+            font-size: 12px;
+            padding: 5px 10px;
         }
-    }
 
-    .insertContents{
-        display: flex;
-        justify-content: center;
-        position: relative;
+        td:nth-child(3){
+            color: red;
+            font-weight: bold;
+        }
     }
 
     .Allmemo{
         width: 45%;
-        min-height: 30em;
-        border: solid 2px black;
+        min-height: 40em;
         border-radius: 10px;
         display: inline-block;
-        margin-top: 20px;
+        margin-top: 40px;
         margin-left: 10px;
         padding: 10px;
         vertical-align: top;
@@ -145,16 +170,16 @@
         button{
             border: none;
             font-size: 15px;
+            margin-top: 10px;
         }
 
         .btn-secondary{
             font-size: 10px;
-            position: absolute;  // 追記
-            right: 0;  
         }
 
-        p{
-            font-size: 15px;
+        td:nth-child(4){
+            color: red;
+            font-weight: bold;
         }
     }
 }
