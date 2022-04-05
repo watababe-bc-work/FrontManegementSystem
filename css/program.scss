@@ -1,9 +1,44 @@
+@charset "utf-8";
+
+// media
+$sizes: xl, lg, md, sm, xs;
+
+$breakpoint-up: (
+    'xs': 'screen and (max-width: 576px)',
+    'sm': 'screen and (max-width: 768px)',
+    'md': 'screen and (max-width: 992px)',
+    'lg': 'screen and (max-width: 1200px)',
+    'xl': 'screen and (max-width: 1400px)',
+);
+
+$breakpoint-down: (
+    'xs': 'screen and (min-width: 577px)',
+    'sm': 'screen and (min-width: 769px)',
+    'md': 'screen and (min-width: 993px)',
+    'lg': 'screen and (min-width: 1201px)',
+    'xl': 'screen and (min-width: 1401px)',
+);
+
+@mixin mq-up($breakpoint: md) {
+    @media #{map-get($breakpoint-up, $breakpoint)} {
+        @content;
+    }
+}
+@mixin mq-dwn($breakpoint: md) {
+    @media #{map-get($breakpoint-down, $breakpoint)} {
+        @content;
+    }
+}
+
 .attendance_management{
     text-align: center;
     padding-top: 2%;
 
     h1{
         margin: 1%;
+        @include mq-up('xs') {
+            margin: 5%;
+        }
     }
 
     /*全体*/
@@ -15,18 +50,72 @@
 
     .wrapper a{
         color: #666;
+        font-size: 15px;
     }
     #header {
-        text-align: center;
+        text-align: left;
         font-size: 24px;
         width: 100%;
         margin: 1rem 0 0;
+    }
+
+    .tops{
+        .title{
+            text-align: left;
+        }
+
+        p{
+            display: inline-block;
+        }
+
+        .searchForm{
+            font-size: 15px;
+            padding: 5px;
+            text-align: right;
+            margin-right: 20px;
+
+            form{
+                display: inline-block;
+                margin: 0 20px;
+            }
+
+            div{
+                display: inline-block;
+            }
+
+            @media screen and (max-width: 1110px) {
+                font-size: 10px;
+            }
+
+            button{
+                margin-top: 5px;
+            }
+        }
     }
 
     /*カレンダー*/
     #calendar {
         text-align: center;
         width: 100%;
+        margin-bottom: 20px;
+
+        /*日曜日*/
+        td:first-child {
+            color: red;
+        }
+        /*土曜日*/
+        td:last-child {
+            color: blue;
+        }
+        /*前後月の日付*/
+        td.disabled{
+            color: #ccc;
+            font-size: 15px;
+        }
+
+        button{
+            border: solid 2px #666;
+        }
     }
     table {
         outline: 2px solid #ddd;
@@ -39,21 +128,9 @@
     }
     th, td {
         outline: 1px solid #ddd;
-        padding-top: 10px;
-        padding-bottom: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
         text-align: center;
-    }
-    /*日曜日*/
-    td:first-child {
-        color: red;
-    }
-    /*土曜日*/
-    td:last-child {
-        color: blue;
-    }
-    /*前後月の日付*/
-    td.disabled{
-        color: #ccc;
     }
     /*本日*/
     td.today {
@@ -67,10 +144,6 @@
     }
     td.today a{
         color: #fff;
-    }
-
-    button{
-        border: solid 2px #666;
     }
 
     /*ボタン*/
@@ -100,23 +173,149 @@
 
     .todaysContent{
         width: 45%;
-        height: 30em;
-        border: solid 2px black;
+        min-height: 40em;
         border-radius: 10px;
         display: inline-block;
-        margin-top: 20px;
+        margin-top: 40px;
         margin-right: 10px;
         padding: 10px;
+        vertical-align: top;
+
+        @include mq-up('xs') {
+            width: 100%;
+            margin-top: 15px;
+            padding: 0;
+            min-height: 0;
+        }
+
+        button{
+            border: none;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+
+
+
+        .btn{
+            font-size: 10px;
+            margin: 0 5px;
+        }
+
+        td{
+            font-size: 12px;
+            padding: 5px 10px;
+
+            @include mq-up('xs') {
+                font-size: 10px;
+                padding: 3px 5px;
+            }
+        }
+
+        td:nth-child(3){
+            color: red;
+            font-weight: bold;
+        }
     }
 
     .Allmemo{
         width: 45%;
-        height: 30em;
-        border: solid 2px black;
+        min-height: 40em;
         border-radius: 10px;
         display: inline-block;
-        margin-top: 20px;
+        margin-top: 40px;
         margin-left: 10px;
         padding: 10px;
+        vertical-align: top;
+
+        button{
+            border: none;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+
+        .btn-secondary{
+            font-size: 10px;
+        }
+
+        td:nth-child(4){
+            color: red;
+            font-weight: bold;
+        }
+
+        @include mq-up('xs') {
+            display: none;
+        }
+    }
+}
+
+//モーダルウィンドウ用
+.modal{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+    overflow: scroll;
+
+    h2{
+        font-size: 25px;
+        margin: 20px 0;
+    }
+
+    button{
+        width: 150px;
+        height: 40px;
+        margin: 0 20px;
+        font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 20px;
+    }
+
+    form{
+        .edit{
+            margin: 3% 5px;
+            display: inline-block;
+        }
+
+        label{
+            font-size: 15px;
+        }
+
+        input,select,textarea{
+            font-size: 15px;
+        }
+
+        #item_input{
+            width: 400px;
+        }
+    }
+
+    .alert{
+        font-size: 15px;
+    }
+}
+
+.modal__bg{
+    background: rgba(0,0,0,0.8);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+}
+.modal__content{
+    background: #fff;
+    left: 50%;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 60%;
+
+    .modalButton{
+        display: inline-block;
     }
 }

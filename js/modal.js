@@ -1,4 +1,4 @@
-//モーダルウィンドウ(新規登録)
+//モーダルウィンドウ
 $(function(){
     $(document).on('click','.js-modal-open',function(){
         $('.js-modal').fadeIn();
@@ -10,7 +10,7 @@ $(function(){
     });
 });
 
-//モーダルウィンドウ(特記事項)
+//モーダルウィンドウ
 $(function(){
     $(document).on('click','.js-modal-open1',function(){
         $('.js-modal1').fadeIn();
