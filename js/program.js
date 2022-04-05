@@ -42,7 +42,7 @@ var year = "";
 function showProcess(date) {
     year = date.getFullYear();
     var month = date.getMonth();
-    document.querySelector('#header').innerHTML = year + "年 " + (month + 1) + "月";
+    document.querySelector('#header').innerHTML = "設備点検予定表 " + year + "年 " + (month + 1) + "月";
 
     var calendar = createProcess(year, month);
     document.querySelector('#calendar').innerHTML = calendar;
@@ -99,6 +99,7 @@ function createProcess(year, month) {
         var year = date.getFullYear();
         var month = date.getMonth() + 1;
         var day = date.getDate();
+
         //選択した月のドキュメントが存在するかの確認
         var monthlyDB = await db.collection('program').doc(year + '-' + (month)).get();
         if(monthlyDB.exists){
@@ -106,7 +107,7 @@ function createProcess(year, month) {
             var daylyDB = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc('firstData').get();
             if(daylyDB.exists){
                 //データを取得して表示
-                querySnapshot = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).get();
+                querySnapshot = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).orderBy('startTimeInput','asc').get();
                 var stocklist = '<table><tr><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th><th>編集</th></tr>';
                 var i = 0;
                 querySnapshot.forEach((postDoc) => {
@@ -123,7 +124,7 @@ function createProcess(year, month) {
                 }else{
                     document.getElementById('dairyContent').innerHTML = stocklist + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
                 }
-                document.getElementById('dairyTitle').textContent = "本日の内容";
+                document.getElementById('dairyTitle').textContent = month + '月' + day + "日の内容";
             }else{
                 //コレクションを作成(同時に存在可否を調べるためのFirstDataドキュメントを新規作成)
                 db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc('firstData').set({
@@ -135,7 +136,7 @@ function createProcess(year, month) {
                     important:'',
                 });
                 document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
-                document.getElementById('dairyTitle').textContent = "本日の内容";
+                document.getElementById('dairyTitle').textContent = month + '月' + day + "日の内容";
             }
 
             //今週の予定を表示
@@ -149,7 +150,7 @@ function createProcess(year, month) {
                 var nextday = date.getDate();
                 nextmonthList.push(nextmonth);
                 nextdayList.push(nextday);
-                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
                 querySnapshot1.forEach((postDoc) => {
                     if(postDoc.id == "firstData"){
 
@@ -170,7 +171,7 @@ function createProcess(year, month) {
             //ドキュメントを作成
             db.collection('program').doc(year + '-' + (month + 1)).set({});
             document.getElementById('dairyContent').innerHTML = '<p>予定はありません。</p>' + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
-            document.getElementById('dairyTitle').textContent = "本日の内容";
+            document.getElementById('dairyTitle').textContent = month + '月' + day + "日の内容";
             //今週の予定を表示
             var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
             var k = 0;
@@ -182,7 +183,7 @@ function createProcess(year, month) {
                 var nextday = date.getDate();
                 nextmonthList.push(nextmonth);
                 nextdayList.push(nextday);
-                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
                 querySnapshot1.forEach((postDoc) => {
                     if(postDoc.id == "firstData"){
 
@@ -220,7 +221,7 @@ function dairyShow(day,month){
                 var daylyDB = await db.collection('program').doc(year + '-' + (monthTrue)).collection('Day' + day).doc('firstData').get();
                 if(daylyDB.exists){
                     //データを取得して表示
-                    querySnapshot = await await db.collection('program').doc(year + '-' + (monthTrue)).collection('Day' + day).get();
+                    querySnapshot = await await db.collection('program').doc(year + '-' + (monthTrue)).collection('Day' + day).orderBy('startTimeInput','asc').get();
                     var stocklist = '<table><tr><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th><th>編集</th></tr>';
                     var i = 0;
                     querySnapshot.forEach((postDoc) => {
@@ -263,7 +264,7 @@ function dairyShow(day,month){
                     var nextday = date.getDate();
                     nextmonthList.push(nextmonth);
                     nextdayList.push(nextday);
-                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
                     querySnapshot1.forEach((postDoc) => {
                         if(postDoc.id == "firstData"){
 
@@ -297,7 +298,7 @@ function dairyShow(day,month){
                     var nextday = date.getDate();
                     nextmonthList.push(nextmonth);
                     nextdayList.push(nextday);
-                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).get();
+                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
                     querySnapshot1.forEach((postDoc) => {
                         if(postDoc.id == "firstData"){
 
@@ -315,10 +316,6 @@ function dairyShow(day,month){
 
                     document.getElementById('AllmemoContent').innerHTML = stocklist1;
                 }
-            }
-
-            if(TodaysDay == day && TodaysMonth == monthTrue){
-                document.getElementById('dairyTitle').textContent = "本日の内容";
             }
         } catch (err) {
         console.log(`Error: ${JSON.stringify(err)}`)
@@ -349,6 +346,7 @@ function AdddairyContentDB(day,month){
         endTimeInput:end,
         rep:rep,
         important:important,
+        createdAt:year + '-' + month + '-' + day,
     });
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
@@ -358,6 +356,10 @@ function AdddairyContentDB(day,month){
 //formクリア
 function dairyFormClear(){
     document.dairyContents.reset();
+}
+
+function searchClear(){
+    document.searchContents.reset();
 }
 
 //日付別日程編集モーダルウィンドウ
@@ -405,6 +407,7 @@ function EditdairyContentDB(day,month,id){
             endTimeInput:end,
             rep:rep,
             important:important,
+            createdAt:year + '-' + newmonth + '-' + newday,
         });
     }else{
         //新規登録して古い方を削除
@@ -417,6 +420,7 @@ function EditdairyContentDB(day,month,id){
             endTimeInput:end,
             rep:rep,
             important:important,
+            createdAt:year + '-' + newmonth + '-' + newday,
         });
         month = Number(month);
         day = Number(day);
@@ -445,22 +449,45 @@ function DeletedairyContent(day,month,id){
 function search(){
     const storename = document.getElementById('storename_search').value;
     const item = document.getElementById('item_search').value;
-
+    document.getElementById('search_button').textContent = "検索中...";
+    document.getElementById('AllmemoContent').innerHTML = "<p>検索中...</p>";
     (async () => {
         try {
+            var stocklist2 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
             //プログラムDBを呼び出す
             query = await db.collection('program').get();
+            var k = 0;
             //プログラムDB内にあるドキュメントを全て呼び出す
             query.forEach(async(postDoc) => {
-                console.log(postDoc.id);
-                //呼び出したドキュメント内のコレクションも全て呼び出す。
-                // const subCollection = await db.collection('program').doc(postDoc.id).collection('Day30').get();
-                // subCollection.forEach(async (postDoc) => {
-                //     console.log('Found subcollection with id:', postDoc.id);
-                // });
-                for(var i = 1;i < 31;i++){
-                    const subCollection = await db.collection('program').doc(postDoc.id).collection('Day' + i).get();
-                    console
+                //呼び出したドキュメント内のコレクションも全て呼び出す
+                for(var i = 1;i < 32;i++){
+                    var subCollection = await db.collection('program').doc(postDoc.id).collection('Day' + i);
+                    if(storename != ''){
+                        subCollection = subCollection.where('storename','==',storename);
+                        if(item != ''){
+                            subCollection = subCollection.where('item','==',item);
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename + "," + item;
+                        }else{
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename;
+                        }
+                    }else{
+                        if(item != ''){
+                            subCollection = subCollection.where('item','==',item);
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + item;
+                        }
+                    }
+                    subCollection = await subCollection.get();
+                    subCollection.forEach(async(postDoc1) => {
+                        console.log(postDoc1.id);
+                        stocklist2 += '<tr><td>'+ postDoc.id + '-' + i +'</td><td>' + postDoc1.get('storename') + '</td><td>' + postDoc1.get('item') + '</td><td>' + postDoc1.get('important') + '</td><td>' + postDoc1.get('startTimeInput') + '~' +  postDoc1.get('endTimeInput') + '</td><td>' + postDoc1.get('rep') + '</td></tr>';
+                        k++;
+                    });
+                };
+                if(k == 0){
+                    document.getElementById('AllmemoContent').innerHTML = "<p>予定はありません。</p>";
+                }else{
+                    document.getElementById('AllmemoContent').innerHTML = stocklist2;
+                    document.getElementById('search_button').textContent = "検索する";
                 }
             });
 

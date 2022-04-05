@@ -23,61 +23,62 @@
 <body>
     <div class="attendance_management">
         <div class="tops">
-            <div class="title">
-                <h1>予定表</h1>
-            </div>
             <div class="searchForm">
                 <p>検索</p>
-                <label for="">店舗名:</label>
-                <input type="text" id="storename_search" list="storesSearch" placeholder="テキスト入力or検索">
-                <datalist id="storesSearch">
-                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
-                    <option value="池袋グランド">池袋グランド</option>
-                    <option value="アトランタ">アトランタ</option>
-                    <option value="アメジスト">アメジスト</option>
-                    <option value="池袋バリバリ">池袋バリバリ</option>
-                    <option value="ウエストワン">ウエストワン</option>
-                    <option value="サード">サード</option>
-                    <option value="クイーン">クイーン</option>
-                    <option value="池袋セントラル">池袋セントラル</option>
-                    <option value="パークサイド">パークサイド</option>
-                    <option value="グランヴィラ">グランヴィラ</option>
-                    <option value="ブルゾン">ブルゾン</option>
-                    <option value="ピュア">ピュア</option>
-                    <option value="松戸グランド">松戸グランド</option>
-                    <option value="カップルズインハッピー">カップルズインハッピー</option>
-                    <option value="トニーワン">トニーワン</option>
-                    <option value="サーティワン">サーティワン</option>
-                    <option value="センチュリー">センチュリー</option>
-                    <option value="ガーネット">ガーネット</option>
-                    <option value="リトルバリ">リトルバリ</option>
-                    <option value="アジアンリゾート">アジアンリゾート</option>
-                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
-                    <option value="ロックス新宿">ロックス新宿</option>
-                    <option value="ブレス">ブレス</option>
-                    <option value="チェルシー">チェルシー</option>
-                    <option value="エルメ">エルメ</option>
-                    <option value="パリス">パリス</option>
-                    <option value="ダイヤモンド">ダイヤモンド</option>
-                    <option value="エイジア">エイジア</option>
-                    <option value="オニキス">オニキス</option>
-                    <option value="アモーレ">アモーレ</option>
-                    <option value="IF">IF</option>
-                    <option value="ココバリ">ココバリ</option>
-                    <option value="エメラルド">エメラルド</option>
-                    <option value="五反田バリバリ">五反田バリバリ</option>
-                    <option value="バリバリANNEX">バリバリANNEX</option>
-                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
-                    <option value="ZALA">ZALA</option>
-                </datalist>
-                <label for="">項目</label>
-                <input list="itemSearch" id="item_search" name="" placeholder="テキスト入力or選択">
-                <datalist id="itemSearch">
-                    <option value="エレベータ点検">エレベータ点検</option>
-                    <option value="電気点検">電気点検</option>
-                </datalist>
-                <br>
-                <button class="btn btn-primary" onClick="search()">検索する</button>
+                <form action="program.html" method="POST" name="searchContents">
+                    <label for="">店舗名:</label>
+                    <input type="text" id="storename_search" list="storesSearch" placeholder="テキスト入力or検索">
+                    <datalist id="storesSearch">
+                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                        <option value="池袋グランド">池袋グランド</option>
+                        <option value="アトランタ">アトランタ</option>
+                        <option value="アメジスト">アメジスト</option>
+                        <option value="池袋バリバリ">池袋バリバリ</option>
+                        <option value="ウエストワン">ウエストワン</option>
+                        <option value="サード">サード</option>
+                        <option value="クイーン">クイーン</option>
+                        <option value="池袋セントラル">池袋セントラル</option>
+                        <option value="パークサイド">パークサイド</option>
+                        <option value="グランヴィラ">グランヴィラ</option>
+                        <option value="ブルゾン">ブルゾン</option>
+                        <option value="ピュア">ピュア</option>
+                        <option value="松戸グランド">松戸グランド</option>
+                        <option value="カップルズインハッピー">カップルズインハッピー</option>
+                        <option value="トニーワン">トニーワン</option>
+                        <option value="サーティワン">サーティワン</option>
+                        <option value="センチュリー">センチュリー</option>
+                        <option value="ガーネット">ガーネット</option>
+                        <option value="リトルバリ">リトルバリ</option>
+                        <option value="アジアンリゾート">アジアンリゾート</option>
+                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                        <option value="ロックス新宿">ロックス新宿</option>
+                        <option value="ブレス">ブレス</option>
+                        <option value="チェルシー">チェルシー</option>
+                        <option value="エルメ">エルメ</option>
+                        <option value="パリス">パリス</option>
+                        <option value="ダイヤモンド">ダイヤモンド</option>
+                        <option value="エイジア">エイジア</option>
+                        <option value="オニキス">オニキス</option>
+                        <option value="アモーレ">アモーレ</option>
+                        <option value="IF">IF</option>
+                        <option value="ココバリ">ココバリ</option>
+                        <option value="エメラルド">エメラルド</option>
+                        <option value="五反田バリバリ">五反田バリバリ</option>
+                        <option value="バリバリANNEX">バリバリANNEX</option>
+                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                        <option value="ZALA">ZALA</option>
+                    </datalist>
+                    <label for="">項目</label>
+                    <input list="itemSearch" id="item_search" name="" placeholder="テキスト入力or選択">
+                    <datalist id="itemSearch">
+                        <option value="エレベータ点検">エレベータ点検</option>
+                        <option value="電気点検">電気点検</option>
+                    </datalist>
+                </form>
+                <div>
+                    <button class="btn btn-primary" onClick="search()" id="search_button">検索</button>
+                    <button class="btn btn-secondary" onClick="searchClear()" id="search_button_clear">クリア</button>
+                </div>
             </div>
         </div>
             <div class="wrapper">
@@ -85,7 +86,7 @@
                 <h1 id="header"></h1>
                 <!-- 当日の内容 -->
                 <div class="todaysContent">
-                    <h2 id="dairyTitle">本日の内容</h2>
+                    <h2 id="dairyTitle">の内容</h2>
                     <div id="dairyContent">
                         <!-- DBに追加された内容が入る -->
                     </div>

@@ -8,6 +8,9 @@
   /*ボタン*/ }
   .attendance_management h1 {
     margin: 1%; }
+    @media screen and (max-width: 576px) {
+      .attendance_management h1 {
+        margin: 5%; } }
   .attendance_management .wrapper {
     max-width: 90%;
     margin: 0 auto;
@@ -16,27 +19,33 @@
     color: #666;
     font-size: 15px; }
   .attendance_management #header {
-    text-align: center;
+    text-align: left;
     font-size: 24px;
     width: 100%;
     margin: 1rem 0 0; }
-  .attendance_management .tops {
-    display: flex;
-    justify-content: center;
-    position: relative; }
-    .attendance_management .tops .title {
-      min-width: 300px; }
-    .attendance_management .tops .searchForm {
-      position: absolute;
-      right: 3%;
-      font-size: 15px;
-      border: double 2px black;
-      padding: 5px; }
-      .attendance_management .tops .searchForm button {
-        margin-top: 5px; }
+  .attendance_management .tops .title {
+    text-align: left; }
+  .attendance_management .tops p {
+    display: inline-block; }
+  .attendance_management .tops .searchForm {
+    font-size: 15px;
+    padding: 5px;
+    text-align: right;
+    margin-right: 20px; }
+    .attendance_management .tops .searchForm form {
+      display: inline-block;
+      margin: 0 20px; }
+    .attendance_management .tops .searchForm div {
+      display: inline-block; }
+    @media screen and (max-width: 1110px) {
+      .attendance_management .tops .searchForm {
+        font-size: 10px; } }
+    .attendance_management .tops .searchForm button {
+      margin-top: 5px; }
   .attendance_management #calendar {
     text-align: center;
     width: 100%;
+    margin-bottom: 20px;
     /*日曜日*/
     /*土曜日*/
     /*前後月の日付*/ }
@@ -96,6 +105,12 @@
     margin-right: 10px;
     padding: 10px;
     vertical-align: top; }
+    @media screen and (max-width: 576px) {
+      .attendance_management .todaysContent {
+        width: 100%;
+        margin-top: 15px;
+        padding: 0;
+        min-height: 0; } }
     .attendance_management .todaysContent button {
       border: none;
       font-size: 15px;
@@ -106,6 +121,10 @@
     .attendance_management .todaysContent td {
       font-size: 12px;
       padding: 5px 10px; }
+      @media screen and (max-width: 576px) {
+        .attendance_management .todaysContent td {
+          font-size: 10px;
+          padding: 3px 5px; } }
     .attendance_management .todaysContent td:nth-child(3) {
       color: red;
       font-weight: bold; }
@@ -127,6 +146,9 @@
     .attendance_management .Allmemo td:nth-child(4) {
       color: red;
       font-weight: bold; }
+    @media screen and (max-width: 576px) {
+      .attendance_management .Allmemo {
+        display: none; } }
 
 .modal {
   display: none;
