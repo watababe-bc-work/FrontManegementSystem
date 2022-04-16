@@ -120,7 +120,7 @@ document.getElementById('prevTableButton').style.visibility = 'hidden';
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
   
-      query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+      query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
 
       //前回のDBとして保存
@@ -186,11 +186,11 @@ function newTable(){
           // 省略 
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
       
-          query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
 
             //10件以下なら次へを表示しない
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }else{
             document.getElementById('nextButton').style.visibility = "visible";
@@ -250,11 +250,11 @@ function nextPegination(){
             console.log(currentQueryList);
             console.log(currentTitleList);
 
-            query = query.limit(10).startAfter(querySnapshot.docs[9]);
+            query = query.limit(30).startAfter(querySnapshot.docs[29]);
             querySnapshot = await query.get();
 
             //後が無い場合に非表示
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }
 
@@ -564,11 +564,11 @@ function TodayInterview(){
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
           var date = new Date();
           var today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
-          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','asc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
 
           //10件以下なら次へを表示しない
-          if(querySnapshot.docs.length < 10){
+          if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
           }else{
             document.getElementById('nextButton').style.visibility = "visible";
@@ -626,6 +626,8 @@ function search(){
     var media_search = document.getElementById('media_search').value;
     var place = document.getElementById('interview_place_search_input').value;
     var status = document.getElementById('status_input_search').value;
+    var name = document.getElementById('name_search').value;
+    var Tel = document.getElementById('Tel_search').value;
     var DateBoolean = false;
     var titleContent = '';
     (async () => {
@@ -639,7 +641,7 @@ function search(){
             document.getElementById('prevTableButton').style.visibility = "visible";
 
             query = await db.collection('interview');
-            
+            var searchAsc = true;
             //面接日での範囲検索
             if(StartDate_search != ""){
                 if(EndDate_search != ""){
@@ -658,6 +660,7 @@ function search(){
                     query = query.where('InterviewDate','<',EndDate_search + 1);
                 }else{
                     //検索なし
+                    searchAsc = false;
                 }
             }
 
@@ -740,8 +743,25 @@ function search(){
                     break;      
             }
 
+            //名前
+            if(name != ""){
+                titleContent += '氏名:' + name;
+                query = query.where('Name','==',name);
+            }else{
+                //検索なし
+            }
+
+            //連絡先
+            if(Tel != ""){
+                titleContent += '連絡先:' + Tel;
+                query = query.where('Tel','==',Tel);
+            }else{
+                //検索なし
+            }
+
+            //where追加はここまで
             if(DateBoolean == true){
-                query = query.orderBy('InterviewTime','desc').limit(10);
+                query = query.orderBy('InterviewTime','asc').limit(30);
             }else{
                 //応募媒体での検索
                 if(media_search != ""){
@@ -749,7 +769,11 @@ function search(){
                     titleContent += '応募媒体:' + media_search;
                     query = query.where('Media', '>=', media_search).where('Media', '<=', media_search).orderBy('Media');
                 }
-                query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(10);
+                if(searchAsc == true){
+                    query = query.orderBy('InterviewDate','asc').orderBy('InterviewTime','asc').limit(30);
+                }else{
+                    query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(30);
+                }
             }
 
             //混合したタイトルを表示
@@ -761,7 +785,7 @@ function search(){
             querySnapshot = await query.get();
 
             //10件以下なら次へを表示しない
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }else{
 
@@ -816,6 +840,8 @@ function ResetSearch(){
     document.getElementById('interview_place_search').value = "";
     document.getElementById('status_input_search').value = "";
     document.getElementById('interview_place_search_input').value = "";
+    document.getElementById('name_search').value = "";
+    document.getElementById('Tel_search').value = "";
 };
 
 //前のテーブルを表示
