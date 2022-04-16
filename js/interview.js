@@ -120,7 +120,7 @@ document.getElementById('prevTableButton').style.visibility = 'hidden';
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
   
-      query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+      query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
 
       //前回のDBとして保存
@@ -186,11 +186,11 @@ function newTable(){
           // 省略 
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
       
-          query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('interview').orderBy('ReceptionDate', 'desc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
 
             //10件以下なら次へを表示しない
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }else{
             document.getElementById('nextButton').style.visibility = "visible";
@@ -250,11 +250,11 @@ function nextPegination(){
             console.log(currentQueryList);
             console.log(currentTitleList);
 
-            query = query.limit(10).startAfter(querySnapshot.docs[9]);
+            query = query.limit(30).startAfter(querySnapshot.docs[29]);
             querySnapshot = await query.get();
 
             //後が無い場合に非表示
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }
 
@@ -564,11 +564,11 @@ function TodayInterview(){
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
           var date = new Date();
           var today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
-          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','asc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','asc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
 
           //10件以下なら次へを表示しない
-          if(querySnapshot.docs.length < 10){
+          if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
           }else{
             document.getElementById('nextButton').style.visibility = "visible";
@@ -761,7 +761,7 @@ function search(){
 
             //where追加はここまで
             if(DateBoolean == true){
-                query = query.orderBy('InterviewTime','asc').limit(10);
+                query = query.orderBy('InterviewTime','asc').limit(30);
             }else{
                 //応募媒体での検索
                 if(media_search != ""){
@@ -770,9 +770,9 @@ function search(){
                     query = query.where('Media', '>=', media_search).where('Media', '<=', media_search).orderBy('Media');
                 }
                 if(searchAsc == true){
-                    query = query.orderBy('InterviewDate','asc').orderBy('InterviewTime','asc').limit(10);
+                    query = query.orderBy('InterviewDate','asc').orderBy('InterviewTime','asc').limit(30);
                 }else{
-                    query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(10);
+                    query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(30);
                 }
             }
 
@@ -785,7 +785,7 @@ function search(){
             querySnapshot = await query.get();
 
             //10件以下なら次へを表示しない
-            if(querySnapshot.docs.length < 10){
+            if(querySnapshot.docs.length < 30){
                 document.getElementById('nextButton').style.visibility = "hidden";
             }else{
 

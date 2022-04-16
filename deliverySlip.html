@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Front Manegement System ~納品書~</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/deliverySlip.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+    <h1>納品書一覧</h1>
+    <div class="youbouTable">
+        <div id="table_list">
+            <!-- DB情報取得 -->
+        </div>
+    </div>
+    <div class="nextButton">
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
+
+    <h1>納品書 追加作成フォーム</h1>
+    <div class="backwhite">
+        <form action="deliverySlip.html" method="POST">
+            <div class="edit">
+                <label for="">日時：</label>
+                <input type="date" id="date">
+                <label for="">名称：</label>
+                <input type="text" id="name">様
+                <label for="">登録番号：</label>
+                <input type="text" id="registerNum">
+            </div>
+            <div class="pro">
+                <p>品目1</p>
+                <label for="">品名</label>
+                <input type="text" id="proname1">
+                <label for="">数量</label>
+                <input type="number" id="pronum1" onchange="change(1);">
+                <label for="">単価</label>
+                <input type="number" id="proprice1" onchange="change(1);">
+                <label for="">税抜・税込</label>
+                <select name="" id="tax_category1" onchange="changeDiv(1);">
+                    <option value="">属性を選択する</option>
+                    <option value="tax_excluded">税抜</option>
+                    <option value="tax_included">税込</option>
+                </select>
+                <div id="taxDiv1">
+                    <label for="">税率(%)</label>
+                    <input type="number" id="tax1" onchange="change(1);">
+                </div>
+                <div id="price1"></div>
+            </div>
+            <div class="pro">
+                <p>品目2</p>
+                <label for="">品名</label>
+                <input type="text" id="proname2">
+                <label for="">数量</label>
+                <input type="number" id="pronum2" onchange="change(2);">
+                <label for="">単価</label>
+                <input type="number" id="proprice2" onchange="change(2);">
+                <label for="">税抜・税込</label>
+                <select name="" id="tax_category2" onchange="changeDiv(2);">
+                    <option value="">属性を選択する</option>
+                    <option value="tax_excluded">税抜</option>
+                    <option value="tax_included">税込</option>
+                </select>
+                <div id="taxDiv2">
+                    <label for="">税率(%)</label>
+                    <input type="number" id="tax2" onchange="change(2);">
+                </div>
+                <div id="price2"></div>
+            </div>
+            <div class="pro">
+                <p>品目3</p>
+                <label for="">品名</label>
+                <input type="text" id="proname3">
+                <label for="">数量</label>
+                <input type="number" id="pronum3" onchange="change(3);">
+                <label for="">単価</label>
+                <input type="number" id="proprice3" onchange="change(3);">
+                <label for="">税抜・税込</label>
+                <select name="" id="tax_category3" onchange="changeDiv(3);">
+                    <option value="">属性を選択する</option>
+                    <option value="tax_excluded">税抜</option>
+                    <option value="tax_included">税込</option>
+                </select>
+                <div id="taxDiv3">
+                    <label for="">税率(%)</label>
+                    <input type="number" id="tax3" onchange="change(3);">
+                </div>
+                <div id="price3"></div>
+            </div>
+            <div class="pro">
+                <p>品目4</p>
+                <label for="">品名</label>
+                <input type="text" id="proname4">
+                <label for="">数量</label>
+                <input type="number" id="pronum4" onchange="change(4);">
+                <label for="">単価</label>
+                <input type="number" id="proprice4" onchange="change(4);">
+                <label for="">税抜・税込</label>
+                <select name="" id="tax_category4" onchange="changeDiv(4);">
+                    <option value="">属性を選択する</option>
+                    <option value="tax_excluded">税抜</option>
+                    <option value="tax_included">税込</option>
+                </select>
+                <div id="taxDiv4">
+                    <label for="">税率(%)</label>
+                    <input type="number" id="tax4" onchange="change(4);">
+                </div>
+                <div id="price4"></div>
+            </div>
+            <div class="pro">
+                <p>品目5</p>
+                <label for="">品名</label>
+                <input type="text" id="proname5">
+                <label for="">数量</label>
+                <input type="number" id="pronum5" onchange="change(5);">
+                <label for="">単価</label>
+                <input type="number" id="proprice5" onchange="change(5);">
+                <label for="">税抜・税込</label>
+                <select name="" id="tax_category5" onchange="changeDiv(5);">
+                    <option value="">属性を選択する</option>
+                    <option value="tax_excluded">税抜</option>
+                    <option value="tax_included">税込</option>
+                </select>
+                <div id="taxDiv5">
+                    <label for="">税率(%)</label>
+                    <input type="number" id="tax5" onchange="change(5);">
+                </div>
+                <div id="price5"></div>
+            </div>
+        </form>
+        <div id="Alert"></div>
+        <div class="buttons">
+            <button type="submit" class="btn btn-success" onclick="POPDemandUpdate()">作成</button>
+        </div>
+    </div>
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/deliverySlip.js"></script>
+    <script src="js/pdfMake/pdfmake.min.js"></script>
+    <script src="js/pdfMake/vfs_fonts.js"></script>
+    <script src="js/modal.js"></script>
+</body>
+</html>

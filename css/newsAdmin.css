@@ -1,0 +1,36 @@
+body {
+  text-align: center;
+  background: #00013f; }
+
+h1 {
+  margin: 30px 0;
+  color: white; }
+
+.backwhite {
+  margin: 20px 10%;
+  padding: 10px 0;
+  border-radius: 20px;
+  box-shadow: #666666 10px 5px 5px;
+  background: white; }
+
+form {
+  font-size: 15px; }
+  form .edit {
+    margin: 25px 0; }
+    form .edit label {
+      margin-left: 20px; }
+  form #title {
+    width: 500px; }
+  form #listTextLabel {
+    vertical-align: top; }
+  form #listText {
+    max-width: 50%; }
+
+.btn {
+  font-size: 15px;
+  margin: 0 5px; }
+
+.alert {
+  font-size: 15px; }
+
+/*# sourceMappingURL=newsAdmin.css.map */
