@@ -161,7 +161,7 @@ function createProcess(year, month) {
                 })
             }
             stocklist1 += '</table>';
-            document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+            document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
             if(k == 0){
                 document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
             }else{
@@ -194,7 +194,7 @@ function createProcess(year, month) {
                 })
             }
             stocklist1 += '</table>';
-            document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+            document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
             if(k == 0){
                 document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
             }else{
@@ -275,7 +275,7 @@ function dairyShow(day,month){
                     })
                 }
                 stocklist1 += '</table>';
-                document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+                document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
                 if(k == 0){
                     document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
                 }else{
@@ -309,7 +309,7 @@ function dairyShow(day,month){
                     })
                 }
                 stocklist1 += '</table>';
-                document.getElementById('AllmemoTitle').textContent = "今週(" + nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + ")の予定";
+                document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
                 if(k == 0){
                     document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
                 }else{
@@ -420,7 +420,7 @@ function EditdairyContentDB(day,month,id){
             endTimeInput:end,
             rep:rep,
             important:important,
-            createdAt:year + '-' + newmonth + '-' + newday,
+            createdAt:year + '-' + newMonth + '-' + newDay,
         });
         month = Number(month);
         day = Number(day);

@@ -75,6 +75,9 @@ h1 {
   .modal .vertical {
     vertical-align: top; }
 
+.search {
+  font-size: 15px; }
+
 .nextButton {
   text-align: left;
   margin-left: 5%; }

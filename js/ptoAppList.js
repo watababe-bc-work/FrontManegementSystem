@@ -36,23 +36,23 @@ document.getElementById('disapproval_reason').style.display = "none";
       backQueryList.push(querySnapshot);
 
       var stocklist = '<table class="table table-striped">'
-      stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>状態</th><th>編集</th>';
+      stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>承認者</th><th>状態</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
         switch(postDoc.get('status')){
         //承認
           case 'approve':
               var statusText = "承認";
-              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
               break;
         //不承認      
           case 'disapproval':
               var statusText = "不承認";
-              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
               break;
         //未承認      
           default:
               var statusText = "未承認";
-              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
+              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
               break;        
         }
       })
@@ -68,6 +68,61 @@ document.getElementById('disapproval_reason').style.display = "none";
         console.log(err);
     }
 })();
+
+//検索
+function showTable(){
+    var store = document.getElementById('store_name_search').value;
+    //テーブル表示(初期値)
+    (async () => {
+        try {
+        // 省略 
+        // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+    
+        query = await db.collection('ptoApps').where('storeName','==',store).orderBy('startDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+        querySnapshot = await query.get();
+
+        //前回のDBとして保存
+        backQueryList.push(querySnapshot);
+
+        var stocklist = '<table class="table table-striped">'
+        stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>承認者</th><th>状態</th><th>編集</th>';
+        querySnapshot.forEach((postDoc) => {
+            switch(postDoc.get('status')){
+            //承認
+            case 'approve':
+                var statusText = "承認";
+                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+                break;
+            //不承認      
+            case 'disapproval':
+                var statusText = "不承認";
+                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+                break;
+            //未承認      
+            default:
+                var statusText = "未承認";
+                stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
+                break;        
+            }
+        })
+        stocklist += '</table>';
+        document.getElementById('table_list').innerHTML = stocklist;
+
+        //後が無い場合に非表示
+        if(querySnapshot.docs.length < 10){
+            document.getElementById('nextButton').style.visibility = "hidden";
+        }
+
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
+
+//キャンセル
+function cancel(){
+    setTimeout("location.reload()");
+}
 
 //不承認理由表示
 function change(){
@@ -113,23 +168,23 @@ function nextPegination(){
           }
 
           var stocklist = '<table class="table table-striped">'
-          stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>状態</th><th>編集</th>';
+          stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>承認者</th><th>状態</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
                   break;
             //不承認      
               case 'disapproval':
                   var statusText = "不承認";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
                   break;        
             }
           })
@@ -148,23 +203,23 @@ function returnTable(){
   querySnapshot = currentQueryList.pop();
 
   var stocklist = '<table class="table table-striped">'
-  stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>状態</th><th>編集</th>';
+  stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>承認者</th><th>状態</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
     switch(postDoc.get('status')){
     //承認
       case 'approve':
           var statusText = "承認";
-          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
           break;
     //不承認      
       case 'disapproval':
           var statusText = "不承認";
-          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
+          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button></td></tr></tbody>';
           break;
     //未承認      
       default:
           var statusText = "未承認";
-          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
+          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></td></tr></tbody>';
           break;        
     }
   })
@@ -184,6 +239,7 @@ function EditUpdate(id){
     if(order_category == 'disapproval'){
         var disapproval_reason = document.getElementById('disapprovalReason').value;
     };
+    var approver = document.getElementById('approver').value;
     var note = document.getElementById('note').value;
     //DBへ送信
     if(order_category == 'disapproval'){
@@ -191,11 +247,13 @@ function EditUpdate(id){
             status:order_category,
             disapprovalReason:disapproval_reason,
             note:note,
+            approver:approver,
         });
     }else{
         db.collection('ptoApps').doc(id).update({
             status:order_category,
             note:note,
+            approver:approver,
         });
     };
     var collectAlert = document.getElementById('collectAlert');
@@ -220,6 +278,8 @@ function createPDF(id){
       var endDate = carrentDB.get('endDate');
       //申請理由
       var reason = carrentDB.get('reason');
+      //承認者
+      var approver = carrentDB.get('approver');
       //処理
       var status = carrentDB.get('status');
       if(status == 'disapproval'){
@@ -392,7 +452,7 @@ function createPDF(id){
                             style:['center'],
                             body: [
                                 ['管理者承認'],
-                                [{text:' ',fontSize:20}]
+                                [{text:approver,fontSize:20}]
                             ]
                         }
                       },
@@ -490,7 +550,7 @@ function createPDF(id){
                           style:['center'],
                           body: [
                               ['管理者不承認'],
-                              [{text:' ',fontSize:20}]
+                              [{text:approver,fontSize:20}]
                           ]
                       }
                     },

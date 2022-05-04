@@ -19,31 +19,245 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <h1>年次有給休暇 申請フォーム</h1>
-    <div class="backwhite">
-        <form action="ptoApp.html" method="POST">
-            <div class="edit">
-                <p>依頼日:<span id="order_date"></span></p>
+    <div class="pto">
+        <h1>年次有給休暇 申請フォーム</h1>
+        <button class="addOrderContent_button" id="addButton" onclick="addOrderContent()">+有休依頼をする</button>
+        <div class="backwhite" id="addForm">
+            <form action="ptoApp.html" method="POST">
+                <div class="edit">
+                    <p>依頼日:<span id="order_date"></span></p>
+                </div>
+                <div class="edit">
+                    <label for="">社員番号</label>
+                    <input type="text" id="staffNum">
+                    <label for="">氏名：</label>
+                    <input type="text" id="name">
+                    <label for="">店舗名:</label>
+                    <select id="store_name">
+                        <option value="">店舗を選択</option>
+                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                        <option value="池袋グランド">池袋グランド</option>
+                        <option value="アトランタ">アトランタ</option>
+                        <option value="アメジスト">アメジスト</option>
+                        <option value="池袋バリバリ">池袋バリバリ</option>
+                        <option value="ウエストワン">ウエストワン</option>
+                        <option value="サード">サード</option>
+                        <option value="クイーン">クイーン</option>
+                        <option value="池袋セントラル">池袋セントラル</option>
+                        <option value="パークサイド">パークサイド</option>
+                        <option value="グランヴィラ">グランヴィラ</option>
+                        <option value="ブルゾン">ブルゾン</option>
+                        <option value="ピュア">ピュア</option>
+                        <option value="松戸グランド">松戸グランド</option>
+                        <option value="カップルズインハッピー">カップルズインハッピー</option>
+                        <option value="トニーワン">トニーワン</option>
+                        <option value="サーティワン">サーティワン</option>
+                        <option value="センチュリー">センチュリー</option>
+                        <option value="ガーネット">ガーネット</option>
+                        <option value="リトルバリ">リトルバリ</option>
+                        <option value="アジアンリゾート">アジアンリゾート</option>
+                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                        <option value="ロックス新宿">ロックス新宿</option>
+                        <option value="ブレス">ブレス</option>
+                        <option value="チェルシー">チェルシー</option>
+                        <option value="エルメ">エルメ</option>
+                        <option value="パリス">パリス</option>
+                        <option value="ダイヤモンド">ダイヤモンド</option>
+                        <option value="エイジア">エイジア</option>
+                        <option value="オニキス">オニキス</option>
+                        <option value="アモーレ">アモーレ</option>
+                        <option value="IF">IF</option>
+                        <option value="ココバリ">ココバリ</option>
+                        <option value="エメラルド">エメラルド</option>
+                        <option value="五反田バリバリ">五反田バリバリ</option>
+                        <option value="バリバリANNEX">バリバリANNEX</option>
+                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                        <option value="ZALA">ZALA</option>
+                    </select>
+                </div>
+                <div class="edit">
+                    <label for="">日時：</label>
+                    <input type="date" id="startdate">から
+                    <input type="date" id="enddate">まで
+                </div>
+                <div class="edit">
+                    <label for="" id="reason_label">事由：</label>
+                    <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
+                </div>
+            </form>
+            <div id="Alert"></div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-success" onclick="PtoUpdate()">申請</button>
             </div>
-            <div class="edit">
-                <label for="">社員番号</label>
-                <input type="text" id="staffNum">
-                <label for="">氏名：</label>
-                <input type="text" id="name">
-                <label for="">日時：</label>
-                <input type="date" id="startdate">から
-                <input type="date" id="enddate">まで
+        </div>
+        <div class="pto_table">
+            <h1>年次有給休暇 要望一覧</h1>
+            <div class="pto_table_select">
+                <label for="">自店舗を選択:</label>
+                <select id="store_name_search" onchange="showTable()">
+                    <option value="">自店舗を選択</option>
+                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                    <option value="池袋グランド">池袋グランド</option>
+                    <option value="アトランタ">アトランタ</option>
+                    <option value="アメジスト">アメジスト</option>
+                    <option value="池袋バリバリ">池袋バリバリ</option>
+                    <option value="ウエストワン">ウエストワン</option>
+                    <option value="サード">サード</option>
+                    <option value="クイーン">クイーン</option>
+                    <option value="池袋セントラル">池袋セントラル</option>
+                    <option value="パークサイド">パークサイド</option>
+                    <option value="グランヴィラ">グランヴィラ</option>
+                    <option value="ブルゾン">ブルゾン</option>
+                    <option value="ピュア">ピュア</option>
+                    <option value="松戸グランド">松戸グランド</option>
+                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                    <option value="トニーワン">トニーワン</option>
+                    <option value="サーティワン">サーティワン</option>
+                    <option value="センチュリー">センチュリー</option>
+                    <option value="ガーネット">ガーネット</option>
+                    <option value="リトルバリ">リトルバリ</option>
+                    <option value="アジアンリゾート">アジアンリゾート</option>
+                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                    <option value="ロックス新宿">ロックス新宿</option>
+                    <option value="ブレス">ブレス</option>
+                    <option value="チェルシー">チェルシー</option>
+                    <option value="エルメ">エルメ</option>
+                    <option value="パリス">パリス</option>
+                    <option value="ダイヤモンド">ダイヤモンド</option>
+                    <option value="エイジア">エイジア</option>
+                    <option value="オニキス">オニキス</option>
+                    <option value="アモーレ">アモーレ</option>
+                    <option value="IF">IF</option>
+                    <option value="ココバリ">ココバリ</option>
+                    <option value="エメラルド">エメラルド</option>
+                    <option value="五反田バリバリ">五反田バリバリ</option>
+                    <option value="バリバリANNEX">バリバリANNEX</option>
+                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                    <option value="ZALA">ZALA</option>
+                </select>
             </div>
-            <div class="edit">
-                <label for="" id="reason_label">事由：</label>
-                <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
-            </div>
-        </form>
-        <div id="Alert"></div>
-        <div class="buttons">
-            <button type="submit" class="btn btn-success" onclick="POPDemandUpdate()">申請</button>
+            <div id="table_list"></div>
         </div>
     </div>
+    <div class="overTime">
+        <div>
+            <h1>残業申請 要望フォーム</h1>
+            <button class="addoverTimeContent_button" id="addButton" onclick="addoverTimeContent()">+残業申請をする</button>
+            <div class="backwhite" id="addForm2">
+                <form action="ptoApp.html" method="POST">
+                    <div class="edit">
+                        <p>依頼日:<span id="order_date2"></span></p>
+                    </div>
+                    <div class="edit">
+                        <label for="">氏名：</label>
+                        <input type="text" id="name_ot">
+                        <label for="">日時：</label>
+                        <input type="date" id="date_ot">
+                        <input type="time" id="startDate_ot"> ~
+                        <input type="time" id="endDate_ot">
+                    </div>
+                    <label for="">店舗名:</label>
+                    <select id="store_name_ot">
+                        <option value="">店舗を選択</option>
+                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                        <option value="池袋グランド">池袋グランド</option>
+                        <option value="アトランタ">アトランタ</option>
+                        <option value="アメジスト">アメジスト</option>
+                        <option value="池袋バリバリ">池袋バリバリ</option>
+                        <option value="ウエストワン">ウエストワン</option>
+                        <option value="サード">サード</option>
+                        <option value="クイーン">クイーン</option>
+                        <option value="池袋セントラル">池袋セントラル</option>
+                        <option value="パークサイド">パークサイド</option>
+                        <option value="グランヴィラ">グランヴィラ</option>
+                        <option value="ブルゾン">ブルゾン</option>
+                        <option value="ピュア">ピュア</option>
+                        <option value="松戸グランド">松戸グランド</option>
+                        <option value="カップルズインハッピー">カップルズインハッピー</option>
+                        <option value="トニーワン">トニーワン</option>
+                        <option value="サーティワン">サーティワン</option>
+                        <option value="センチュリー">センチュリー</option>
+                        <option value="ガーネット">ガーネット</option>
+                        <option value="リトルバリ">リトルバリ</option>
+                        <option value="アジアンリゾート">アジアンリゾート</option>
+                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                        <option value="ロックス新宿">ロックス新宿</option>
+                        <option value="ブレス">ブレス</option>
+                        <option value="チェルシー">チェルシー</option>
+                        <option value="エルメ">エルメ</option>
+                        <option value="パリス">パリス</option>
+                        <option value="ダイヤモンド">ダイヤモンド</option>
+                        <option value="エイジア">エイジア</option>
+                        <option value="オニキス">オニキス</option>
+                        <option value="アモーレ">アモーレ</option>
+                        <option value="IF">IF</option>
+                        <option value="ココバリ">ココバリ</option>
+                        <option value="エメラルド">エメラルド</option>
+                        <option value="五反田バリバリ">五反田バリバリ</option>
+                        <option value="バリバリANNEX">バリバリANNEX</option>
+                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                        <option value="ZALA">ZALA</option>
+                    </select>
+                    <div class="edit">
+                        <label for="" id="reason_label_ot">申請理由：</label>
+                        <textarea name="" cols="50" rows="5" id="reason_detail_ot"></textarea>
+                    </div>
+                </form>
+                <div id="Alert2"></div>
+                <div class="buttons">
+                    <button type="submit" class="btn btn-success" onclick="overTimeUpdate()">申請</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1>残業申請 要望一覧</h1>
+            <div class="pto_table_select">
+                <label for="">自店舗を選択:</label>
+                <select id="store_name_ot_search" onchange="showTableOt()">
+                    <option value="">自店舗を選択</option>
+                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                    <option value="池袋グランド">池袋グランド</option>
+                    <option value="アトランタ">アトランタ</option>
+                    <option value="アメジスト">アメジスト</option>
+                    <option value="池袋バリバリ">池袋バリバリ</option>
+                    <option value="ウエストワン">ウエストワン</option>
+                    <option value="サード">サード</option>
+                    <option value="クイーン">クイーン</option>
+                    <option value="池袋セントラル">池袋セントラル</option>
+                    <option value="パークサイド">パークサイド</option>
+                    <option value="グランヴィラ">グランヴィラ</option>
+                    <option value="ブルゾン">ブルゾン</option>
+                    <option value="ピュア">ピュア</option>
+                    <option value="松戸グランド">松戸グランド</option>
+                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                    <option value="トニーワン">トニーワン</option>
+                    <option value="サーティワン">サーティワン</option>
+                    <option value="センチュリー">センチュリー</option>
+                    <option value="ガーネット">ガーネット</option>
+                    <option value="リトルバリ">リトルバリ</option>
+                    <option value="アジアンリゾート">アジアンリゾート</option>
+                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                    <option value="ロックス新宿">ロックス新宿</option>
+                    <option value="ブレス">ブレス</option>
+                    <option value="チェルシー">チェルシー</option>
+                    <option value="エルメ">エルメ</option>
+                    <option value="パリス">パリス</option>
+                    <option value="ダイヤモンド">ダイヤモンド</option>
+                    <option value="エイジア">エイジア</option>
+                    <option value="オニキス">オニキス</option>
+                    <option value="アモーレ">アモーレ</option>
+                    <option value="IF">IF</option>
+                    <option value="ココバリ">ココバリ</option>
+                    <option value="エメラルド">エメラルド</option>
+                    <option value="五反田バリバリ">五反田バリバリ</option>
+                    <option value="バリバリANNEX">バリバリANNEX</option>
+                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                    <option value="ZALA">ZALA</option>
+                </select>
+            </div>
+            <div id="table_list2"></div>
+        </div>
+    </div>    
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

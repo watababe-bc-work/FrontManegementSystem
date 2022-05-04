@@ -35,13 +35,15 @@
     <div class="container-fluid">
         <div class="Page_title">
             <h1>面接受付</h1>
-            <a href="honbu.php"><button>Front Management System</button></a>
+            <a href="honbu.php"><button>TOP</button></a>
         </div>
         <div class="notice_button">
             <button class="btn btn-link" onclick="NoticeDisplay()">特記事項を表示する</button>
         </div>
         <div class="new_registration">
-            <a class="js-modal-open"><button class="btn btn-info">新規登録する</button></a>
+            <a><button class="btn btn-primary" onclick="TodayInterview()">本日の面接</button></a>
+            <button class="btn btn-secondary" onclick="newTable()">全表示</button>
+            <a class="js-modal-open"><button class="btn btn-info">新規登録</button></a>
             <!-- 新規登録モーダルウィンドウ内容 -->
             <div class="modal js-modal">
                 <div class="modal__bg js-modal-close"></div>
@@ -59,6 +61,8 @@
                             <option value="不採用">不採用</option>
                             <option value="キャンセル">キャンセル</option>
                             <option value="リスケジュール">リスケジュール</option>
+                            <option value="入社">入社</option>
+                            <option value="退社">退社</option>
                         </datalist>
                     </div>
                     <div class="edit">
@@ -141,6 +145,24 @@
                         </datalist>   
                     </div>
                     <div class="edit">
+                        <label for="">役職:</label>
+                        <select name="" id="post_input">
+                            <option value="">役職を選択する</option>
+                            <option value="総合管理">総合管理</option>
+                            <option value="運営">運営</option>
+                            <option value="メンテ">メンテ</option>
+                            <option value="フロント">フロント</option>
+                            <option value="池袋">池袋</option>
+                            <option value="渋谷">渋谷</option>
+                            <option value="新宿">新宿</option>
+                            <option value="五反田">五反田</option>
+                            <option value="新横浜・川崎">新横浜・川崎</option>
+                            <option value="千葉・船橋・松戸">千葉・船橋・松戸</option>
+                            <option value="岩槻">岩槻</option>
+                            <option value="仙台">仙台</option>
+                        </select>
+                    </div>
+                    <div class="edit">
                         <label for="">寮希望:</label>
                         <input type="checkbox" name="agree_privacy" id="dormitory" value=""/>   
                     </div><br>
@@ -157,8 +179,6 @@
                     <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
                 </div>
             </div> 
-            <a><button class="btn btn-primary" onclick="TodayInterview()">本日面接の一覧を表示する</button></a>
-            <button class="btn btn-secondary" onclick="newTable()">全表示にする</button>
             <div id="NoticeContent">
                 <h2>特記事項</h2>
                 <div id="NoticeShow">
@@ -181,16 +201,19 @@
                 </div>
             </div> 
         </div>
+        <div id="recruitProgress">
+            <a href="recruitProgress.html" target="_blank">求人進捗状況へ</a>
+        </div>
         <div class="search">
             <h3>検索</h3>
             <div>
-                <label for="">面接日での範囲検索(開始日のみ、終了日のみも可):</label>
-                <input type="date" name="" id="StartDate_search">から
-                <input type="date" id="EndDate_search">まで 
+                <label for="">面接日:</label>
+                <input type="date" name="" id="InterviewDay_search">
             </div>  
             <div>
-                <label for="">面接日での検索:</label>
-                <input type="date" name="" id="InterviewDay_search">
+                <label for="">範囲検索:</label>
+                <input type="date" name="" id="StartDate_search">から
+                <input type="date" id="EndDate_search">まで 
             </div>  
             <div>
                 <label for="">名前:</label>
@@ -227,34 +250,36 @@
                     <option value="不採用">不採用</option>
                     <option value="キャンセル">キャンセル</option>
                     <option value="リスケジュール">リスケジュール</option>
+                    <option value="入社">入社</option>
+                    <option value="退社">退社</option>
                 </datalist>
             </div>
             <br>
             <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
             <button type="submit" class="btn btn-secondary" onclick="ResetSearch()">検索欄リセット</button>
         </div>
-        <div id="title">全表示</div>
         <button onclick="prevTable()" class="button-19" role="button" id="prevTableButton">前回テーブルに戻る</button>
         <table class="table table-title">
             <thead class="thead-dark">
             <tr>
-                <th>状態</th>
-                <th>番号</th>
-                <th>受付者</th>
-                <th class="bigTh">応募媒体</th>
-                <th>最寄駅</th>
-                <th class="bigTh_name">氏名</th>
-                <th>性別</th>
-                <th>年齢</th>
-                <th>国籍</th>
-                <th>連絡先</th>
-                <th class="bigTh">面接日時</th>
-                <th class="bigTh">面接場所</th>
-                <th>寮希望</th>
-                <th>受付日</th>
-                <th>編集</th>
+                <th class="th">状態</th>
+                <th class="th">番号</th>
+                <th class="th">受付者</th>
+                <th class="th">応募媒体</th>
+                <th class="th">最寄駅</th>
+                <th class="th">氏名</th>
+                <th class="th">性別</th>
+                <th class="th">年齢</th>
+                <th class="th">国籍</th>
+                <th class="th">連絡先</th>
+                <th class="th">面接日時</th>
+                <th class="th">面接場所</th>
+                <th class="th">役職</th>
+                <th class="th">寮希望</th>
+                <th class="th">受付日</th>
+                <th class="th">編集</th>
             </tr>
-            <tr><th colspan="15" class="notice">特記事項</th></tr>
+            <tr><th colspan="16" class="notice">特記事項</th></tr>
             </thead>
         </table>
         <div id="interview_list">
@@ -282,6 +307,8 @@
                     <option value="不採用">不採用</option>
                     <option value="キャンセル">キャンセル</option>
                     <option value="リスケジュール">リスケジュール</option>
+                    <option value="入社">入社</option>
+                    <option value="退社">退社</option>
                 </datalist>
             </div>
             <div class="edit">
@@ -362,6 +389,24 @@
                     <option value="ファイヤー">ファイヤー</option>
                     <option value="アジアン">アジアン</option>
                 </datalist>   
+            </div>
+            <div class="edit">
+                <label for="">役職:</label>
+                <select name="" id="post_edit">
+                    <option value="">役職を選択する</option>
+                    <option value="総合管理">総合管理</option>
+                    <option value="運営">運営</option>
+                    <option value="メンテ">メンテ</option>
+                    <option value="フロント">フロント</option>
+                    <option value="池袋">池袋</option>
+                    <option value="渋谷">渋谷</option>
+                    <option value="新宿">新宿</option>
+                    <option value="五反田">五反田</option>
+                    <option value="新横浜・川崎">新横浜・川崎</option>
+                    <option value="千葉・船橋・松戸">千葉・船橋・松戸</option>
+                    <option value="岩槻">岩槻</option>
+                    <option value="仙台">仙台</option>
+                </select>
             </div>
             <div class="edit">
                 <label for="">寮希望:</label>

@@ -19,6 +19,52 @@
 </head>
 <body>
     <h1>残業申請要望一覧</h1>
+    <div class="search">
+        <p>検索</p>
+        <label for="">店舗：</label>
+        <select id="store_name_search" onchange="showTable()">
+            <option value="">店舗を選択</option>
+            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+            <option value="池袋グランド">池袋グランド</option>
+            <option value="アトランタ">アトランタ</option>
+            <option value="アメジスト">アメジスト</option>
+            <option value="池袋バリバリ">池袋バリバリ</option>
+            <option value="ウエストワン">ウエストワン</option>
+            <option value="サード">サード</option>
+            <option value="クイーン">クイーン</option>
+            <option value="池袋セントラル">池袋セントラル</option>
+            <option value="パークサイド">パークサイド</option>
+            <option value="グランヴィラ">グランヴィラ</option>
+            <option value="ブルゾン">ブルゾン</option>
+            <option value="ピュア">ピュア</option>
+            <option value="松戸グランド">松戸グランド</option>
+            <option value="カップルズインハッピー">カップルズインハッピー</option>
+            <option value="トニーワン">トニーワン</option>
+            <option value="サーティワン">サーティワン</option>
+            <option value="センチュリー">センチュリー</option>
+            <option value="ガーネット">ガーネット</option>
+            <option value="リトルバリ">リトルバリ</option>
+            <option value="アジアンリゾート">アジアンリゾート</option>
+            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+            <option value="ロックス新宿">ロックス新宿</option>
+            <option value="ブレス">ブレス</option>
+            <option value="チェルシー">チェルシー</option>
+            <option value="エルメ">エルメ</option>
+            <option value="パリス">パリス</option>
+            <option value="ダイヤモンド">ダイヤモンド</option>
+            <option value="エイジア">エイジア</option>
+            <option value="オニキス">オニキス</option>
+            <option value="アモーレ">アモーレ</option>
+            <option value="IF">IF</option>
+            <option value="ココバリ">ココバリ</option>
+            <option value="エメラルド">エメラルド</option>
+            <option value="五反田バリバリ">五反田バリバリ</option>
+            <option value="バリバリANNEX">バリバリANNEX</option>
+            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+            <option value="ZALA">ZALA</option>
+        </select>
+        <button class="btn btn-secondary" onclick="cancel()">検索リセット</button>
+    </div>
     <div class="youbouTable">
         <div id="table_list">
             <!-- DB情報取得 -->

@@ -46,6 +46,10 @@ $breakpoint-down: (
                 font-size: 10px;
                 text-align: center;
             }
+
+            button{
+                width: 150px;
+            }
         }
     }
 }
@@ -302,6 +306,12 @@ textarea{
     font-size: 20px;
 }
 
+#recruitProgress{
+    font-size: 15px;
+    text-align: center;
+    margin: 2% 0;
+}
+
 .search{
     text-align: center;
     margin: 2% 0;
@@ -334,8 +344,9 @@ table{
         font-size: 15px;
     }
 
-    th{
-        min-width: 6em;
+    .th{
+        min-width: 7em;
+        max-width: 7em;
         text-align: center;
         @include mq-up('xs') {
             max-width: 6em;
@@ -343,27 +354,27 @@ table{
         }
     }
 
-    .bigTh{
-        min-width: 6em;
+    .thbig{
+        width: 10em;
+    }
+
+    td{
+        min-width: 7em;
+        max-width: 7em;
+        margin: 0;
+        @include mq-up('xs') {
+            max-width: 6em;
+            min-width: 5em;
+        }
     }
 
     .bigTh_name{
-        min-width: 7em;
         font-weight: 600;
     }
 
     .bigTh_interviewDate{
         font-weight: 600;
         text-align: center;
-    }
-
-    td{
-        min-width:  6em;
-        margin: 0;
-        @include mq-up('xs') {
-            max-width: 6em;
-            min-width: 5em;
-        }
     }
 
     .notice{
@@ -403,6 +414,16 @@ table{
     .reschedule_back{
         background: #db7093;
     }
+
+    .join_back{
+        background: #191970;
+        color: white;
+    }
+
+    .leave_back{
+        background: #006400;
+        color: white;
+    }
 }
 
 .noticeLabel{
@@ -422,7 +443,6 @@ table{
 }
 
 .table-title{
-    margin-top: 3%;
     margin-bottom: 0;
 }
 

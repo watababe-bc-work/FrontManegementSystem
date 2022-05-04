@@ -52,14 +52,25 @@ $breakpoint-down: (
         color: #666;
         font-size: 15px;
     }
+
     #header {
-        text-align: left;
         font-size: 24px;
-        width: 100%;
-        margin: 1rem 0 0;
+        position: absolute;  // 追記
+        left: 0;    
+
+        @include mq-up('xs') {
+            position: static;
+        }
     }
 
     .tops{
+        position: relative;
+        margin-bottom: 10px;
+
+        @include mq-up('xs') {
+            position: static;
+        }
+
         .title{
             text-align: left;
         }
@@ -71,8 +82,14 @@ $breakpoint-down: (
         .searchForm{
             font-size: 15px;
             padding: 5px;
-            text-align: right;
+            display: inline-block;
             margin-right: 20px;
+            position: absolute;  // 追記
+            right: 0;  
+
+            @include mq-up('xs') {
+                position: static;
+            }
 
             form{
                 display: inline-block;
@@ -201,6 +218,12 @@ $breakpoint-down: (
             margin: 0 5px;
         }
 
+        @include mq-up('xs') {
+            .btn-primary{
+                background: gray;
+            }
+        }
+
         td{
             font-size: 12px;
             padding: 5px 10px;
@@ -226,6 +249,16 @@ $breakpoint-down: (
         margin-left: 10px;
         padding: 10px;
         vertical-align: top;
+
+        td{
+            font-size: 12px;
+            padding: 5px 10px;
+
+            @include mq-up('xs') {
+                font-size: 10px;
+                padding: 3px 5px;
+            }
+        }
 
         button{
             border: none;
@@ -262,6 +295,11 @@ $breakpoint-down: (
     h2{
         font-size: 25px;
         margin: 20px 0;
+
+        @include mq-up('xs') {
+            font-size: 15px;
+            margin: 10px 0;
+        }
     }
 
     button{
@@ -269,6 +307,13 @@ $breakpoint-down: (
         height: 40px;
         margin: 0 20px;
         font-size: 15px;
+
+        @include mq-up('xs') {
+            width: 100px;
+            height: 30px;
+            margin: 0 5px;
+            font-size: 10px;
+        }
     }
 
     p{
@@ -292,6 +337,10 @@ $breakpoint-down: (
 
         #item_input{
             width: 400px;
+
+            @include mq-up('xs') {
+                width: 150px;
+            }
         }
     }
 
@@ -314,6 +363,10 @@ $breakpoint-down: (
     top: 50%;
     transform: translate(-50%,-50%);
     width: 60%;
+
+    @include mq-up('xs') {
+        padding: 10px;
+    }
 
     .modalButton{
         display: inline-block;

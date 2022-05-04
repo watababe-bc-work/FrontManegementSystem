@@ -1,6 +1,7 @@
 body {
   text-align: center;
-  background: #d3d3d3; }
+  background: #d3d3d3;
+  padding-top: 2%; }
 
 h1 {
   margin: 30px 0;
@@ -13,12 +14,29 @@ h1 {
   box-shadow: #666666 10px 5px 5px;
   background: white; }
 
+.pto {
+  background: whitesmoke;
+  padding: 10px 0;
+  margin: 0 5%;
+  margin-bottom: 10%;
+  border-radius: 10px; }
+
+.overTime {
+  background: whitesmoke;
+  padding: 10px 0;
+  margin: 0 5%;
+  margin-bottom: 5%;
+  border-radius: 10px; }
+
 form {
   font-size: 15px; }
   form .edit {
     margin: 25px 0; }
     form .edit label {
       margin-left: 20px; }
+      @media screen and (max-width: 576px) {
+        form .edit label {
+          margin-left: 0; } }
   form #subject {
     width: 50%; }
   form #horizontal, form #vertical, form #covering_fare {
@@ -26,8 +44,19 @@ form {
     text-align: right; }
   form #reason_label {
     vertical-align: top; }
+  form #reason_label_ot {
+    vertical-align: top; }
+  @media screen and (max-width: 768px) {
+    form #date_ot {
+      width: 70%; } }
   form #reason_detail {
     max-width: 50%; }
+    @media screen and (max-width: 768px) {
+      form #reason_detail {
+        max-width: 90%; } }
+  @media screen and (max-width: 768px) {
+    form #reason_detail_ot {
+      max-width: 90%; } }
 
 .btn {
   font-size: 15px;
@@ -35,5 +64,49 @@ form {
 
 .alert {
   font-size: 15px; }
+
+.addOrderContent_button {
+  background: orange;
+  color: white;
+  border-radius: 50px;
+  font-size: 15px;
+  border: none;
+  margin: 5px 0;
+  padding: 5px 10px; }
+
+.addoverTimeContent_button {
+  background: green;
+  color: white;
+  border-radius: 50px;
+  font-size: 15px;
+  border: none;
+  margin: 5px 0;
+  padding: 5px 10px; }
+
+.pto_table {
+  text-align: center; }
+  .pto_table_select {
+    font-size: 15px; }
+
+table {
+  margin: 10px 0;
+  font-size: 15px; }
+  @media screen and (max-width: 768px) {
+    table {
+      font-size: 10px; } }
+
+@media screen and (max-width: 768px) {
+  .table > tbody > tr > td {
+    padding: 5px; } }
+
+.collectBack {
+  background: #91B87E;
+  color: white; }
+
+.orderBack {
+  background: #E1DBCD; }
+
+.yetBack {
+  background: white; }
 
 /*# sourceMappingURL=ptoApp.css.map */

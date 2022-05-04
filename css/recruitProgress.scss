@@ -1,0 +1,105 @@
+body{
+    text-align: center;
+    background: #d3d3d3;
+}
+
+h1{
+    margin: 30px 0;
+    color: #696969;
+}
+
+.month_search{
+    font-size: 15px;
+}
+
+#monthTitle{
+    margin: 0;
+}
+
+.backwhite{
+    margin: 20px 10%;
+    padding: 10px 0;
+    border-radius: 20px;
+    box-shadow: #666666 10px 5px 5px;
+    background: white;
+}
+
+.btn{
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.alert{
+    font-size: 15px;
+}
+
+.youbouTable{
+    background: white;
+    margin-top: 50px;
+    margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 20px 0;
+    border-radius: 20px;
+
+    th,td{
+        font-size: 15px;
+    }
+
+    button{
+        font-size: 10px;
+        margin: 0 5px;
+    }
+
+    .collectBack{
+        background: #91B87E;
+        color: white;
+    }
+
+    .orderBack{
+        background: #E1DBCD;
+    }
+
+    .table>tbody>tr>td,.table>tbody>tr>th{
+        vertical-align: middle;
+    }
+}
+
+#table_list{
+    display: inline-block;
+    width: 40%;
+
+    td{
+        vertical-align: middle;
+        height: 50px;
+    }
+
+    input{
+        width: 50px;
+    }
+}
+
+.yajirusi{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 20%;
+    font-size: 30px;
+}
+
+#table_list_progress{
+    display: inline-block;
+    width: 40%;
+
+    td{
+        height: 50px;
+    }
+}
+
+.jump{
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.btn.btn-success{
+    font-size: 15px;
+}
