@@ -15,6 +15,9 @@ db.settings({
   timestampsInSnapshots: true
 });
 
+document.getElementById('addForm').style.display = "none";
+document.getElementById('addForm2').style.display = "none";
+
 //本日の日付を初期値に配置
 window.onload = function () {
     //今日の日時を表示
@@ -23,22 +26,34 @@ window.onload = function () {
     var month = date.getMonth() + 1
     var day = date.getDate()
     document.getElementById("order_date").textContent = "令和" + (year - 2018) + "年" + month + "月" + day + "日";
+    document.getElementById("order_date2").textContent = "令和" + (year - 2018) + "年" + month + "月" + day + "日";
 }
 
+function addOrderContent(){
+    document.getElementById('addForm').style.display = "block";
+}
+
+function addoverTimeContent(){
+    document.getElementById('addForm2').style.display = "block";
+}
+
+//有休申請
 //DBへ追加
-function POPDemandUpdate(){
+function PtoUpdate(){
     //社員番号
     var staffNum = document.getElementById('staffNum').value;
     //氏名
     var name = document.getElementById('name').value;
     //作成日
     var createdAt = document.getElementById('order_date').textContent;
+    //店舗名
+    var storeName = document.getElementById('store_name').value;
     //日時
     var startDate = document.getElementById('startdate').value;
     var endDate = document.getElementById('enddate').value;
     //理由
     var reason = document.getElementById('reason_detail').value;
-    if(staffNum == "" || name == "" || startDate == "" || endDate == "" || reason == ""){
+    if(staffNum == "" || name == "" || storeName == "" || startDate == "" || endDate == "" || reason == ""){
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
@@ -50,9 +65,137 @@ function POPDemandUpdate(){
             startDate:startDate,
             endDate:endDate,
             reason:reason,
+            storeName:storeName,
             status:"unapproved",
         });
         var Alert = document.getElementById('Alert');
-        Alert.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました。画面を閉じて終了してください。</div>';
+        Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
+        setTimeout("location.reload()",2000);
     }
+}
+
+//table表示
+function showTable(){
+    var store = document.getElementById('store_name_search').value;
+    console.log(store);
+    var query="";
+    var querySnapshot="";
+
+    //テーブル表示(初期値)
+    (async () => {
+        try {
+        // 省略 
+        // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+    
+        query = await db.collection('ptoApps').where('storeName','==',store).orderBy('startDate', 'desc'); // firebase.firestore.QuerySnapshotのインスタンスを取得
+        querySnapshot = await query.get();
+
+        var stocklist = '<table class="table table-striped">'
+        stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>承認者</th><th>状態</th><th>本部回答</th>';
+        querySnapshot.forEach((postDoc) => {
+            switch(postDoc.get('status')){
+            //承認
+            case 'approve':
+                var statusText = "承認";
+                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td>' + postDoc.get('note') +'</td></tr></tbody>';
+                break;
+            //不承認      
+            case 'disapproval':
+                var statusText = "不承認";
+                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td>' + postDoc.get('note') +'</td></tr></tbody>';
+                break;
+            //未承認      
+            default:
+                var statusText = "未承認";
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td></td><td>' + statusText + '</td><td></td></tr></tbody>';
+                break;        
+            }
+        })
+        stocklist += '</table>';
+        document.getElementById('table_list').innerHTML = stocklist;
+
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
+
+//残業申請
+//DBへ追加
+function overTimeUpdate(){
+    //氏名
+    var name = document.getElementById('name_ot').value;
+    //作成日
+    var createdAt = document.getElementById('order_date2').textContent;
+    console.log(createdAt);
+    //日時
+    var date = document.getElementById('date_ot').value;
+    var startDate = document.getElementById('startDate_ot').value;
+    var endDate = document.getElementById('endDate_ot').value;
+    var storeName = document.getElementById('store_name_ot').value;
+    var reason = document.getElementById('reason_detail_ot').value;
+    if(name == "" || date == "" || startDate == "" || endDate == "" || storeName == "" || reason == ""){
+        var Alert = document.getElementById('Alert2');
+        Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
+    }else{
+        //DBへ送信
+        db.collection('overtimeApp').add({
+            name:name,
+            createdAt:createdAt,
+            date:date,
+            startDate:startDate,
+            endDate:endDate,
+            storeName:storeName,
+            reason:reason,
+            status:"unapproved",
+        });
+        var Alert = document.getElementById('Alert2');
+        Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
+        setTimeout("location.reload()",2000);
+    }
+}
+
+//table表示
+function showTableOt(){
+    var store = document.getElementById('store_name_ot_search').value;
+    var query="";
+    var querySnapshot="";
+
+    //テーブル表示(初期値)
+    (async () => {
+        try {
+        // 省略 
+        // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+    
+        query = await db.collection('overtimeApp').where('storeName','==',store).orderBy('date', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
+        querySnapshot = await query.get();
+
+        var stocklist = '<table class="table table-striped">'
+        stocklist += '<tr><th>依頼日時</th><th>氏名</th><th>申請日時</th><th>状態</th><th>本部回答</th>';
+        querySnapshot.forEach((postDoc) => {
+            switch(postDoc.get('status')){
+            //承認
+            case 'approve':
+                var statusText = "承認";
+                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                break;
+            //不承認      
+            case 'disapproval':
+                var statusText = "不承認";
+                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                break;
+            //未承認      
+            default:
+                var statusText = "未承認";
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                break;        
+            }
+        })
+        stocklist += '</table>';
+        document.getElementById('table_list2').innerHTML = stocklist;
+
+        } catch (err) {
+            console.log(err);
+        }
+    })();
 }

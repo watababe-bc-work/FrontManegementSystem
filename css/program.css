@@ -19,29 +19,42 @@
     color: #666;
     font-size: 15px; }
   .attendance_management #header {
-    text-align: left;
     font-size: 24px;
-    width: 100%;
-    margin: 1rem 0 0; }
-  .attendance_management .tops .title {
-    text-align: left; }
-  .attendance_management .tops p {
-    display: inline-block; }
-  .attendance_management .tops .searchForm {
-    font-size: 15px;
-    padding: 5px;
-    text-align: right;
-    margin-right: 20px; }
-    .attendance_management .tops .searchForm form {
-      display: inline-block;
-      margin: 0 20px; }
-    .attendance_management .tops .searchForm div {
+    position: absolute;
+    left: 0; }
+    @media screen and (max-width: 576px) {
+      .attendance_management #header {
+        position: static; } }
+  .attendance_management .tops {
+    position: relative;
+    margin-bottom: 10px; }
+    @media screen and (max-width: 576px) {
+      .attendance_management .tops {
+        position: static; } }
+    .attendance_management .tops .title {
+      text-align: left; }
+    .attendance_management .tops p {
       display: inline-block; }
-    @media screen and (max-width: 1110px) {
-      .attendance_management .tops .searchForm {
-        font-size: 10px; } }
-    .attendance_management .tops .searchForm button {
-      margin-top: 5px; }
+    .attendance_management .tops .searchForm {
+      font-size: 15px;
+      padding: 5px;
+      display: inline-block;
+      margin-right: 20px;
+      position: absolute;
+      right: 0; }
+      @media screen and (max-width: 576px) {
+        .attendance_management .tops .searchForm {
+          position: static; } }
+      .attendance_management .tops .searchForm form {
+        display: inline-block;
+        margin: 0 20px; }
+      .attendance_management .tops .searchForm div {
+        display: inline-block; }
+      @media screen and (max-width: 1110px) {
+        .attendance_management .tops .searchForm {
+          font-size: 10px; } }
+      .attendance_management .tops .searchForm button {
+        margin-top: 5px; }
   .attendance_management #calendar {
     text-align: center;
     width: 100%;
@@ -118,6 +131,9 @@
     .attendance_management .todaysContent .btn {
       font-size: 10px;
       margin: 0 5px; }
+    @media screen and (max-width: 576px) {
+      .attendance_management .todaysContent .btn-primary {
+        background: gray; } }
     .attendance_management .todaysContent td {
       font-size: 12px;
       padding: 5px 10px; }
@@ -137,6 +153,13 @@
     margin-left: 10px;
     padding: 10px;
     vertical-align: top; }
+    .attendance_management .Allmemo td {
+      font-size: 12px;
+      padding: 5px 10px; }
+      @media screen and (max-width: 576px) {
+        .attendance_management .Allmemo td {
+          font-size: 10px;
+          padding: 3px 5px; } }
     .attendance_management .Allmemo button {
       border: none;
       font-size: 15px;
@@ -162,11 +185,21 @@
   .modal h2 {
     font-size: 25px;
     margin: 20px 0; }
+    @media screen and (max-width: 576px) {
+      .modal h2 {
+        font-size: 15px;
+        margin: 10px 0; } }
   .modal button {
     width: 150px;
     height: 40px;
     margin: 0 20px;
     font-size: 15px; }
+    @media screen and (max-width: 576px) {
+      .modal button {
+        width: 100px;
+        height: 30px;
+        margin: 0 5px;
+        font-size: 10px; } }
   .modal p {
     font-size: 15px;
     margin: 20px; }
@@ -179,6 +212,9 @@
     font-size: 15px; }
   .modal form #item_input {
     width: 400px; }
+    @media screen and (max-width: 576px) {
+      .modal form #item_input {
+        width: 150px; } }
   .modal .alert {
     font-size: 15px; }
 
@@ -196,6 +232,9 @@
   top: 50%;
   transform: translate(-50%, -50%);
   width: 60%; }
+  @media screen and (max-width: 576px) {
+    .modal__content {
+      padding: 10px; } }
   .modal__content .modalButton {
     display: inline-block; }
 

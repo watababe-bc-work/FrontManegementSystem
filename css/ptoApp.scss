@@ -1,6 +1,39 @@
+@charset "utf-8";
+
+// media
+$sizes: xl, lg, md, sm, xs;
+
+$breakpoint-up: (
+    'xs': 'screen and (max-width: 576px)',
+    'sm': 'screen and (max-width: 768px)',
+    'md': 'screen and (max-width: 992px)',
+    'lg': 'screen and (max-width: 1200px)',
+    'xl': 'screen and (max-width: 1400px)',
+);
+
+$breakpoint-down: (
+    'xs': 'screen and (min-width: 577px)',
+    'sm': 'screen and (min-width: 769px)',
+    'md': 'screen and (min-width: 993px)',
+    'lg': 'screen and (min-width: 1201px)',
+    'xl': 'screen and (min-width: 1401px)',
+);
+
+@mixin mq-up($breakpoint: md) {
+    @media #{map-get($breakpoint-up, $breakpoint)} {
+        @content;
+    }
+}
+@mixin mq-dwn($breakpoint: md) {
+    @media #{map-get($breakpoint-down, $breakpoint)} {
+        @content;
+    }
+}
+
 body{
     text-align: center;
     background: #d3d3d3;
+    padding-top: 2%;
 }
 
 h1{
@@ -16,6 +49,22 @@ h1{
     background: white;
 }
 
+.pto{
+    background: whitesmoke;
+    padding: 10px 0;
+    margin: 0 5%;
+    margin-bottom: 10%;
+    border-radius: 10px;
+}
+
+.overTime{
+    background: whitesmoke;
+    padding: 10px 0;
+    margin: 0 5%;
+    margin-bottom: 5%;
+    border-radius: 10px;
+}
+
 form{
     font-size: 15px;
 
@@ -23,6 +72,9 @@ form{
         margin: 25px 0;
         label{
             margin-left:20px;
+            @include mq-up('xs') {
+                margin-left: 0;
+            }
         }
     }
     #subject{
@@ -38,8 +90,27 @@ form{
         vertical-align: top;
     }
 
+    #reason_label_ot{
+        vertical-align: top;
+    }
+
+    #date_ot{
+        @include mq-up('sm') {
+            width: 70%;
+        }
+    }
+
     #reason_detail{
         max-width: 50%;
+        @include mq-up('sm') {
+            max-width: 90%;
+        }
+    }
+
+    #reason_detail_ot{
+        @include mq-up('sm') {
+            max-width: 90%;
+        }
     }
 }
 
@@ -50,4 +121,58 @@ form{
 
 .alert{
     font-size: 15px;
+}
+
+.addOrderContent_button{
+    background: orange;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    border: none;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+.addoverTimeContent_button{
+    background: green;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    border: none;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+.pto_table{
+    text-align: center;
+    &_select{
+        font-size: 15px; 
+    }
+}
+
+table{
+    margin: 10px 0;
+    font-size: 15px;
+    @include mq-up('sm') {
+        font-size: 10px;
+    }
+}
+
+.table>tbody>tr>td{
+    @include mq-up('sm') {
+        padding: 5px;
+    }
+}
+
+.collectBack{
+    background: #91B87E;
+    color: white;
+}
+
+.orderBack{
+    background: #E1DBCD;
+}
+
+.yetBack{
+    background: white;
 }
