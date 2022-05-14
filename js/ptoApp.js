@@ -123,6 +123,8 @@ function showTable(){
 //残業申請
 //DBへ追加
 function overTimeUpdate(){
+    //社員番号
+    var staffNum = document.getElementById('staffNum_ot').value;
     //氏名
     var name = document.getElementById('name_ot').value;
     //作成日
@@ -140,6 +142,7 @@ function overTimeUpdate(){
     }else{
         //DBへ送信
         db.collection('overtimeApp').add({
+            staffNum,staffNum,
             name:name,
             createdAt:createdAt,
             date:date,
@@ -171,23 +174,23 @@ function showTableOt(){
         querySnapshot = await query.get();
 
         var stocklist = '<table class="table table-striped">'
-        stocklist += '<tr><th>依頼日時</th><th>氏名</th><th>申請日時</th><th>状態</th><th>本部回答</th>';
+        stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請日時</th><th>状態</th><th>本部回答</th>';
         querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
             //承認
             case 'approve':
                 var statusText = "承認";
-                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
                 break;
             //不承認      
             case 'disapproval':
                 var statusText = "不承認";
-                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
                 break;
             //未承認      
             default:
                 var statusText = "未承認";
-                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td></td></tr></tbody>';
                 break;        
             }
         })

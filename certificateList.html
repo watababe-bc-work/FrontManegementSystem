@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Front Manegement System ~残業申請要望一覧~</title>
+    <title>Front Manegement System ~証明書等発行申請一覧~</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -14,17 +14,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/overtimeAppList.css">
+    <link rel="stylesheet" href="css/certificateList.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <h1>残業申請要望一覧</h1>
+    <h1>証明書等発行申請一覧</h1>
     <div class="search">
         <p>検索</p>
-        <label for="">名前：</label>
-        <input type="text" id="name_search">
         <label for="">店舗：</label>
-        <select id="store_name_search">
+        <select id="store_name_search" onchange="showTable()">
             <option value="">店舗を選択</option>
             <option value="ワタナベ商事本部">ワタナベ商事本部</option>
             <option value="池袋グランド">池袋グランド</option>
@@ -65,8 +63,6 @@
             <option value="HOTEL グランバリ">HOTEL グランバリ</option>
             <option value="ZALA">ZALA</option>
         </select>
-        <br>
-        <button class="btn btn-primary" onclick="showTable()">検索</button>
         <button class="btn btn-secondary" onclick="cancel()">検索リセット</button>
     </div>
     <div class="youbouTable">
@@ -79,61 +75,29 @@
         <div class="modal__bg js-modal-close"></div>
         <div class="modal__content">
             <h2>申請回答</h2>
-            <form action="overtimeAppList.html" method="POST">
+            <form action="ptoAppList.html" method="POST">
                 <div class="edit">
-                    <div>
-                        <label for="">依頼日時:</label>
-                        <p id="createdAt_edit"></p>
-                    </div>
-                    <div>
-                        <label for="">社員番号</label>
-                        <p id="staffNum_edit"></p>
-                    </div>
                     <div>
                         <label for="">氏名:</label>
                         <p id="name_edit"></p>
                     </div>
-                </div>
-                <br>
-                <div class="edit">
                     <div>
-                        <label for="">日時：</label>
-                        <input type="date" id="date_edit">
-                        <input type="time" id="startDate_edit"> ~
-                        <input type="time" id="endDate_edit">
-                    </div>
-                    <div>
-                        <label for="" id="reason_label_edit">申請理由：</label>
-                        <textarea name="" cols="50" rows="5" id="reason_detail_edit"></textarea>
+                        <label for="">依頼日時:</label>
+                        <p id="createdAt_edit"></p>
                     </div>
                 </div>
                 <br>
                 <div class="edit">
+                    <label for="">処理：</label>
+                    <select name="" id="order_category" onchange="change();">
+                        <option value="unapproval">処理を選択する</option>
+                        <option value="approve">承認</option>
+                        <option value="delivered">発送済み</option>
+                    </select>
                     <div>
-                        <label for="">電話での承認者:</label>
-                        <input type="text" id="phoneApprover">
+                        <label for="">承認者</label>
+                        <input type="text" id="approver">
                     </div>
-                    <div>
-                        <label for="">FMS承認者:</label>
-                        <input type="text" id="approvalPerson">
-                    </div>
-                    <div>
-                        <label for="">処理：</label>
-                        <select name="" id="order_category" onchange="change();">
-                            <option value="unapproved">処理を選択する</option>
-                            <option value="approve">承認</option>
-                            <option value="disapproval">不承認</option>
-                        </select>
-                    </div>
-                </div>
-                <div id="disapproval_reason">
-                    <label for="" class="vertical">不承認理由:</label>
-                    <textarea name="" id="disapprovalReason" cols="60" rows="5"></textarea>
-                </div>
-                <br>
-                <div class="edit">
-                    <label for="" class="vertical">備考:</label>
-                    <textarea name="" id="note" cols="60" rows="5"></textarea>
                 </div>
             </form>
             <br>
@@ -157,7 +121,7 @@
     <!-- bootstrapの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src="js/overtimeAppList.js"></script>
+    <script src="js/certificateList.js"></script>
     <script src="js/pdfMake/pdfmake.min.js"></script>
     <script src="js/pdfMake/vfs_fonts.js"></script>
     <script src="js/modal.js"></script>

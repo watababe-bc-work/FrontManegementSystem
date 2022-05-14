@@ -145,13 +145,14 @@
                         </datalist>   
                     </div>
                     <div class="edit">
-                        <label for="">役職:</label>
+                        <label for="">職種:</label>
                         <select name="" id="post_input">
                             <option value="">役職を選択する</option>
                             <option value="総合管理">総合管理</option>
                             <option value="運営">運営</option>
                             <option value="メンテ">メンテ</option>
                             <option value="フロント">フロント</option>
+                            <option value="ハウスキーパー">ハウスキーパー</option>
                             <option value="池袋">池袋</option>
                             <option value="渋谷">渋谷</option>
                             <option value="新宿">新宿</option>
@@ -258,7 +259,10 @@
             <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
             <button type="submit" class="btn btn-secondary" onclick="ResetSearch()">検索欄リセット</button>
         </div>
-        <button onclick="prevTable()" class="button-19" role="button" id="prevTableButton">前回テーブルに戻る</button>
+        <div class="nextButton">
+            <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
+            <button onclick="prevTable()" class="button-19" role="button" id="prevTableButton">前回テーブルに戻る</button>
+        </div>
         <table class="table table-title">
             <thead class="thead-dark">
             <tr>
@@ -274,7 +278,7 @@
                 <th class="th">連絡先</th>
                 <th class="th">面接日時</th>
                 <th class="th">面接場所</th>
-                <th class="th">役職</th>
+                <th class="th">職種</th>
                 <th class="th">寮希望</th>
                 <th class="th">受付日</th>
                 <th class="th">編集</th>
@@ -288,7 +292,6 @@
         <div class="nextButton">
             <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
             <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
-            <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
         </div>
     <!-- 編集用モーダルウィンドウ内容 -->
     <div class="modal js-modal2">
@@ -391,13 +394,14 @@
                 </datalist>   
             </div>
             <div class="edit">
-                <label for="">役職:</label>
+                <label for="">職種:</label>
                 <select name="" id="post_edit">
                     <option value="">役職を選択する</option>
                     <option value="総合管理">総合管理</option>
                     <option value="運営">運営</option>
                     <option value="メンテ">メンテ</option>
                     <option value="フロント">フロント</option>
+                    <option value="ハウスキーパー">ハウスキーパー</option>
                     <option value="池袋">池袋</option>
                     <option value="渋谷">渋谷</option>
                     <option value="新宿">新宿</option>

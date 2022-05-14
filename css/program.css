@@ -5,173 +5,278 @@
   /*全体*/
   /*カレンダー*/
   /*本日*/
-  /*ボタン*/ }
+  /*ボタン*/
+}
+
+.attendance_management h1 {
+  margin: 1%;
+}
+
+@media screen and (max-width: 576px) {
   .attendance_management h1 {
-    margin: 1%; }
-    @media screen and (max-width: 576px) {
-      .attendance_management h1 {
-        margin: 5%; } }
-  .attendance_management .wrapper {
-    max-width: 90%;
-    margin: 0 auto;
-    color: #666; }
-  .attendance_management .wrapper a {
-    color: #666;
-    font-size: 15px; }
+    margin: 5%;
+  }
+}
+
+.attendance_management .wrapper {
+  max-width: 90%;
+  margin: 0 auto;
+  color: #666;
+}
+
+.attendance_management .wrapper a {
+  color: #666;
+  font-size: 15px;
+}
+
+.attendance_management #header {
+  font-size: 24px;
+  position: absolute;
+  left: 0;
+}
+
+@media screen and (max-width: 576px) {
   .attendance_management #header {
-    font-size: 24px;
-    position: absolute;
-    left: 0; }
-    @media screen and (max-width: 576px) {
-      .attendance_management #header {
-        position: static; } }
+    position: static;
+  }
+}
+
+.attendance_management .tops {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 576px) {
   .attendance_management .tops {
-    position: relative;
-    margin-bottom: 10px; }
-    @media screen and (max-width: 576px) {
-      .attendance_management .tops {
-        position: static; } }
-    .attendance_management .tops .title {
-      text-align: left; }
-    .attendance_management .tops p {
-      display: inline-block; }
-    .attendance_management .tops .searchForm {
-      font-size: 15px;
-      padding: 5px;
-      display: inline-block;
-      margin-right: 20px;
-      position: absolute;
-      right: 0; }
-      @media screen and (max-width: 576px) {
-        .attendance_management .tops .searchForm {
-          position: static; } }
-      .attendance_management .tops .searchForm form {
-        display: inline-block;
-        margin: 0 20px; }
-      .attendance_management .tops .searchForm div {
-        display: inline-block; }
-      @media screen and (max-width: 1110px) {
-        .attendance_management .tops .searchForm {
-          font-size: 10px; } }
-      .attendance_management .tops .searchForm button {
-        margin-top: 5px; }
-  .attendance_management #calendar {
-    text-align: center;
-    width: 100%;
-    margin-bottom: 20px;
-    /*日曜日*/
-    /*土曜日*/
-    /*前後月の日付*/ }
-    .attendance_management #calendar td:first-child {
-      color: red; }
-    .attendance_management #calendar td:last-child {
-      color: blue; }
-    .attendance_management #calendar td.disabled {
-      color: #ccc;
-      font-size: 15px; }
-    .attendance_management #calendar button {
-      border: solid 2px #666; }
-  .attendance_management table {
-    outline: 2px solid #ddd;
-    border-collapse: collapse;
-    width: 100%;
-    height: 10px; }
-  .attendance_management th {
-    color: #000; }
-  .attendance_management th, .attendance_management td {
-    outline: 1px solid #ddd;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    text-align: center; }
-  .attendance_management td.today {
-    background-color: #D65E72; }
-    .attendance_management td.today button {
-      background-color: #D65E72;
-      color: #fff;
-      border: solid 2px #fff; }
-  .attendance_management td.today a {
-    color: #fff; }
-  .attendance_management #next-prev-button {
-    position: relative; }
-  .attendance_management #next-prev-button button {
-    cursor: pointer;
-    background: #B78D4A;
-    color: #fff;
-    border: 1px solid #B78D4A;
-    border-radius: 4px;
-    font-size: 1rem;
-    padding: 0.5rem 2rem;
-    margin: 1rem 0; }
-  .attendance_management #next-prev-button button:hover {
-    background-color: #D4BB92;
-    border-color: #D4BB92; }
-  .attendance_management #prev {
-    float: left; }
-  .attendance_management #next {
-    float: right; }
+    position: static;
+  }
+}
+
+.attendance_management .tops .title {
+  text-align: left;
+}
+
+.attendance_management .tops p {
+  display: inline-block;
+}
+
+.attendance_management .tops .searchForm {
+  font-size: 15px;
+  padding: 5px;
+  display: inline-block;
+  margin-right: 20px;
+  position: absolute;
+  right: 0;
+}
+
+@media screen and (max-width: 576px) {
+  .attendance_management .tops .searchForm {
+    position: static;
+  }
+}
+
+.attendance_management .tops .searchForm form {
+  display: inline-block;
+  margin: 0 20px;
+}
+
+.attendance_management .tops .searchForm div {
+  display: inline-block;
+}
+
+@media screen and (max-width: 1110px) {
+  .attendance_management .tops .searchForm {
+    font-size: 10px;
+  }
+}
+
+.attendance_management .tops .searchForm button {
+  margin-top: 5px;
+}
+
+.attendance_management #calendar {
+  text-align: center;
+  width: 100%;
+  margin-bottom: 20px;
+  /*日曜日*/
+  /*土曜日*/
+  /*前後月の日付*/
+}
+
+.attendance_management #calendar td:first-child {
+  color: red;
+}
+
+.attendance_management #calendar td:last-child {
+  color: blue;
+}
+
+.attendance_management #calendar td.disabled {
+  color: #ccc;
+  font-size: 15px;
+}
+
+.attendance_management #calendar button {
+  border: solid 2px #666;
+}
+
+.attendance_management table {
+  outline: 2px solid #ddd;
+  border-collapse: collapse;
+  width: 100%;
+  height: 10px;
+}
+
+.attendance_management th {
+  color: #000;
+}
+
+.attendance_management th, .attendance_management td {
+  outline: 1px solid #ddd;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+.attendance_management td.today {
+  background-color: #D65E72;
+}
+
+.attendance_management td.today button {
+  background-color: #D65E72;
+  color: #fff;
+  border: solid 2px #fff;
+}
+
+.attendance_management td.today a {
+  color: #fff;
+}
+
+.attendance_management #next-prev-button {
+  position: relative;
+}
+
+.attendance_management #next-prev-button button {
+  cursor: pointer;
+  background: #B78D4A;
+  color: #fff;
+  border: 1px solid #B78D4A;
+  border-radius: 4px;
+  font-size: 1rem;
+  padding: 0.5rem 2rem;
+  margin: 1rem 0;
+}
+
+.attendance_management #next-prev-button button:hover {
+  background-color: #D4BB92;
+  border-color: #D4BB92;
+}
+
+.attendance_management #prev {
+  float: left;
+}
+
+.attendance_management #next {
+  float: right;
+}
+
+.attendance_management .todaysContent {
+  width: 45%;
+  min-height: 40em;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 40px;
+  margin-right: 10px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+@media screen and (max-width: 576px) {
   .attendance_management .todaysContent {
-    width: 45%;
-    min-height: 40em;
-    border-radius: 10px;
-    display: inline-block;
-    margin-top: 40px;
-    margin-right: 10px;
-    padding: 10px;
-    vertical-align: top; }
-    @media screen and (max-width: 576px) {
-      .attendance_management .todaysContent {
-        width: 100%;
-        margin-top: 15px;
-        padding: 0;
-        min-height: 0; } }
-    .attendance_management .todaysContent button {
-      border: none;
-      font-size: 15px;
-      margin-top: 10px; }
-    .attendance_management .todaysContent .btn {
-      font-size: 10px;
-      margin: 0 5px; }
-    @media screen and (max-width: 576px) {
-      .attendance_management .todaysContent .btn-primary {
-        background: gray; } }
-    .attendance_management .todaysContent td {
-      font-size: 12px;
-      padding: 5px 10px; }
-      @media screen and (max-width: 576px) {
-        .attendance_management .todaysContent td {
-          font-size: 10px;
-          padding: 3px 5px; } }
-    .attendance_management .todaysContent td:nth-child(3) {
-      color: red;
-      font-weight: bold; }
+    width: 100%;
+    margin-top: 15px;
+    padding: 0;
+    min-height: 0;
+  }
+}
+
+.attendance_management .todaysContent button {
+  border: none;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.attendance_management .todaysContent .btn {
+  font-size: 10px;
+  margin: 0 5px;
+}
+
+@media screen and (max-width: 576px) {
+  .attendance_management .todaysContent .btn-primary {
+    background: gray;
+  }
+}
+
+.attendance_management .todaysContent td {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .attendance_management .todaysContent td {
+    font-size: 10px;
+    padding: 3px 5px;
+  }
+}
+
+.attendance_management .todaysContent td:nth-child(3) {
+  color: red;
+  font-weight: bold;
+}
+
+.attendance_management .Allmemo {
+  width: 45%;
+  min-height: 40em;
+  border-radius: 10px;
+  display: inline-block;
+  margin-top: 40px;
+  margin-left: 10px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.attendance_management .Allmemo td {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .attendance_management .Allmemo td {
+    font-size: 10px;
+    padding: 3px 5px;
+  }
+}
+
+.attendance_management .Allmemo button {
+  border: none;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+.attendance_management .Allmemo .btn-secondary {
+  font-size: 10px;
+}
+
+.attendance_management .Allmemo td:nth-child(4) {
+  color: red;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 576px) {
   .attendance_management .Allmemo {
-    width: 45%;
-    min-height: 40em;
-    border-radius: 10px;
-    display: inline-block;
-    margin-top: 40px;
-    margin-left: 10px;
-    padding: 10px;
-    vertical-align: top; }
-    .attendance_management .Allmemo td {
-      font-size: 12px;
-      padding: 5px 10px; }
-      @media screen and (max-width: 576px) {
-        .attendance_management .Allmemo td {
-          font-size: 10px;
-          padding: 3px 5px; } }
-    .attendance_management .Allmemo button {
-      border: none;
-      font-size: 15px;
-      margin-top: 10px; }
-    .attendance_management .Allmemo .btn-secondary {
-      font-size: 10px; }
-    .attendance_management .Allmemo td:nth-child(4) {
-      color: red;
-      font-weight: bold; }
-    @media screen and (max-width: 576px) {
-      .attendance_management .Allmemo {
-        display: none; } }
+    display: none;
+  }
+}
 
 .modal {
   display: none;
@@ -181,48 +286,75 @@
   width: 100%;
   text-align: center;
   overflow: auto;
-  overflow: scroll; }
+  overflow: scroll;
+}
+
+.modal h2 {
+  font-size: 25px;
+  margin: 20px 0;
+}
+
+@media screen and (max-width: 576px) {
   .modal h2 {
-    font-size: 25px;
-    margin: 20px 0; }
-    @media screen and (max-width: 576px) {
-      .modal h2 {
-        font-size: 15px;
-        margin: 10px 0; } }
-  .modal button {
-    width: 150px;
-    height: 40px;
-    margin: 0 20px;
-    font-size: 15px; }
-    @media screen and (max-width: 576px) {
-      .modal button {
-        width: 100px;
-        height: 30px;
-        margin: 0 5px;
-        font-size: 10px; } }
-  .modal p {
     font-size: 15px;
-    margin: 20px; }
-  .modal form .edit {
-    margin: 3% 5px;
-    display: inline-block; }
-  .modal form label {
-    font-size: 15px; }
-  .modal form input, .modal form select, .modal form textarea {
-    font-size: 15px; }
+    margin: 10px 0;
+  }
+}
+
+.modal button {
+  width: 150px;
+  height: 40px;
+  margin: 0 20px;
+  font-size: 15px;
+}
+
+@media screen and (max-width: 576px) {
+  .modal button {
+    width: 100px;
+    height: 30px;
+    margin: 0 5px;
+    font-size: 10px;
+  }
+}
+
+.modal p {
+  font-size: 15px;
+  margin: 20px;
+}
+
+.modal form .edit {
+  margin: 3% 5px;
+  display: inline-block;
+}
+
+.modal form label {
+  font-size: 15px;
+}
+
+.modal form input, .modal form select, .modal form textarea {
+  font-size: 15px;
+}
+
+.modal form #item_input {
+  width: 400px;
+}
+
+@media screen and (max-width: 576px) {
   .modal form #item_input {
-    width: 400px; }
-    @media screen and (max-width: 576px) {
-      .modal form #item_input {
-        width: 150px; } }
-  .modal .alert {
-    font-size: 15px; }
+    width: 150px;
+  }
+}
+
+.modal .alert {
+  font-size: 15px;
+}
 
 .modal__bg {
   background: rgba(0, 0, 0, 0.8);
   height: 100%;
   position: absolute;
-  width: 100%; }
+  width: 100%;
+}
 
 .modal__content {
   background: #fff;
@@ -230,12 +362,18 @@
   padding: 40px;
   position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%; }
-  @media screen and (max-width: 576px) {
-    .modal__content {
-      padding: 10px; } }
-  .modal__content .modalButton {
-    display: inline-block; }
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 60%;
+}
 
+@media screen and (max-width: 576px) {
+  .modal__content {
+    padding: 10px;
+  }
+}
+
+.modal__content .modalButton {
+  display: inline-block;
+}
 /*# sourceMappingURL=program.css.map */

@@ -1,31 +1,47 @@
 body {
   text-align: center;
-  background: #d3d3d3; }
+  background: #d3d3d3;
+}
 
 h1 {
   margin: 30px 0;
-  color: #696969; }
+  color: #696969;
+}
 
 .search {
-  font-size: 15px; }
+  font-size: 15px;
+}
+
+.search button {
+  margin-top: 10px;
+  width: 100px;
+  height: 40px;
+}
 
 .youbouTable {
   background: white;
   margin-top: 50px;
   margin-bottom: 10px;
-  margin-left: 5%;
-  margin-right: 5%;
   padding: 20px 0;
-  border-radius: 20px; }
-  .youbouTable th, .youbouTable td {
-    font-size: 15px; }
-  .youbouTable button {
-    margin: 0 5px; }
-  .youbouTable .collectBack {
-    background: #91B87E;
-    color: white; }
-  .youbouTable .orderBack {
-    background: #E1DBCD; }
+  border-radius: 20px;
+}
+
+.youbouTable th, .youbouTable td {
+  font-size: 15px;
+}
+
+.youbouTable button {
+  margin: 0 5px;
+}
+
+.youbouTable .collectBack {
+  background: #91B87E;
+  color: white;
+}
+
+.youbouTable .orderBack {
+  background: #E1DBCD;
+}
 
 .modal {
   display: none;
@@ -35,90 +51,128 @@ h1 {
   width: 100%;
   text-align: center;
   overflow: auto;
-  overflow: scroll; }
-  .modal h2 {
-    font-size: 25px;
-    margin: 20px 0; }
-  .modal button {
-    width: 150px;
-    height: 40px;
-    margin: 5px 20px;
-    font-size: 15px; }
-  .modal p {
-    font-size: 15px;
-    margin: 10px; }
-  .modal form .edit {
-    margin: 3% 5px;
-    display: inline-block; }
-    .modal form .edit div {
-      display: inline-block; }
-      .modal form .edit div label {
-        display: inline-block; }
-      .modal form .edit div p {
-        display: inline-block; }
-  .modal form label {
-    font-size: 15px; }
-  .modal form input, .modal form select {
-    font-size: 15px; }
-  .modal .alert {
-    font-size: 15px; }
-  .modal .modal__bg {
-    background: rgba(0, 0, 0, 0.8);
-    height: 100%;
-    position: absolute;
-    width: 100%; }
-  .modal .modal__content {
-    background: #fff;
-    left: 50%;
-    padding: 40px;
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%; }
-  .modal .vertical {
-    vertical-align: top; }
+  overflow: scroll;
+}
+
+.modal h2 {
+  font-size: 25px;
+  margin: 20px 0;
+}
+
+.modal button {
+  width: 150px;
+  height: 40px;
+  margin: 5px 20px;
+  font-size: 15px;
+}
+
+.modal p {
+  font-size: 15px;
+  margin: 10px;
+}
+
+.modal form .edit {
+  margin: 3% 5px;
+  display: inline-block;
+}
+
+.modal form .edit div {
+  display: inline-block;
+  margin: 0 5px;
+}
+
+.modal form .edit div label {
+  display: inline-block;
+}
+
+.modal form .edit div p {
+  display: inline-block;
+}
+
+.modal form label {
+  font-size: 15px;
+}
+
+.modal form input, .modal form select {
+  font-size: 15px;
+}
+
+.modal form #reason_label_edit {
+  vertical-align: top;
+}
+
+.modal .alert {
+  font-size: 15px;
+}
+
+.modal .modal__bg {
+  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.modal .modal__content {
+  background: #fff;
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 60%;
+}
+
+.modal .vertical {
+  vertical-align: top;
+}
 
 .nextButton {
   text-align: left;
-  margin-left: 5%; }
-  .nextButton .btn,
-  .nextButton a.btn,
-  .nextButton button.btn {
-    font-size: 1.6rem;
-    font-weight: 700;
-    line-height: 1.5;
-    position: relative;
-    display: inline-block;
-    padding: 1rem 4rem;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    -webkit-transition: all 0.3s;
-    transition: all 0.3s;
-    text-align: center;
-    vertical-align: middle;
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    color: #212529;
-    border-radius: 0.5rem;
-    margin-bottom: 3%; }
-  .nextButton a.btn-radius-solid {
-    border: 1px solid #ccc;
-    background: #f1e767;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
-    background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
-    background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
-    -webkit-box-shadow: inset 1px 1px 1px #fff;
-    box-shadow: inset 1px 1px 1px #fff; }
-  .nextButton a.btn-radius-solid:hover {
-    background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
-    background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
-    background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%); }
+  margin-left: 5%;
+}
+
+.nextButton .btn,
+.nextButton a.btn,
+.nextButton button.btn {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+  margin-bottom: 3%;
+}
+
+.nextButton a.btn-radius-solid {
+  border: 1px solid #ccc;
+  background: #f1e767;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  -webkit-box-shadow: inset 1px 1px 1px #fff;
+  box-shadow: inset 1px 1px 1px #fff;
+}
+
+.nextButton a.btn-radius-solid:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+}
 
 .jump {
   font-size: 15px;
-  margin: 0 5px; }
-
+  margin: 0 5px;
+}
 /*# sourceMappingURL=overtimeAppList.css.map */

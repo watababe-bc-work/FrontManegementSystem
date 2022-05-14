@@ -21,8 +21,10 @@
     <h1>年次有給休暇要望一覧</h1>
     <div class="search">
         <p>検索</p>
+        <label for="">名前：</label>
+        <input type="text" id="name_search">
         <label for="">店舗：</label>
-        <select id="store_name_search" onchange="showTable()">
+        <select id="store_name_search">
             <option value="">店舗を選択</option>
             <option value="ワタナベ商事本部">ワタナベ商事本部</option>
             <option value="池袋グランド">池袋グランド</option>
@@ -63,6 +65,8 @@
             <option value="HOTEL グランバリ">HOTEL グランバリ</option>
             <option value="ZALA">ZALA</option>
         </select>
+        <br>
+        <button class="btn btn-primary" onclick="showTable()">検索</button>
         <button class="btn btn-secondary" onclick="cancel()">検索リセット</button>
     </div>
     <div class="youbouTable">
@@ -78,34 +82,58 @@
             <form action="ptoAppList.html" method="POST">
                 <div class="edit">
                     <div>
-                        <label for="">氏名:</label>
-                        <p id="name_edit"></p>
-                    </div>
-                    <div>
                         <label for="">依頼日時:</label>
                         <p id="createdAt_edit"></p>
+                    </div>
+                    <div>
+                        <label for="">社員番号:</label>
+                        <p id="staffNum_edit"></p>
+                    </div>
+                    <div>
+                        <label for="">氏名:</label>
+                        <p id="name_edit"></p>
                     </div>
                 </div>
                 <br>
                 <div class="edit">
-                    <label for="">処理：</label>
-                    <select name="" id="order_category" onchange="change();">
-                        <option value="unapproval">処理を選択する</option>
-                        <option value="approve">承認</option>
-                        <option value="disapproval">不承認</option>
-                    </select>
                     <div>
-                        <label for="">承認者</label>
-                        <input type="text" id="approver">
+                        <label for="">申請期間:</label>
+                        <input type="date" id="startDate_edit">~
+                        <input type="date" id="endDate_edit">
+                    </div>
+                    <div>
+                        <label for="" class="vertical">申請理由:</label>
+                        <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
                     </div>
                 </div>
-                <div id="disapproval_reason">
+                <br>
+                <div class="edit">
+                    <div>
+                        <label for="">電話での承認者:</label>
+                        <input type="text" id="phoneApprover">
+                    </div>
+                    <div>
+                        <label for="">FMS承認者:</label>
+                        <input type="text" id="approvalPerson">
+                    </div>
+                    <div>
+                        <label for="">処理:</label>
+                        <select name="" id="order_category" onchange="change();">
+                            <option value="unapproval">処理を選択する</option>
+                            <option value="approve">承認</option>
+                            <option value="disapproval">不承認</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="disapproval_reason" class="edit">
                     <label for="" class="vertical">不承認理由:</label>
                     <textarea name="" id="disapprovalReason" cols="60" rows="5"></textarea>
                 </div>
                 <br>
-                <label for="" class="vertical">備考:</label>
-                <textarea name="" id="note" cols="60" rows="5"></textarea>
+                <div class="edit">
+                    <label for="" class="vertical">備考:</label>
+                    <textarea name="" id="note" cols="60" rows="5"></textarea>
+                </div>
             </form>
             <br>
             <div id="collectAlert">
