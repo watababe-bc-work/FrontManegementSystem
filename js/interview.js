@@ -458,29 +458,32 @@ function EditContent(id){
                 case 'フロント':
                     post_elements.options[4].selected = true;   
                     break;
-                case '池袋':
+                case 'ハウスキーパー':
                     post_elements.options[5].selected = true;   
                     break;
-                case '渋谷':
+                case '池袋':
                     post_elements.options[6].selected = true;   
                     break;
-                case '新宿':
+                case '渋谷':
                     post_elements.options[7].selected = true;   
                     break;
-                case '五反田':
+                case '新宿':
                     post_elements.options[8].selected = true;   
                     break;
-                case '新横浜・川崎':
+                case '五反田':
                     post_elements.options[9].selected = true;   
                     break;
-                case '千葉・船橋・松戸':
+                case '新横浜・川崎':
                     post_elements.options[10].selected = true;   
                     break;
-                case '岩槻':
+                case '千葉・船橋・松戸':
                     post_elements.options[11].selected = true;   
                     break;
-                case '仙台':
+                case '岩槻':
                     post_elements.options[12].selected = true;   
+                    break;
+                case '仙台':
+                    post_elements.options[13].selected = true;   
                     break;
                 default:
                     post_elements.options[0].selected = true;
@@ -627,15 +630,11 @@ function TodayInterview(){
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
           var date = new Date();
           var today = date.getFullYear() + '-' + ('00' + (date.getMonth()+1)).slice(-2) + '-' + ('00' + date.getDate()).slice(-2);
-          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','asc').limit(30) // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('interview').where('InterviewDate','==',today).orderBy('InterviewTime','asc') // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
 
-          //10件以下なら次へを表示しない
-          if(querySnapshot.docs.length < 30){
-                document.getElementById('nextButton').style.visibility = "hidden";
-          }else{
-            document.getElementById('nextButton').style.visibility = "visible";
-          }
+        //検索なので次へを非表示にする
+        document.getElementById('nextButton').style.visibility = "hidden";
 
           var i = 0;
           var stocklist = '<table class="table" id="download_table">'
@@ -715,10 +714,10 @@ function search(){
             if(StartDate_search != ""){
                 if(EndDate_search != ""){
                     //からまで
-                    query = query.where('InterviewDate','>',StartDate_search).where('InterviewDate','<',EndDate_search + 1);
+                    query = query.where('InterviewDate','>=',StartDate_search).where('InterviewDate','<',EndDate_search + 1);
                 }else{
                     //から
-                    query = query.where('InterviewDate','>',StartDate_search);
+                    query = query.where('InterviewDate','>=',StartDate_search);
                 }
             }else{
                 if(EndDate_search != ""){
@@ -816,7 +815,7 @@ function search(){
 
             //where追加はここまで
             if(DateBoolean == true){
-                query = query.orderBy('InterviewTime','asc').limit(30);
+                query = query.orderBy('InterviewTime','asc');
             }else{
                 //応募媒体での検索
                 if(media_search != ""){
@@ -824,9 +823,9 @@ function search(){
                     query = query.where('Media', '>=', media_search).where('Media', '<=', media_search).orderBy('Media');
                 }
                 if(searchAsc == true){
-                    query = query.orderBy('InterviewDate','asc').orderBy('InterviewTime','asc').limit(30);
+                    query = query.orderBy('InterviewDate','asc').orderBy('InterviewTime','asc');
                 }else{
-                    query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc').limit(30);
+                    query = query.orderBy('InterviewDate','desc').orderBy('InterviewTime','desc');
                 }
             }
 
@@ -835,12 +834,8 @@ function search(){
 
             querySnapshot = await query.get();
 
-            //10件以下なら次へを表示しない
-            if(querySnapshot.docs.length < 30){
-                document.getElementById('nextButton').style.visibility = "hidden";
-            }else{
-
-            }
+            //検索なので次を表示しない
+            document.getElementById('nextButton').style.visibility = "hidden";
 
             querySnapshot.forEach((postDoc) => {
                 i += 1;
@@ -963,6 +958,13 @@ function returnTable(){
 function prevTable(){
     querySnapshot = backQueryList.pop();
 
+    //10件以下なら次へを表示しない
+    if(querySnapshot.docs.length < 30){
+        document.getElementById('nextButton').style.visibility = "hidden";
+    }else{
+        document.getElementById('nextButton').style.visibility = "visible";
+    }
+
     var i = 0;
     var stocklist = '<table class="table" id="download_table">';
     querySnapshot.forEach((postDoc) => {
@@ -1020,7 +1022,7 @@ function handleDownload(){
     var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);//文字コードをBOM付きUTF-8に指定
     var table = document.getElementById('download_table');
     var data_csv="";//ここに文字データとして値を格納していく
-    data_csv += "状態,番号,受付者,応募媒体,最寄駅,氏名,性別,年齢,国籍,連絡先,面接日時,面接場所,寮希望,受付日,概要\n\n"; 
+    data_csv += "状態,番号,受付者,応募媒体,最寄駅,氏名,性別,年齢,国籍,連絡先,面接日時,面接場所,職種,寮希望,受付日,概要\n\n"; 
 
     for(var i = 0;  i < table.rows.length; i++){
         for(var j = 0; j < table.rows[i].cells.length -1; j++){

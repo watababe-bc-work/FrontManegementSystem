@@ -1,0 +1,229 @@
+@charset "utf-8";
+
+// media
+$sizes: xl, lg, md, sm, xs;
+
+$breakpoint-up: (
+    'xs': 'screen and (max-width: 576px)',
+    'sm': 'screen and (max-width: 768px)',
+    'md': 'screen and (max-width: 992px)',
+    'lg': 'screen and (max-width: 1200px)',
+    'xl': 'screen and (max-width: 1400px)',
+);
+
+$breakpoint-down: (
+    'xs': 'screen and (min-width: 577px)',
+    'sm': 'screen and (min-width: 769px)',
+    'md': 'screen and (min-width: 993px)',
+    'lg': 'screen and (min-width: 1201px)',
+    'xl': 'screen and (min-width: 1401px)',
+);
+
+@mixin mq-up($breakpoint: md) {
+    @media #{map-get($breakpoint-up, $breakpoint)} {
+        @content;
+    }
+}
+@mixin mq-dwn($breakpoint: md) {
+    @media #{map-get($breakpoint-down, $breakpoint)} {
+        @content;
+    }
+}
+
+body{
+    text-align: center;
+    background: #f5deb3;
+    padding-top: 2%;
+}
+
+h1{
+    margin: 30px 0;
+    color: #696969;
+}
+
+.backwhite{
+    margin: 20px 10%;
+    padding: 10px 0;
+    border-radius: 20px;
+    box-shadow: #666666 10px 5px 5px;
+    background: white;
+}
+
+.certificate{
+    background: whitesmoke;
+    padding: 10px 0;
+    margin: 0 5%;
+    margin-bottom: 10%;
+    border-radius: 10px;
+
+    &_checklist{
+        p{
+            font-size: 15px;
+        }
+    }
+}
+
+.uniform{
+    background: whitesmoke;
+    padding: 10px 0;
+    margin: 0 5%;
+    margin-bottom: 5%;
+    border-radius: 10px;
+}
+
+form{
+    font-size: 15px;
+
+    .edit{
+        margin: 25px 0;
+        label{
+            margin-left:20px;
+            @include mq-up('xs') {
+                margin-left: 0;
+            }
+        }
+    }
+    #subject{
+        width: 50%;
+    }
+
+    #horizontal,#vertical,#covering_fare{
+        width: 100px;
+        text-align: right;
+    }
+
+    #reason_label{
+        vertical-align: top;
+    }
+
+    #reason_label_ot{
+        vertical-align: top;
+    }
+
+    #note_label{
+        vertical-align: top;
+    }
+
+    #date_ot{
+        @include mq-up('sm') {
+            width: 70%;
+        }
+    }
+
+    #reason_detail{
+        max-width: 50%;
+        @include mq-up('sm') {
+            max-width: 90%;
+        }
+    }
+
+    #reason_detail_ot{
+        @include mq-up('sm') {
+            max-width: 90%;
+        }
+    }
+
+    #note_detail{
+        max-width: 50%;
+        @include mq-up('sm') {
+            max-width: 90%;
+        }
+    }
+
+    #paper{
+        display: inline-block;
+    }
+
+    #paper_input{
+        display: inline-block;
+        #tax_withholding{
+            width: 30px;
+            margin-left: 10px;
+        }
+    }
+
+    #required_number{
+        width: 50px;
+    }
+
+    #submission_target{
+        width: 50%;
+    }
+
+    .note{
+        border: 3px double gray;
+        margin-left: 10%;
+        margin-right: 10%;
+        padding: 20px 0;
+    }
+
+    table{
+        margin: 0 auto;
+        td{
+            padding: 10px;
+        }
+    }
+}
+
+.btn{
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.alert{
+    font-size: 15px;
+}
+
+.addCertificate_button{
+    background: orange;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    border: none;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+.adduniformContent_button{
+    background: green;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    border: none;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+.certificate_table{
+    text-align: center;
+    &_select{
+        font-size: 15px; 
+    }
+}
+
+table{
+    margin: 10px 0;
+    font-size: 15px;
+    @include mq-up('sm') {
+        font-size: 10px;
+    }
+}
+
+.table>tbody>tr>td{
+    @include mq-up('sm') {
+        padding: 5px;
+    }
+}
+
+.collectBack{
+    background: #91B87E;
+    color: white;
+}
+
+.orderBack{
+    background: #E1DBCD;
+}
+
+.yetBack{
+    background: white;
+}

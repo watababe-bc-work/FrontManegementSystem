@@ -1,6 +1,6 @@
 body{
     text-align: center;
-    background: #d3d3d3;
+    background: #f5deb3;
 }
 
 h1{
@@ -8,19 +8,12 @@ h1{
     color: #696969;
 }
 
-.search{
-    font-size: 15px;
-    button{
-        margin-top: 10px;
-        width: 100px;
-        height: 40px;
-    }
-}
-
 .youbouTable{
     background: white;
     margin-top: 50px;
     margin-bottom: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
     padding: 20px 0;
     border-radius: 20px;
 
@@ -75,7 +68,6 @@ h1{
             display: inline-block;
             div{
                 display: inline-block;
-                margin: 0 5px;
                 label{
                     display: inline-block;
                 }
@@ -91,10 +83,6 @@ h1{
 
         input,select{
             font-size: 15px;
-        }
-
-        #reason_label_edit{
-            vertical-align: top;
         }
     }
 
@@ -121,6 +109,10 @@ h1{
     .vertical{
         vertical-align: top;
     }
+}
+
+.search{
+    font-size: 15px;
 }
 
 .nextButton{

@@ -1,42 +1,61 @@
 body {
   text-align: center;
-  background: #d3d3d3; }
+  background: #d3d3d3;
+}
 
 h1 {
   margin: 30px 0;
-  color: #696969; }
+  color: #696969;
+}
 
 .backwhite {
   margin: 20px 10%;
   padding: 10px 0;
   border-radius: 20px;
-  box-shadow: #666666 10px 5px 5px;
-  background: white; }
+  -webkit-box-shadow: #666666 10px 5px 5px;
+          box-shadow: #666666 10px 5px 5px;
+  background: white;
+}
 
 form {
-  font-size: 15px; }
-  form .edit {
-    margin: 25px 0; }
-    form .edit label {
-      margin-left: 20px; }
-  form #subject {
-    width: 800px; }
-  form #horizontal, form #vertical, form #covering_fare {
-    width: 100px;
-    text-align: right; }
-  form #demand_detail_label {
-    vertical-align: top; }
+  font-size: 15px;
+}
+
+form .edit {
+  margin: 25px 0;
+}
+
+form .edit label {
+  margin-left: 20px;
+}
+
+form #subject {
+  width: 800px;
+}
+
+form #horizontal, form #vertical, form #covering_fare {
+  width: 100px;
+  text-align: right;
+}
+
+form #demand_detail_label {
+  vertical-align: top;
+}
 
 .btn {
   font-size: 15px;
-  margin: 0 5px; }
+  margin: 0 5px;
+}
 
 .orderContent {
   border: 1px solid black;
   margin: 10px 10%;
-  padding: 10px; }
-  .orderContent input {
-    margin: 10px; }
+  padding: 10px;
+}
+
+.orderContent input {
+  margin: 10px;
+}
 
 .addOrderContent_button {
   background: orange;
@@ -45,6 +64,6 @@ form {
   font-size: 15px;
   border: none;
   margin: 20px 0;
-  padding: 5px 10px; }
-
+  padding: 5px 10px;
+}
 /*# sourceMappingURL=priceChangeDemand.css.map */

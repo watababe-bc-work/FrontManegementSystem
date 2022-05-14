@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Front Manegement System ~年次有給休暇申請~</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/certificate_uniform.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+    <div class="certificate">
+        <h1>証明書等発行 申請書用フォーム</h1>
+        <div class="certificate_checklist">
+            <p>※ 余裕を持って申請してください。<br>証明の内容や都合によって1週間ほど後の発行になる場合もあります。</p>
+            <p>※ 入社後実働14日以上経過した者が発行することが出来ます。</p>
+        </div>
+        <button class="addCertificate_button" id="addButton" onclick="addCertificateContent()">+証明書等の発行申請をする</button>
+        <div class="backwhite" id="addForm">
+            <form action="certificate_uniform.html" method="POST">
+                <div class="edit">
+                    <p>申請日:<span id="order_date"></span></p>
+                </div>
+                <div class="edit">
+                    <label for="">社員番号：</label>
+                    <input type="text" id="staffNum">
+                    <label for="">氏名：</label>
+                    <input type="text" id="name">
+                    <label for="">所属店舗：</label>
+                    <select id="store_name">
+                        <option value="">店舗を選択</option>
+                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                        <option value="池袋グランド">池袋グランド</option>
+                        <option value="アトランタ">アトランタ</option>
+                        <option value="アメジスト">アメジスト</option>
+                        <option value="池袋バリバリ">池袋バリバリ</option>
+                        <option value="ウエストワン">ウエストワン</option>
+                        <option value="サード">サード</option>
+                        <option value="クイーン">クイーン</option>
+                        <option value="池袋セントラル">池袋セントラル</option>
+                        <option value="パークサイド">パークサイド</option>
+                        <option value="グランヴィラ">グランヴィラ</option>
+                        <option value="ブルゾン">ブルゾン</option>
+                        <option value="ピュア">ピュア</option>
+                        <option value="松戸グランド">松戸グランド</option>
+                        <option value="カップルズインハッピー">カップルズインハッピー</option>
+                        <option value="トニーワン">トニーワン</option>
+                        <option value="サーティワン">サーティワン</option>
+                        <option value="センチュリー">センチュリー</option>
+                        <option value="ガーネット">ガーネット</option>
+                        <option value="リトルバリ">リトルバリ</option>
+                        <option value="アジアンリゾート">アジアンリゾート</option>
+                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                        <option value="ロックス新宿">ロックス新宿</option>
+                        <option value="ブレス">ブレス</option>
+                        <option value="チェルシー">チェルシー</option>
+                        <option value="エルメ">エルメ</option>
+                        <option value="パリス">パリス</option>
+                        <option value="ダイヤモンド">ダイヤモンド</option>
+                        <option value="エイジア">エイジア</option>
+                        <option value="オニキス">オニキス</option>
+                        <option value="アモーレ">アモーレ</option>
+                        <option value="IF">IF</option>
+                        <option value="ココバリ">ココバリ</option>
+                        <option value="エメラルド">エメラルド</option>
+                        <option value="五反田バリバリ">五反田バリバリ</option>
+                        <option value="バリバリANNEX">バリバリANNEX</option>
+                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                        <option value="ZALA">ZALA</option>
+                    </select>
+                </div>
+                <div class="edit">
+                    <label for="">必要書類：</label>
+                    <select name="" id="paper" onchange="paperInput()">
+                        <option value="">書類の種類を選択</option>
+                        <option value="在職証明書">在職証明書</option>
+                        <option value="源泉徴収票">源泉徴収票</option>
+                        <option value="給与明細">給与明細</option>
+                        <option value="賃金台帳">賃金台帳</option>
+                        <option value="その他">その他</option>
+                    </select>
+                    <div id="paper_input">
+                        <!-- selectに応じてinputがはいる -->
+                    </div>
+                    <label for="">必要部数：</label>
+                    <input type="number" id="required_number">部
+                </div>
+                <div class="edit">
+                    <label for="">提出先：</label>
+                    <input type="text" id="submission_target">
+                </div>
+                <div class="edit">
+                    <label for="" id="reason_label">依頼理由：</label>
+                    <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
+                </div>
+                <div class="edit">
+                    <label for="">希望期日：</label>
+                    <input type="date" id="enddate">まで
+                </div>
+                <div class="edit note">
+                    <label for="" id="note_label">備考/連絡事項：</label>
+                    <textarea name="" cols="50" rows="5" id="note_detail"></textarea>
+                </div>
+            </form>
+            <div id="Alert"></div>
+            <div class="buttons">
+                <button type="submit" class="btn btn-success" onclick="certificateUpdate()">申請</button>
+            </div>
+        </div>
+        <div class="certificate_table">
+            <h1>証明書等発行 申請書一覧</h1>
+            <div class="certificate_table_select">
+                <label for="">自店舗を選択:</label>
+                <select id="store_name_search" onchange="showTable()">
+                    <option value="">自店舗を選択</option>
+                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                    <option value="池袋グランド">池袋グランド</option>
+                    <option value="アトランタ">アトランタ</option>
+                    <option value="アメジスト">アメジスト</option>
+                    <option value="池袋バリバリ">池袋バリバリ</option>
+                    <option value="ウエストワン">ウエストワン</option>
+                    <option value="サード">サード</option>
+                    <option value="クイーン">クイーン</option>
+                    <option value="池袋セントラル">池袋セントラル</option>
+                    <option value="パークサイド">パークサイド</option>
+                    <option value="グランヴィラ">グランヴィラ</option>
+                    <option value="ブルゾン">ブルゾン</option>
+                    <option value="ピュア">ピュア</option>
+                    <option value="松戸グランド">松戸グランド</option>
+                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                    <option value="トニーワン">トニーワン</option>
+                    <option value="サーティワン">サーティワン</option>
+                    <option value="センチュリー">センチュリー</option>
+                    <option value="ガーネット">ガーネット</option>
+                    <option value="リトルバリ">リトルバリ</option>
+                    <option value="アジアンリゾート">アジアンリゾート</option>
+                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                    <option value="ロックス新宿">ロックス新宿</option>
+                    <option value="ブレス">ブレス</option>
+                    <option value="チェルシー">チェルシー</option>
+                    <option value="エルメ">エルメ</option>
+                    <option value="パリス">パリス</option>
+                    <option value="ダイヤモンド">ダイヤモンド</option>
+                    <option value="エイジア">エイジア</option>
+                    <option value="オニキス">オニキス</option>
+                    <option value="アモーレ">アモーレ</option>
+                    <option value="IF">IF</option>
+                    <option value="ココバリ">ココバリ</option>
+                    <option value="エメラルド">エメラルド</option>
+                    <option value="五反田バリバリ">五反田バリバリ</option>
+                    <option value="バリバリANNEX">バリバリANNEX</option>
+                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                    <option value="ZALA">ZALA</option>
+                </select>
+            </div>
+            <div id="table_list"></div>
+        </div>
+    </div>
+    <div class="uniform">
+        <div>
+            <h1>ユニフォーム 申請用フォーム</h1>
+            <button class="adduniformContent_button" id="addButton" onclick="adduniformContent()">+ユニフォーム申請をする</button>
+            <div class="backwhite" id="addForm2">
+                <form action="certificate_uniform.html" method="POST">
+                    <div class="edit">
+                        <p>申請日：<span id="order_date2"></span></p>
+                    </div>
+                    <div class="edit">
+                        <label for="">社員番号：</label>
+                        <input type="text" id="stuffNum_uni">
+                        <label for="">氏名：</label>
+                        <input type="text" id="name_uni">
+                        <label for="">店舗名：</label>
+                        <select id="store_name_uni">
+                            <option value="">店舗を選択</option>
+                            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                            <option value="池袋グランド">池袋グランド</option>
+                            <option value="アトランタ">アトランタ</option>
+                            <option value="アメジスト">アメジスト</option>
+                            <option value="池袋バリバリ">池袋バリバリ</option>
+                            <option value="ウエストワン">ウエストワン</option>
+                            <option value="サード">サード</option>
+                            <option value="クイーン">クイーン</option>
+                            <option value="池袋セントラル">池袋セントラル</option>
+                            <option value="パークサイド">パークサイド</option>
+                            <option value="グランヴィラ">グランヴィラ</option>
+                            <option value="ブルゾン">ブルゾン</option>
+                            <option value="ピュア">ピュア</option>
+                            <option value="松戸グランド">松戸グランド</option>
+                            <option value="カップルズインハッピー">カップルズインハッピー</option>
+                            <option value="トニーワン">トニーワン</option>
+                            <option value="サーティワン">サーティワン</option>
+                            <option value="センチュリー">センチュリー</option>
+                            <option value="ガーネット">ガーネット</option>
+                            <option value="リトルバリ">リトルバリ</option>
+                            <option value="アジアンリゾート">アジアンリゾート</option>
+                            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                            <option value="ロックス新宿">ロックス新宿</option>
+                            <option value="ブレス">ブレス</option>
+                            <option value="チェルシー">チェルシー</option>
+                            <option value="エルメ">エルメ</option>
+                            <option value="パリス">パリス</option>
+                            <option value="ダイヤモンド">ダイヤモンド</option>
+                            <option value="エイジア">エイジア</option>
+                            <option value="オニキス">オニキス</option>
+                            <option value="アモーレ">アモーレ</option>
+                            <option value="IF">IF</option>
+                            <option value="ココバリ">ココバリ</option>
+                            <option value="エメラルド">エメラルド</option>
+                            <option value="五反田バリバリ">五反田バリバリ</option>
+                            <option value="バリバリANNEX">バリバリANNEX</option>
+                            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                            <option value="ZALA">ZALA</option>
+                        </select>
+                    </div>
+                    <div class="edit">
+                        <label for="">要望内容</label>
+                        <select id="demand_uni" onchange="demandChange()">
+                            <option value="">要望内容を選択</option>
+                            <option value="通常購入">通常購入</option>
+                            <option value="緊急用購入">緊急用購入</option>
+                        </select>
+                    </div>
+                    <div class="edit">
+                        <div id="normal">
+                            <label for="">種類</label>
+                            <p>購入する備品のみ、その枚数を記入してください。</p>
+                            <table>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>単価</th>
+                                    <th>枚数</th>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ黒S</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blackS">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ黒M</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blackM">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ黒L</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blackL">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ黒LL</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blackLL">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ黒3L</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="black3L">枚</td>
+                                </tr>
+                            </table>
+                            <table>
+                                <tr>
+                                    <td>ポロシャツ青S</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blueS">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ青M</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blueM">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ青L</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blueL">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ青LL</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blueLL">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ポロシャツ青3L</td>
+                                    <td>¥700</td>
+                                    <td><input type="number" id="blue3L">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>エプロン</td>
+                                    <td>¥800</td>
+                                    <td><input type="number" id="apron">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>ヘッドタオル</td>
+                                    <td>¥400</td>
+                                    <td><input type="number" id="head_towel">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>フリース青S</td>
+                                    <td>¥2000</td>
+                                    <td><input type="number" id="fleece_blueS">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>フリース青M</td>
+                                    <td>¥2000</td>
+                                    <td><input type="number" id="fleece_blueM">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>フリース青L</td>
+                                    <td>¥2000</td>
+                                    <td><input type="number" id="fleece_blueL">枚</td>
+                                </tr>
+                                <tr>
+                                    <td>フリース青XL</td>
+                                    <td>¥2000</td>
+                                    <td><input type="number" id="fleece_blueXL">枚</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div id="emergency">
+                            <label for="">種類：</label>
+                            <p>一種類のみ選択してください。</p>
+                            <div class="edit_checkbox">
+                                <input type="checkbox" id="black">
+                                <label for="black">ポロシャツ黒LL</label>
+                            </div>
+                            <div class="edit_checkbox">
+                                <input type="checkbox" id="blue">
+                                <label for="blue">ポロシャツ青LL</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="Alert2"></div>
+                <div class="buttons">
+                    <button type="submit" class="btn btn-success" onclick="uniformUpdate()">申請</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <h1>ユニフォーム申請 要望一覧</h1>
+            <div class="certificate_checklist">
+                <p>※ こちらから申請書のPDFが印刷できます。</p>
+                <p>申請者は、「申請印」と「受取印」に押印し、ユニフォームと共に「受領書(本人控え)」を受け取ってください。</p>
+                <p>フロントは、ユニフォーム補充の店舗要望の際にこの申請書を添付してください。(FAX不要)</p>
+            </div>
+            <div class="certificate_table_select">
+                <label for="">自店舗を選択:</label>
+                <select id="store_name_uni_search" onchange="showTableuni()">
+                    <option value="">自店舗を選択</option>
+                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                    <option value="池袋グランド">池袋グランド</option>
+                    <option value="アトランタ">アトランタ</option>
+                    <option value="アメジスト">アメジスト</option>
+                    <option value="池袋バリバリ">池袋バリバリ</option>
+                    <option value="ウエストワン">ウエストワン</option>
+                    <option value="サード">サード</option>
+                    <option value="クイーン">クイーン</option>
+                    <option value="池袋セントラル">池袋セントラル</option>
+                    <option value="パークサイド">パークサイド</option>
+                    <option value="グランヴィラ">グランヴィラ</option>
+                    <option value="ブルゾン">ブルゾン</option>
+                    <option value="ピュア">ピュア</option>
+                    <option value="松戸グランド">松戸グランド</option>
+                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                    <option value="トニーワン">トニーワン</option>
+                    <option value="サーティワン">サーティワン</option>
+                    <option value="センチュリー">センチュリー</option>
+                    <option value="ガーネット">ガーネット</option>
+                    <option value="リトルバリ">リトルバリ</option>
+                    <option value="アジアンリゾート">アジアンリゾート</option>
+                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                    <option value="ロックス新宿">ロックス新宿</option>
+                    <option value="ブレス">ブレス</option>
+                    <option value="チェルシー">チェルシー</option>
+                    <option value="エルメ">エルメ</option>
+                    <option value="パリス">パリス</option>
+                    <option value="ダイヤモンド">ダイヤモンド</option>
+                    <option value="エイジア">エイジア</option>
+                    <option value="オニキス">オニキス</option>
+                    <option value="アモーレ">アモーレ</option>
+                    <option value="IF">IF</option>
+                    <option value="ココバリ">ココバリ</option>
+                    <option value="エメラルド">エメラルド</option>
+                    <option value="五反田バリバリ">五反田バリバリ</option>
+                    <option value="バリバリANNEX">バリバリANNEX</option>
+                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                    <option value="ZALA">ZALA</option>
+                </select>
+            </div>
+            <div id="table_list2"></div>
+        </div>
+    </div>    
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/certificate_uniform.js"></script>
+    <script src="js/pdfMake/pdfmake.min.js"></script>
+    <script src="js/pdfMake/vfs_fonts.js"></script>
+</body>
+</html>

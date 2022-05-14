@@ -2,7 +2,8 @@
   background: rgba(0, 0, 0, 0.8);
   height: 100%;
   position: absolute;
-  width: 100%; }
+  width: 100%;
+}
 
 .modal__content {
   background: #fff;
@@ -10,8 +11,10 @@
   padding: 40px;
   position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
-  width: 60%; }
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 60%;
+}
 
 .modal {
   display: none;
@@ -21,47 +24,71 @@
   width: 100%;
   text-align: center;
   overflow: auto;
-  overflow: scroll; }
-  .modal h2 {
-    font-size: 25px;
-    margin: 20px 0; }
-  .modal button {
-    width: 150px;
-    height: 40px;
-    margin: 0 20px;
-    font-size: 15px; }
-  .modal p {
-    font-size: 15px;
-    margin: 20px; }
-  .modal form .edit {
-    margin: 3% 5px;
-    display: inline-block; }
-  .modal form p {
-    font-size: 15px;
-    font-weight: bold; }
-  .modal form #title {
-    width: 400px; }
-  .modal form label {
-    font-size: 15px; }
-  .modal form input, .modal form select {
-    font-size: 15px; }
-  .modal .alert {
-    font-size: 15px; }
+  overflow: scroll;
+}
+
+.modal h2 {
+  font-size: 25px;
+  margin: 20px 0;
+}
+
+.modal button {
+  width: 150px;
+  height: 40px;
+  margin: 0 20px;
+  font-size: 15px;
+}
+
+.modal p {
+  font-size: 15px;
+  margin: 20px;
+}
+
+.modal form .edit {
+  margin: 3% 5px;
+  display: inline-block;
+}
+
+.modal form p {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.modal form #title {
+  width: 400px;
+}
+
+.modal form label {
+  font-size: 15px;
+}
+
+.modal form input, .modal form select {
+  font-size: 15px;
+}
+
+.modal .alert {
+  font-size: 15px;
+}
 
 h1 {
   text-align: center;
-  margin: 3% 0; }
+  margin: 3% 0;
+}
 
 .add_button {
-  text-align: center; }
+  text-align: center;
+}
 
 .btn.btn-info {
-  font-size: 15px; }
+  font-size: 15px;
+}
 
 #contentList {
-  margin: 2% 5%; }
-  #contentList table tr {
-    text-align: center;
-    font-size: 15px; }
+  margin: 2% 5%;
+}
 
+#contentList table tr {
+  text-align: center;
+  font-size: 15px;
+}
 /*# sourceMappingURL=equipmentManual.css.map */
