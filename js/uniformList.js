@@ -22,6 +22,7 @@ var currentQueryList = [];
 var backQueryList = [];
 document.getElementById('prevButton').style.visibility = 'hidden';
 
+
 //テーブル表示(初期値)
 (async () => {
     try {
@@ -37,22 +38,22 @@ document.getElementById('prevButton').style.visibility = 'hidden';
       var stocklist = '<table class="table table-striped">'
       stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
-        if(postDoc.get('demandStatus') == "通常購入"){
+        if(postDoc.get('demandStatus') == "購入"){
             switch(postDoc.get('status')){
                 //承認
                   case 'approve':
                       var statusText = "承認";
-                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //発送済み     
                   case 'delivered':
                       var statusText = "発送済み";
-                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //未承認      
                   default:
                       var statusText = "未承認";
-                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
         }else{
@@ -60,17 +61,17 @@ document.getElementById('prevButton').style.visibility = 'hidden';
                 //承認
                   case 'approve':
                       var statusText = "承認";
-                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //発送済み     
                   case 'delivered':
                       var statusText = "発送済み";
-                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //未承認      
                   default:
                       var statusText = "未承認";
-                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
         }
@@ -106,22 +107,22 @@ function showTable(){
         var stocklist = '<table class="table table-striped">'
         stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == "通常購入"){
+            if(postDoc.get('demandStatus') == "購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
                           var statusText = "承認";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //発送済み     
                       case 'delivered':
                           var statusText = "発送済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //未承認      
                       default:
                           var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }else{
@@ -129,17 +130,17 @@ function showTable(){
                     //承認
                       case 'approve':
                           var statusText = "承認";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //発送済み     
                       case 'delivered':
                           var statusText = "発送済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //未承認      
                       default:
                           var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }
@@ -168,9 +169,42 @@ function editStatus(id){
   (async () => {
     try {
         const carrentDB = await db.collection('uniforms').doc(id).get();
-        document.getElementById('name_edit').textContent = carrentDB.get('name');
-        document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum')
+
         document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt');
+        document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
+        document.getElementById('name_edit').textContent = carrentDB.get('name');
+        var demandStatus = carrentDB.get('demandStatus');
+        if(demandStatus == '購入'){
+            document.getElementById('normal').style.display = "";
+            document.getElementById('emergency').style.display = "none";
+            document.getElementById('blackS').value = carrentDB.get('blackS');
+            document.getElementById('blackM').value = carrentDB.get('blackM');
+            document.getElementById('blackL').value = carrentDB.get('blackL');
+            document.getElementById('blackLL').value = carrentDB.get('blackLL');
+            document.getElementById('black3L').value = carrentDB.get('black3L');
+            document.getElementById('blueS').value = carrentDB.get('blueS');
+            document.getElementById('blueM').value = carrentDB.get('blueM');
+            document.getElementById('blueL').value = carrentDB.get('blueL');
+            document.getElementById('blueLL').value = carrentDB.get('blueLL');
+            document.getElementById('blue3L').value = carrentDB.get('blue3L');
+            document.getElementById('apron').value = carrentDB.get('apron');
+            document.getElementById('head_towel').value = carrentDB.get('head_towel');
+            document.getElementById('fleece_blueS').value = carrentDB.get('fleece_blueS');
+            document.getElementById('fleece_blueM').value = carrentDB.get('fleece_blueM');
+            document.getElementById('fleece_blueL').value = carrentDB.get('fleece_blueL');
+            document.getElementById('fleece_blueXL').value = carrentDB.get('fleece_blueXL');
+        }else{
+            document.getElementById('normal').style.display = "none";
+            document.getElementById('emergency').style.display = "";  
+            var category = carrentDB.get('category');
+            if(category == "ポロシャツ青LL"){
+                document.getElementById('blue').checked = true;
+                document.getElementById('black').checked = false;
+            }else{
+                document.getElementById('black').checked = true;
+                document.getElementById('blue').checked = false;
+            }
+        }
         var approver = carrentDB.get('approver');
         if(approver == null){
             document.getElementById('approver').value = "";
@@ -190,7 +224,7 @@ function editStatus(id){
                 break;    
         }
         //編集送信ボタン生成
-        document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\')">送信する</button>';
+        document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\',\''+ demandStatus +'\')">送信する</button>';
     } catch (err) {
     console.log(`Error: ${JSON.stringify(err)}`)
     }
@@ -218,22 +252,22 @@ function nextPegination(){
           var stocklist = '<table class="table table-striped">'
           stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == "通常購入"){
+            if(postDoc.get('demandStatus') == "購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
                           var statusText = "承認";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //発送済み     
                       case 'delivered':
                           var statusText = "発送済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //未承認      
                       default:
                           var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }else{
@@ -241,17 +275,17 @@ function nextPegination(){
                     //承認
                       case 'approve':
                           var statusText = "承認";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //発送済み     
                       case 'delivered':
                           var statusText = "発送済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //未承認      
                       default:
                           var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }
@@ -273,22 +307,22 @@ function returnTable(){
   var stocklist = '<table class="table table-striped">'
   stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
-    if(postDoc.get('demandStatus') == "通常購入"){
+    if(postDoc.get('demandStatus') == "購入"){
         switch(postDoc.get('status')){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
               case 'delivered':
                   var statusText = "発送済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
         }
     }else{
@@ -296,17 +330,17 @@ function returnTable(){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
               case 'delivered':
                   var statusText = "発送済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
         }
     }
@@ -321,48 +355,226 @@ function returnTable(){
 }
 
 //status編集
-function EditUpdate(id){
+function EditUpdate(id,status){
+    if(status == '購入'){
+        var blackS = Number(document.getElementById('blackS').value);
+        var blackM = Number(document.getElementById('blackM').value);
+        var blackL = Number(document.getElementById('blackL').value);
+        var blackLL = Number(document.getElementById('blackLL').value);
+        var black3L = Number(document.getElementById('black3L').value);
+        var blueS = Number(document.getElementById('blueS').value);
+        var blueM = Number(document.getElementById('blueM').value);
+        var blueL = Number(document.getElementById('blueL').value);
+        var blueLL = Number(document.getElementById('blueLL').value);
+        var blue3L = Number(document.getElementById('blue3L').value);
+        var apron = Number(document.getElementById('apron').value);
+        var head_towel = Number(document.getElementById('head_towel').value);
+        var fleece_blueS = Number(document.getElementById('fleece_blueS').value);
+        var fleece_blueM = Number(document.getElementById('fleece_blueM').value);
+        var fleece_blueL = Number(document.getElementById('fleece_blueL').value);
+        var fleece_blueXL = Number(document.getElementById('fleece_blueXL').value);
+        var sum = (blackS + blackM + blackL + blackLL + black3L + blueS + blueM + blueL + blueLL + blue3L) * 700 + (apron * 800) + (head_towel * 400) + (fleece_blueS + fleece_blueM + fleece_blueL + fleece_blueXL) * 2000;
+    }else{
+        var checkBox = document.getElementById('black');
+        var checkBox2 = document.getElementById('blue');
+        var category = "";
+        if(checkBox.checked){
+            category = "ポロシャツ黒LL";
+        }else if(checkBox2.checked){
+            category = "ポロシャツ青LL";
+        };
+    }
     //status
     var order_category = document.getElementById('order_category').value;
     var approver = document.getElementById('approver').value;
-    //DBへ送信
-    db.collection('uniforms').doc(id).update({
-        status:order_category,
-        approver:approver,
-    });
+    if(status == "購入"){
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            blackS:blackS,
+            blackM:blackM,
+            blackL:blackL,
+            blackLL:blackLL,
+            black3L:black3L,
+            blueS:blueS,
+            blueM:blueM,
+            blueL:blueL,
+            blueLL:blueLL,
+            blue3L:blue3L,
+            apron:apron,
+            head_towel:head_towel,
+            fleece_blueS:fleece_blueS,
+            fleece_blueM:fleece_blueM,
+            fleece_blueL:fleece_blueL,
+            fleece_blueXL:fleece_blueXL,
+            sum:sum,
+            status:order_category,
+            approver:approver,
+        });
+    }else{
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            category:category,
+            status:order_category,
+            approver:approver,
+        });
+    }
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
     setTimeout("location.reload()",2000);
 }
 
-//PDF作成
-function createPDF(id){
-  (async () => {
-    try {
-      const carrentDB = await db.collection('uniforms').doc(id).get();
-      //申請日
-      var createdAt = carrentDB.get('createdAt');
-      //所属店舗
-      var store = carrentDB.get('storeName')
-      //社員番号
-      var staffNum = carrentDB.get('stuffNum');
-      //氏名
-      var name = carrentDB.get('name');
-      //種類
-      var category = carrentDB.get('category');
-      
-          //日本語フォント読み込み
-          pdfMake.fonts = {
-              GenShin: {
-              normal: 'GenShinGothic-Normal-Sub.ttf',
-              bold: 'GenShinGothic-Normal-Sub.ttf',
-              italics: 'GenShinGothic-Normal-Sub.ttf',
-              bolditalics: 'GenShinGothic-Normal-Sub.ttf'
-              }
-          };
+//削除
+function deleteContent(id,name){
+    var res = window.confirm(name + "さんの内容を削除しますか？");
+    if( res ) {
+        db.collection('uniforms').doc(id).delete();
+        alert("削除されました。");
+        setTimeout("location.reload()",500);
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+};
 
-          //ここからPDFコード
-          if(category == "ポロシャツ黒LL"){
+//購入PDF作成
+function NormalPDF(id){
+    (async () => {
+      try {
+        const carrentDB = await db.collection('uniforms').doc(id).get();
+        //社員番号
+        var stuffNum = carrentDB.get('stuffNum');
+        //氏名
+        var name = carrentDB.get('name');
+        //申請日
+        var createdAt = carrentDB.get('createdAt');
+        //店舗名
+        var storeName = carrentDB.get('storeName');
+        //それぞれの備品が1以上ある時合計金額を表示
+        if(carrentDB.get('blackS') == 0){
+            var blackS = '';
+            var blackS_sum = '';
+        }else{
+            var blackS = carrentDB.get('blackS');
+            var blackS_sum = '¥' +  700 * carrentDB.get('blackS');
+        }
+        if(carrentDB.get('blackM') == 0){
+            var blackM = '';
+            var blackM_sum = '';
+        }else{
+            var blackM = carrentDB.get('blackM');
+            var blackM_sum = '¥' +  700 * carrentDB.get('blackM');
+        }
+        if(carrentDB.get('blackL') == 0){
+            var blackL = '';
+            var blackL_sum = '';
+        }else{
+            var blackL = carrentDB.get('blackL');
+            var blackL_sum =  '¥' + 700 * carrentDB.get('blackL');
+        }
+        if(carrentDB.get('blackLL') == 0){
+            var blackLL = '';
+            var blackLL_sum = '';
+        }else{
+            var blackLL = carrentDB.get('blackLL');
+            var blackLL_sum = '¥' +  700 * carrentDB.get('blackLL');
+        }
+        if(carrentDB.get('black3L') == 0){
+            var black3L = '';
+            var black3L_sum = '';
+        }else{
+            var black3L = carrentDB.get('black3L');
+            var black3L_sum = '¥' +  700 * carrentDB.get('black3L');
+        }
+        if(carrentDB.get('blueS') == 0){
+            var blueS = '';
+            var blueS_sum = '';
+        }else{
+            var blueS = carrentDB.get('blueS');
+            var blueS_sum = '¥' +  700 * carrentDB.get('blueS');
+        }
+        if(carrentDB.get('blueM') == 0){
+            var blueM = '';
+            var blueM_sum = '';
+        }else{
+            var blueM = carrentDB.get('blueM');
+            var blueM_sum = '¥' +  700 * carrentDB.get('blueM');
+        }
+        if(carrentDB.get('blueL') == 0){
+            var blueL = '';
+            var blueL_sum = '';
+        }else{
+            var blueL = carrentDB.get('blueL');
+            var blueL_sum = '¥' +  700 * carrentDB.get('blueL');
+        }
+        if(carrentDB.get('blueLL') == 0){
+            var blueLL = '';
+            var blueLL_sum = '';
+        }else{
+            var blueLL = carrentDB.get('blueLL');
+            var blueLL_sum = '¥' +  700 * carrentDB.get('blueLL');
+        }
+        if(carrentDB.get('blue3L') == 0){
+            var blue3L = '';
+            var blue3L_sum = '';
+        }else{
+            var blue3L = carrentDB.get('blue3L');
+            var blue3L_sum = '¥' +  700 * carrentDB.get('blue3L');
+        }
+        if(carrentDB.get('apron') == 0){
+            var apron = '';
+            var apron_sum = '';
+        }else{
+            var apron = carrentDB.get('apron');
+            var apron_sum = '¥' +  800 * carrentDB.get('apron');
+        }
+        if(carrentDB.get('head_towel') == 0){
+            var head_towel = '';
+            var head_towel_sum = '';
+        }else{
+            var head_towel = carrentDB.get('head_towel');
+            var head_towel_sum = '¥' +  400 * carrentDB.get('head_towel');
+        }
+        if(carrentDB.get('fleece_blueS') == 0){
+            var fleece_blueS = '';
+            var fleece_blueS_sum = '';
+        }else{
+            var fleece_blueS = carrentDB.get('fleece_blueS');
+            var fleece_blueS_sum = '¥' +  2000 * carrentDB.get('fleece_blueS');
+        }
+        if(carrentDB.get('fleece_blueM') == 0){
+            var fleece_blueM = '';
+            var fleece_blueM_sum = '';
+        }else{
+            var fleece_blueM = carrentDB.get('fleece_blueM');
+            var fleece_blueM_sum = '¥' +  2000 * carrentDB.get('fleece_blueM');
+        }
+        if(carrentDB.get('fleece_blueL') == 0){
+            var fleece_blueL = '';
+            var fleece_blueL_sum = '';
+        }else{
+            var fleece_blueL = carrentDB.get('fleece_blueL');
+            var fleece_blueL_sum = '¥' +  2000 * carrentDB.get('fleece_blueL');
+        }
+        if(carrentDB.get('fleece_blueXL') == 0){
+            var fleece_blueXL = '';
+            var fleece_blueXL_sum = '';
+        }else{
+            var fleece_blueXL = carrentDB.get('fleece_blueXL');
+            var fleece_blueXL_sum = '¥' +  2000 * carrentDB.get('fleece_blueXL');
+        }
+        //合計金額
+        var sum = carrentDB.get('sum');
+        //日本語フォント読み込み
+        pdfMake.fonts = {
+            GenShin: {
+            normal: 'GenShinGothic-Normal-Sub.ttf',
+            bold: 'GenShinGothic-Normal-Sub.ttf',
+            italics: 'GenShinGothic-Normal-Sub.ttf',
+            bolditalics: 'GenShinGothic-Normal-Sub.ttf'
+            }
+        };
+  
             //PDF作成処理
             var docDef = {
                 content: [
@@ -384,8 +596,8 @@ function createPDF(id){
                           widths: ['*','*'],
                           body: [
                               [{text:'日付・店舗名',fontSize:15,alignment:'center'},{text:'社員番号・氏名',fontSize:15,alignment:'center'}],
-                              [{text:createdAt,fontSize:15,alignment:'center'},{text:'社員番号: ' + staffNum,fontSize:15,alignment:'center'}],
-                              [{text:'店舗: ' + store,fontSize:15,alignment:'center'},{text:'氏名: ' + name + '            印',fontSize:15,alignment:'center'}],
+                              [{text:createdAt,fontSize:15,alignment:'center'},{text:'社員番号: ' + stuffNum,fontSize:15,alignment:'center'}],
+                              [{text:'店舗: ' + storeName,fontSize:15,alignment:'center'},{text:'氏名: ' + name + '            印',fontSize:15,alignment:'center'}],
                           ],
                       }
                     },
@@ -408,11 +620,11 @@ function createPDF(id){
                           style:['center'],
                           body: [
                               ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
-                              [{text:'ポロシャツ黒S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                              [{text:'ポロシャツ黒M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                              [{text:'ポロシャツ黒L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                              [{text:'ポロシャツ黒LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'1枚',fontSize:15,alignment:'right'},{text:'¥700',fontSize:15,alignment:'center'}],
-                              [{text:'ポロシャツ黒3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
+                              [{text:'ポロシャツ黒S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blackS + '枚',fontSize:15,alignment:'right'},{text:blackS_sum,fontSize:15,alignment:'center'}],
+                              [{text:'ポロシャツ黒M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blackM + '枚',fontSize:15,alignment:'right'},{text:blackM_sum,fontSize:15,alignment:'center'}],
+                              [{text:'ポロシャツ黒L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blackL + '枚',fontSize:15,alignment:'right'},{text:blackL_sum,fontSize:15,alignment:'center'}],
+                              [{text:'ポロシャツ黒LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blackLL + '枚',fontSize:15,alignment:'right'},{text:blackLL_sum,fontSize:15,alignment:'center'}],
+                              [{text:'ポロシャツ黒3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:black3L + '枚',fontSize:15,alignment:'right'},{text:black3L_sum,fontSize:15,alignment:'center'}],
 
                           ]
                       }
@@ -435,11 +647,11 @@ function createPDF(id){
                             widths: [150,100,150,'*'],
                             style:['center'],
                             body: [
-                                [{text:'ポロシャツ青S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
+                                [{text:'ポロシャツ青S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blueS + '枚',fontSize:15,alignment:'right'},{text:blueS_sum,fontSize:15,alignment:'center'}],
+                                [{text:'ポロシャツ青M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blueM + '枚',fontSize:15,alignment:'right'},{text:blueM_sum,fontSize:15,alignment:'center'}],
+                                [{text:'ポロシャツ青L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blueL + '枚',fontSize:15,alignment:'right'},{text:blueL_sum,fontSize:15,alignment:'center'}],
+                                [{text:'ポロシャツ青LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blueLL + '枚',fontSize:15,alignment:'right'},{text:blueLL_sum,fontSize:15,alignment:'center'}],
+                                [{text:'ポロシャツ青3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:blue3L + '枚',fontSize:15,alignment:'right'},{text:blue3L_sum,fontSize:15,alignment:'center'}],
   
                             ]
                         }
@@ -462,8 +674,8 @@ function createPDF(id){
                             widths: [150,100,150,'*'],
                             style:['center'],
                             body: [
-                                [{text:'エプロン',fontSize:15,alignment:'center'},{text:'¥800',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ヘッドタオル',fontSize:15,alignment:'center'},{text:'¥400',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
+                                [{text:'エプロン',fontSize:15,alignment:'center'},{text:'¥800',fontSize:15,alignment:'center'},{text:apron + '枚',fontSize:15,alignment:'right'},{text:apron_sum,fontSize:15,alignment:'center'}],
+                                [{text:'ヘッドタオル',fontSize:15,alignment:'center'},{text:'¥400',fontSize:15,alignment:'center'},{text:head_towel + '枚',fontSize:15,alignment:'right'},{text:head_towel_sum,fontSize:15,alignment:'center'}],
   
                             ]
                         }
@@ -486,10 +698,10 @@ function createPDF(id){
                             widths: [150,100,150,'*'],
                             style:['center'],
                             body: [
-                                [{text:'フリース青S',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青M',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青L',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青XL',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
+                                [{text:'フリース青S',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:fleece_blueS + '枚',fontSize:15,alignment:'right'},{text:fleece_blueS_sum,fontSize:15,alignment:'center'}],
+                                [{text:'フリース青M',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:fleece_blueM + '枚',fontSize:15,alignment:'right'},{text:fleece_blueM_sum,fontSize:15,alignment:'center'}],
+                                [{text:'フリース青L',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:fleece_blueL + '枚',fontSize:15,alignment:'right'},{text:fleece_blueL_sum,fontSize:15,alignment:'center'}],
+                                [{text:'フリース青XL',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:fleece_blueXL + '枚',fontSize:15,alignment:'right'},{text:fleece_blueXL_sum,fontSize:15,alignment:'center'}],
                             ]
                         }
                       },
@@ -497,7 +709,7 @@ function createPDF(id){
                         columns: [
                             {
                                 width: '*',
-                                text: '合計金額    ¥700',
+                                text: '合計金額    ¥' + sum,
                                 margin: [ 0, 30, 0, 10 ],
                                 style: ['right','border'],
                                 fontSize: 20
@@ -534,183 +746,453 @@ function createPDF(id){
                     font: 'GenShin',
                 },
             };
-        }else{
-            //PDF作成処理
-            var docDef = {
-                content: [
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                text: 'ユニフォーム申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        table: {
-                            headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                            widths: ['*','*'],
-                            body: [
-                                [{text:'日付・店舗名',fontSize:15,alignment:'center'},{text:'社員番号・氏名',fontSize:15,alignment:'center'}],
-                                [{text:createdAt,fontSize:15,alignment:'center'},{text:'社員番号: ' + staffNum,fontSize:15,alignment:'center'}],
-                                [{text:'店舗: ' + store,fontSize:15,alignment:'center'},{text:'氏名: ' + name + '            印',fontSize:15,alignment:'center'}],
-                            ],
-                        }
-                    },
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                height:100,
-                                text: ' ',
-                                style: ['center'],
-                                fontSize: 10
-                            }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        table: {
-                            headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                            widths: [150,100,150,'*'],
-                            style:['center'],
-                            body: [
-                                ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ黒S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ黒M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ黒L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ黒LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ黒3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
 
-                            ]
-                        }
-                    },
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                height:100,
-                                text: ' ',
-                                style: ['center'],
-                                fontSize: 10
-                            }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        table: {
-                            headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                            widths: [150,100,150,'*'],
-                            style:['center'],
-                            body: [
-                                [{text:'ポロシャツ青S',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青M',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青LL',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'1枚',fontSize:15,alignment:'right'},{text:'¥700',fontSize:15,alignment:'center'}],
-                                [{text:'ポロシャツ青3L',fontSize:15,alignment:'center'},{text:'¥700',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-    
-                            ]
-                        }
+            pdfMake.createPdf(docDef).print();
+            //pdfMake.createPdf(docDef).download("残業申請書.pdf");
+      } catch (err) {
+      console.log(err);
+      }
+  })();
+}
+
+//緊急用PDF作成
+function emergencyPDF(id){
+    (async () => {
+      try {
+        const carrentDB = await db.collection('uniforms').doc(id).get();
+        //社員番号
+        var stuffNum = carrentDB.get('stuffNum');
+        //氏名
+        var name = carrentDB.get('name');
+        //申請日
+        var createdAt = carrentDB.get('createdAt');
+        //店舗名
+        var storeName = carrentDB.get('storeName');
+        //要望内容
+        var category = carrentDB.get('category');
+        //日本語フォント読み込み
+        pdfMake.fonts = {
+            GenShin: {
+            normal: 'GenShinGothic-Normal-Sub.ttf',
+            bold: 'GenShinGothic-Normal-Sub.ttf',
+            italics: 'GenShinGothic-Normal-Sub.ttf',
+            bolditalics: 'GenShinGothic-Normal-Sub.ttf'
+            }
+        };
+  
+            if(category == "ポロシャツ黒LL"){
+                //PDF作成処理
+                var docDef = {
+                    content: [
+                        {
+                          columns: [
+                              {
+                                  width: '*',
+                                  text: 'ユニフォーム申請書(店舗用)',
+                                  margin: [ 0, 0, 0, 10 ],
+                                  style: ['center','border'],
+                                  fontSize: 20
+                              }
+                          ],
+                          columnGap: 10
                         },
                         {
-                        columns: [
-                            {
-                                width: '*',
-                                height:100,
-                                text: ' ',
-                                style: ['center'],
-                                fontSize: 10
-                            }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        table: {
-                            headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                            widths: [150,100,150,'*'],
-                            style:['center'],
-                            body: [
-                                [{text:'エプロン',fontSize:15,alignment:'center'},{text:'¥800',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'ヘッドタオル',fontSize:15,alignment:'center'},{text:'¥400',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-    
-                            ]
-                        }
+                          table: {
+                              headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                              widths: ['*','*'],
+                              body: [
+                                  [{text:'日付・店舗名',fontSize:15,alignment:'center'},{text:'社員番号・氏名',fontSize:15,alignment:'center'}],
+                                  [{text:createdAt,fontSize:15,alignment:'center'},{text:'社員番号: ' + stuffNum,fontSize:15,alignment:'center'}],
+                                  [{text:'店舗: ' + storeName,fontSize:15,alignment:'center'},{text:'氏名: ' + name + '            印',fontSize:15,alignment:'center'}],
+                              ],
+                          }
                         },
                         {
-                        columns: [
-                            {
-                                width: '*',
-                                height:100,
-                                text: ' ',
-                                style: ['center'],
-                                fontSize: 10
-                            }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        table: {
-                            headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                            widths: [150,100,150,'*'],
-                            style:['center'],
-                            body: [
-                                [{text:'フリース青S',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青M',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青L',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                                [{text:'フリース青XL',fontSize:15,alignment:'center'},{text:'¥2000',fontSize:15,alignment:'center'},{text:'枚',fontSize:15,alignment:'right'},{text:'',fontSize:15,alignment:'center'}],
-                            ]
-                        }
+                            columns: [
+                                {
+                                    width: '*',
+                                    height:100,
+                                    text: ' ',
+                                    style: ['center'],
+                                    fontSize: 10
+                                }
+                            ],
+                            columnGap: 10
                         },
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '合計金額    ¥700',
-                                margin: [ 0, 30, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 20
+                        {
+                          table: {
+                              headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                              widths: [150,100,150,'*'],
+                              style:['center'],
+                              body: [
+                                  ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                  [{text:'ポロシャツ黒LL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                              ]
+                          }
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '合計金額    ¥700',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['center','border'],
+                                    fontSize: 20
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '切り取り不要',
+                                    style: ['center'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '受領書(会社控え)',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['left'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: createdAt,
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['right'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [150,100,150,'*'],
+                                style:['center'],
+                                body: [
+                                    ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                    [{text:'ポロシャツLL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                                ]
                             }
-                        ],
-                        columnGap: 10
-                    },
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '※入社時にポロシャツ2枚とエプロン1枚(女性のみ)を支給しますが、\n1ヶ月以内に退社の場合は有償となり、上記合計金額が給与から天引きとなります。',
-                                style: ['left'],
-                                fontSize: 10
+                          },
+                                                  {
+                            columns: [
+                                {
+                                    width: '*',
+                                    height:100,
+                                    text: ' ',
+                                    style: ['center'],
+                                    fontSize: 10
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [100],
+                                style:['center'],
+                                body: [
+                                    [{text:'本人受取印',fontSize:15,alignment:'center'}],
+                                    [{text:'印',fontSize:20,alignment:'center'}]
+                                ]
                             }
-                        ],
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '------------------------------切り取り-----------------------------',
+                                    margin: [ 0, 0, 0, 10 ],
+                                    style: ['center','border'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '受領書(本人控え)',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['left'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: createdAt,
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['right'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '社員番号: ' + stuffNum,
+                                    style: ['center'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: '氏名: ' + name,
+                                    style: ['center'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [150,100,150,'*'],
+                                style:['center'],
+                                body: [
+                                    ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                    [{text:'ポロシャツLL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                                ]
+                            }
+                          },
+                    ],
+                    styles:{
+                        center:{
+                            alignment: 'center'
+                        },
+                        right:{
+                          alignment: 'right'
+                        },
+                        left:{
+                          alignment: 'left'
+                        },
+                        border:{
+                            decorationStyle:'dashed'
+                        }
                     },
-                ],
-                styles:{
-                    center:{
-                        alignment: 'center'
+                    defaultStyle: {
+                        font: 'GenShin',
                     },
-                    right:{
-                        alignment: 'right'
+                };
+            }else{
+                //PDF作成処理
+                var docDef = {
+                    content: [
+                        {
+                          columns: [
+                              {
+                                  width: '*',
+                                  text: 'ユニフォーム申請書(店舗用)',
+                                  margin: [ 0, 0, 0, 10 ],
+                                  style: ['center','border'],
+                                  fontSize: 20
+                              }
+                          ],
+                          columnGap: 10
+                        },
+                        {
+                          table: {
+                              headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                              widths: ['*','*'],
+                              body: [
+                                [{text:'日付・店舗名',fontSize:15,alignment:'center'},{text:'社員番号・氏名',fontSize:15,alignment:'center'}],
+                                [{text:createdAt,fontSize:15,alignment:'center'},{text:'社員番号: ' + stuffNum,fontSize:15,alignment:'center'}],
+                                [{text:'店舗: ' + storeName,fontSize:15,alignment:'center'},{text:'氏名: ' + name + '            印',fontSize:15,alignment:'center'}],
+                              ],
+                          }
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    height:100,
+                                    text: ' ',
+                                    style: ['center'],
+                                    fontSize: 10
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                          table: {
+                              headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                              widths: [150,100,150,'*'],
+                              style:['center'],
+                              body: [
+                                  ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                  [{text:'ポロシャツ青LL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                              ]
+                          }
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '合計金額    ¥700',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['center','border'],
+                                    fontSize: 20
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '切り取り不要',
+                                    style: ['center'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '受領書(会社控え)',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['left'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: createdAt,
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['right'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [150,100,150,'*'],
+                                style:['center'],
+                                body: [
+                                    ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                    [{text:'ポロシャツLL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                                ]
+                            }
+                          },
+                                                  {
+                            columns: [
+                                {
+                                    width: '*',
+                                    height:100,
+                                    text: ' ',
+                                    style: ['center'],
+                                    fontSize: 10
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [100],
+                                style:['center'],
+                                body: [
+                                    [{text:'本人受取印',fontSize:15,alignment:'center'}],
+                                    [{text:'印',fontSize:20,alignment:'center'}]
+                                ]
+                            }
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: '*',
+                                    text: '------------------------------切り取り-----------------------------',
+                                    margin: [ 0, 0, 0, 10 ],
+                                    style: ['center','border'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '受領書(本人控え)',
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['left'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: createdAt,
+                                    margin: [ 0, 10, 0, 10 ],
+                                    style: ['right'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: 'auto',
+                                    text:  '社員番号: ' + stuffNum,
+                                    style: ['center'],
+                                    fontSize: 15
+                                },
+                                {
+                                    width: '*',
+                                    text: '氏名: ' + name,
+                                    style: ['center'],
+                                    fontSize: 15
+                                }
+                            ],
+                            columnGap: 10
+                        },
+                        {
+                            table: {
+                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                                widths: [150,100,150,'*'],
+                                style:['center'],
+                                body: [
+                                    ['',{text:'単価',fontSize:15,alignment:'center'},{text:'枚数',fontSize:15,alignment:'center'},{text:'金額',fontSize:15,alignment:'center'}],
+                                    [{text:'ポロシャツLL',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'},{text:'1枚',fontSize:20,alignment:'center'},{text:'¥700',fontSize:20,alignment:'center'}]
+                                ]
+                            }
+                          },
+                    ],
+                    styles:{
+                        center:{
+                            alignment: 'center'
+                        },
+                        right:{
+                          alignment: 'right'
+                        },
+                        left:{
+                          alignment: 'left'
+                        },
+                        border:{
+                            decorationStyle:'dashed'
+                        }
                     },
-                    left:{
-                        alignment: 'left'
+                    defaultStyle: {
+                        font: 'GenShin',
                     },
-                    border:{
-                        decorationStyle:'dashed'
-                    }
-                },
-                defaultStyle: {
-                    font: 'GenShin',
-                },
-            };
-        }
-          pdfMake.createPdf(docDef).print();
-          //pdfMake.createPdf(docDef).download("残業申請書.pdf");
-    } catch (err) {
-    console.log(`Error: ${JSON.stringify(err)}`)
-    }
-})();
+                };
+            }
+            pdfMake.createPdf(docDef).print();
+            //pdfMake.createPdf(docDef).download("残業申請書.pdf");
+      } catch (err) {
+      console.log(err);
+      }
+  })();
 }

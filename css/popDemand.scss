@@ -47,3 +47,25 @@ form{
     font-size: 15px;
     margin: 0 5px;
 }
+
+.select-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto;
+}
+
+.btn.btn-select {
+    color: #708090;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, "sans-serif";
+    font-weight: bold;
+    font-size: 50px;
+    background-color: #afeeee;
+    border-radius: 50%;
+    height: 200px;
+    margin: 30px;
+    padding: 50px;
+    -webkit-box-shadow: 0 10px 0 #add8e6;
+    box-shadow: 0 10px 0 #add8e6;
+}
+

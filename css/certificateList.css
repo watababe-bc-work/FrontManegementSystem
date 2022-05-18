@@ -162,8 +162,22 @@ h1 {
   background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
 }
 
+.uniform table {
+  display: inline-block;
+  margin: 0 10px;
+  font-size: 15px;
+}
+
+.uniform table input {
+  width: 40px;
+}
+
 .jump {
   font-size: 15px;
   margin: 0 5px;
+}
+
+.buy-td {
+  background: gray;
 }
 /*# sourceMappingURL=certificateList.css.map */

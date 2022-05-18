@@ -21,45 +21,268 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <h1>POP・Web要望一覧</h1>
-    <a href="popDemand.html"><button class="btn btn-info jump">要望新規登録へ</button></a>
-    <div class="youbouTable">
-        <div id="table_list">
-            <!-- DB情報取得 -->
+    <div class="popDemand">
+        <h1>POP・Web要望一覧</h1>
+        <a href="popDemand.html"><button class="btn btn-info jump">要望新規登録へ</button></a>
+        <div class="csvButton">
+            <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
         </div>
-    </div>
-     <!-- 新規登録モーダルウィンドウ内容 -->
-     <div class="modal js-modal">
-        <div class="modal__bg js-modal-close"></div>
-        <div class="modal__content">
-            <h2>状況変更</h2>
-            <form action="popDemand.html" method="POST">
-                <div class="edit">
-                    <label for="">状況:</label>
-                    <select name="" id="status">
-                        <option value="">状況を選択する</option>
-                        <option value="未完了">未完了</option>
-                        <option value="完了">完了</option>
-                        <option value="依頼中">依頼中</option>
-                    </select>
-                </div>
-                <div class="edit">
-                    <label for="">対応者:</label>
-                    <input type="text" id="supportPerson">
-                </div>
-            </form>
-            <br>
-            <div id="collectAlert">
-                <!-- 編集完了のAlert -->
+        <div class="youbouTable">
+            <div id="table_list">
+                <!-- DB情報取得 -->
             </div>
-            <div id="edit_submit_button"></div>
-            <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
         </div>
-    </div> 
-    <div class="nextButton">
-        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
-        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+        <!-- 新規登録モーダルウィンドウ内容 -->
+        <div class="modal js-modal">
+            <div class="modal__bg js-modal-close"></div>
+            <div class="modal__content">
+                <h2>状況変更</h2>
+                <form action="popDemand.html" method="POST">
+                    <div class="edit">
+                        <div>
+                            <label for="">区分：</label>
+                            <p id="orderCategory"></p>
+                        </div>
+                        <div>
+                            <label for="">依頼日：</label>
+                            <p id="createdAt"></p>
+                        </div>
+                        <div>
+                            <label for="">納品日：</label>
+                            <input type="date" id="orderDate">
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div>
+                            <label for="">店舗名：</label>
+                            <p id="store_name"></p>
+                        </div>
+                        <div>
+                            <label for="">件名：</label>
+                            <input type="text" id="subject">
+                        </div>
+                        <div>
+                            <label for="">状況:</label>
+                            <select name="" id="status">
+                                <option value="">状況を選択する</option>
+                                <option value="未完了">未完了</option>
+                                <option value="完了">完了</option>
+                                <option value="依頼中">依頼中</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div>
+                            <label for="">依頼者：</label>
+                            <input type="text" id="requesterName">
+                        </div>
+                        <div>
+                            <label for="">対応者:</label>
+                            <input type="text" id="supportPerson">
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div id="collectAlert">
+                    <!-- 編集完了のAlert -->
+                </div>
+                <div id="edit_submit_button"></div>
+                <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+        </div> 
+        <div class="nextButton">
+            <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+            <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+        </div>
     </div>
+    <div class="price">
+        <h1>料金変更要望一覧</h1>
+        <a href="priceChangeDemand.html"><button class="btn btn-info jump">要望新規登録へ</button></a>
+        <div class="csvButton">
+            <a id="downloadPrice" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownloadPrice();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
+        </div>
+        <div class="youbouTable">
+            <div id="table_list_priceChange">
+                <!-- DB情報取得 -->
+            </div>
+        </div>
+        <!-- 新規登録モーダルウィンドウ内容 -->
+        <div class="modal js-modal1">
+            <div class="modal__bg js-modal-close1"></div>
+            <div class="modal__content">
+                <h2>状況変更</h2>
+                <form action="priceChangeDemand.html" method="POST">
+                    <div class="edit">
+                        <div>
+                            <label for="">依頼日:</label>
+                            <p id ="CreatedAt" class="inline"></p>
+                        </div>
+                        <div>
+                            <label for="">希望日:</label>
+                            <input type="date" id="preferredDate">
+                        </div>
+                        <div>
+                            <label for="">店舗名:</label>
+                            <p id="storeName" class="inline"></p>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div>
+                            <label for="">依頼者:</label>
+                            <input type="text" id="requesterName_price">
+                        </div>
+                        <div>
+                            <label for="">対応者:</label>
+                            <input type="text" id="supportPerson_price">
+                        </div>
+                        <div>
+                            <label for="">状況:</label>
+                            <select name="" id="status_price">
+                                <option value="">状況を選択する</option>
+                                <option value="未完了">未完了</option>
+                                <option value="完了">完了</option>
+                                <option value="依頼中">依頼中</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div class="orderContent" id="select0">
+                            <label for="">依頼区分：</label>
+                            <select name="" id="order_category0" onchange="orderCategoryChange(0)">
+                                <option value="">区分を選択する</option>
+                                <option value="新規プラン">新規プラン</option>
+                                <option value="現行から変更">現行から変更</option>
+                            </select><br>
+                            <label for="">プラン</label>
+                            <input type="text" id="orderContent0">
+                            <label for="">受付日時</label>
+                            <input type="date" id="receptionDate0">
+                            <label for="">金額</label>
+                            <input type="text" id="price0">
+                            <div id="select0_change">
+                                <p>↓</p>
+                                <label for="">プラン</label>
+                                <input type="text" id="orderContent_change0">
+                                <label for="">受付日時</label>
+                                <input type="date" id="receptionDate_change0">
+                                <label for="">金額</label>
+                                <input type="text" id="price_change0">
+                            </div>
+                        </div>
+                        <!-- 2つめ -->
+                        <div class="orderContent" id="select1">
+                            <label for="">依頼区分：</label>
+                            <select name="" id="order_category1" onchange="orderCategoryChange(1)">
+                                <option value="">区分を選択する</option>
+                                <option value="新規プラン">新規プラン</option>
+                                <option value="現行から変更">現行から変更</option>
+                            </select><br>
+                            <label for="">プラン</label>
+                            <input type="text" id="orderContent1">
+                            <label for="">受付日時</label>
+                            <input type="date" id="receptionDate1">
+                            <label for="">金額</label>
+                            <input type="text" id="price1">
+                            <div id="select1_change">
+                                <p>↓</p>
+                                <label for="">プラン</label>
+                                <input type="text" id="orderContent_change1">
+                                <label for="">受付日時</label>
+                                <input type="date" id="receptionDate_change1">
+                                <label for="">金額</label>
+                                <input type="text" id="price_change1">
+                            </div>
+                        </div>
+            
+                        <!-- 3つめ -->
+                        <div class="orderContent" id="select2">
+                            <label for="">依頼区分：</label>
+                            <select name="" id="order_category2" onchange="orderCategoryChange(2)">
+                                <option value="">区分を選択する</option>
+                                <option value="新規プラン">新規プラン</option>
+                                <option value="現行から変更">現行から変更</option>
+                            </select><br>
+                            <label for="">プラン</label>
+                            <input type="text" id="orderContent2">
+                            <label for="">受付日時</label>
+                            <input type="date" id="receptionDate2">
+                            <label for="">金額</label>
+                            <input type="text" id="price2">
+                            <div id="select2_change">
+                                <p>↓</p>
+                                <label for="">プラン</label>
+                                <input type="text" id="orderContent_change2">
+                                <label for="">受付日時</label>
+                                <input type="date" id="receptionDate_change2">
+                                <label for="">金額</label>
+                                <input type="text" id="price_change2">
+                            </div>
+                        </div>
+            
+                        <!-- 4つめ -->
+                        <div class="orderContent" id="select3">
+                            <label for="">依頼区分：</label>
+                            <select name="" id="order_category3" onchange="orderCategoryChange(3)">
+                                <option value="">区分を選択する</option>
+                                <option value="新規プラン">新規プラン</option>
+                                <option value="現行から変更">現行から変更</option>
+                            </select><br>
+                            <label for="">プラン</label>
+                            <input type="text" id="orderContent3">
+                            <label for="">受付日時</label>
+                            <input type="date" id="receptionDate3">
+                            <label for="">金額</label>
+                            <input type="text" id="price3">
+                            <div id="select3_change">
+                                <p>↓</p>
+                                <label for="">プラン</label>
+                                <input type="text" id="orderContent_change3">
+                                <label for="">受付日時</label>
+                                <input type="date" id="receptionDate_change3">
+                                <label for="">金額</label>
+                                <input type="text" id="price_change3">
+                            </div>
+                        </div>
+            
+                        <!-- 5つめ -->
+                        <div class="orderContent" id="select4">
+                            <label for="">依頼区分：</label>
+                            <select name="" id="order_category4" onchange="orderCategoryChange(4)">
+                                <option value="">区分を選択する</option>
+                                <option value="新規プラン">新規プラン</option>
+                                <option value="現行から変更">現行から変更</option>
+                            </select><br>
+                            <label for="">プラン</label>
+                            <input type="text" id="orderContent4">
+                            <label for="">受付日時</label>
+                            <input type="date" id="receptionDate4">
+                            <label for="">金額</label>
+                            <input type="text" id="price4">
+                            <div id="select4_change">
+                                <p>↓</p>
+                                <label for="">プラン</label>
+                                <input type="text" id="orderContent_change4">
+                                <label for="">受付日時</label>
+                                <input type="date" id="receptionDate_change4">
+                                <label for="">金額</label>
+                                <input type="text" id="price_change4">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br>
+                <div id="collectAlert_price">
+                    <!-- 編集完了のAlert -->
+                </div>
+                <div id="edit_submit_button_price"></div>
+                <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+        </div> 
+        <div class="nextButton">
+            <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton_price" onclick="returnTablePrice();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+            <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton_price" onclick="nextPeginationPrice();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+        </div>
+    </div>    
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -70,6 +293,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="js/popDemandList.js"></script>
+    <script src="js/priceChangeDemandList.js"></script>
     <script src="js/pdfMake/pdfmake.min.js"></script>
     <script src="js/pdfMake/vfs_fonts.js"></script>
     <script src="js/modal.js"></script>

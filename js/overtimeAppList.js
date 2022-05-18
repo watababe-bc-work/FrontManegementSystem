@@ -36,7 +36,7 @@ document.getElementById('disapproval_reason').style.display = "none";
       //前回のDBとして保存
       backQueryList.push(querySnapshot);
 
-      var stocklist = '<table class="table table-striped">'
+      var stocklist = '<table class="table table-striped" id = "download_table">'
       stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請理由</th><th>申請日時</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
         switch(postDoc.get('status')){
@@ -157,7 +157,7 @@ function nextPegination(){
               document.getElementById('nextButton').style.visibility = "hidden";
           }
 
-          var stocklist = '<table class="table table-striped">'
+          var stocklist = '<table class="table table-striped" id = "download_table">'
           stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請理由</th><th>申請日時</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
@@ -192,7 +192,7 @@ function returnTable(){
   document.getElementById('nextButton').style.visibility = 'visible';
   querySnapshot = currentQueryList.pop();
 
-  var stocklist = '<table class="table table-striped">'
+  var stocklist = '<table class="table table-striped" id = "download_table">'
   stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請理由</th><th>申請日時</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
     switch(postDoc.get('status')){
@@ -244,7 +244,7 @@ function showTable(){
         //前回のDBとして保存
         backQueryList.push(querySnapshot);
 
-        var stocklist = '<table class="table table-striped">'
+        var stocklist = '<table class="table table-striped" id = "download_table">'
         stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請理由</th><th>申請日時</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
           switch(postDoc.get('status')){
@@ -347,6 +347,42 @@ function deleteContent(id,name){
         alert("キャンセルしました。");
     } 
 };
+
+//CSV出力＆ダウンロード
+function handleDownload(){
+    var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);//文字コードをBOM付きUTF-8に指定
+    var table = document.getElementById('download_table');
+    var data_csv="";//ここに文字データとして値を格納していく
+
+    for(var i = 0;  i < table.rows.length; i++){
+        for(var j = 0; j < table.rows[i].cells.length -1; j++){
+        //data_csv += table.rows[i].cells[j].innerText;//HTML中の表のセル値をdata_csvに格納
+        if(j == 8){
+            data_csv += "\n";
+        }else{
+            data_csv += table.rows[i].cells[j].innerText;
+            if(j == table.rows[i].cells.length-2){
+                data_csv += ",";
+                data_csv += table.rows[i].cells[0].innerText;
+                data_csv += "\n";
+            }
+            else {
+                data_csv += ",";//セル値の区切り文字として,を追加
+            }
+        }
+        }
+    }
+
+    var blob = new Blob([ bom, data_csv], { "type" : "text/csv" });//data_csvのデータをcsvとしてダウンロードする関数
+    if (window.navigator.msSaveBlob) { //IEの場合の処理
+        window.navigator.msSaveBlob(blob, "test.csv"); 
+        //window.navigator.msSaveOrOpenBlob(blob, "test.csv");// msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+    } else {
+        document.getElementById("download").href = window.URL.createObjectURL(blob);
+    }
+
+    delete data_csv;//data_csvオブジェクトはもういらないので消去してメモリを開放
+}
 
 //PDF作成
 // function createPDF(id){
