@@ -249,11 +249,11 @@ document.getElementById('emergency').style.display = "none";
 function demandChange(){
     var demandStatus = document.getElementById('demand_uni').value;
     switch(demandStatus){
-        case "通常購入":
+        case "購入":
             document.getElementById('normal').style.display = "block";
             document.getElementById('emergency').style.display = "none";
         break;
-        case "緊急用購入":
+        case "店舗予備":
             document.getElementById('emergency').style.display = "block";
             document.getElementById('normal').style.display = "none";
         break;
@@ -273,7 +273,7 @@ function uniformUpdate(){
     //種類
     var demandStatus = document.getElementById('demand_uni').value;
     switch(demandStatus){
-        case "通常購入":
+        case "購入":
             var blackS = Number(document.getElementById('blackS').value);
             var blackM = Number(document.getElementById('blackM').value);
             var blackL = Number(document.getElementById('blackL').value);
@@ -292,7 +292,7 @@ function uniformUpdate(){
             var fleece_blueXL = Number(document.getElementById('fleece_blueXL').value);
             var sum = (blackS + blackM + blackL + blackLL + black3L + blueS + blueM + blueL + blueLL + blue3L) * 700 + (apron * 800) + (head_towel * 400) + (fleece_blueS + fleece_blueM + fleece_blueL + fleece_blueXL) * 2000;
         break;
-        case "緊急用購入":
+        case "店舗予備":
             var checkBox = document.getElementById('black');
             var checkBox2 = document.getElementById('blue');
             var category = "";
@@ -308,7 +308,7 @@ function uniformUpdate(){
         var Alert = document.getElementById('Alert2');
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
-        if(demandStatus == "通常購入"){
+        if(demandStatus == "購入"){
             //DBへ送信
             db.collection('uniforms').add({
                 stuffNum:stuffNum,
@@ -371,7 +371,7 @@ function showTableuni(){
         var stocklist = '<table class="table table-striped">'
         stocklist += '<tr><th>申請日</th><th>社員番号</th><th>氏名</th><th>要望内容</th><th>状態</th><th>PDF</th>';
         querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == '通常購入'){
+            if(postDoc.get('demandStatus') == '購入'){
                 switch(postDoc.get('status')){
                     //承認
                     case 'approve':
@@ -418,7 +418,7 @@ function showTableuni(){
     })();
 }
 
-//通常購入PDF作成
+//購入PDF作成
 function NormalPDF(id){
     (async () => {
       try {
@@ -970,7 +970,7 @@ function emergencyPDF(id){
             }
         };
 
-        if(demandStatus == "通常購入"){
+        if(demandStatus == "購入"){
             //それぞれの備品が1以上ある時合計金額を表示
             if(carrentDB.get('blackS') == 0){
                 var blackS = '';

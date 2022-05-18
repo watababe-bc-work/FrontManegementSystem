@@ -160,7 +160,23 @@ h1{
     }
 }
 
+.uniform{
+    table{
+        display: inline-block;
+        margin: 0 10px;
+        font-size: 15px;
+
+        input{
+            width: 40px;
+        }
+    }
+}
+
 .jump{
     font-size: 15px;
     margin: 0 5px;
+}
+
+.buy-td{
+    background: gray;
 }

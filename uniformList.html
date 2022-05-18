@@ -73,7 +73,7 @@
      <!-- 新規登録モーダルウィンドウ内容 -->
      <div class="modal js-modal">
         <div class="modal__bg js-modal-close"></div>
-        <div class="modal__content">
+        <div class="modal__content uniform">
             <h2>申請回答</h2>
             <form action="ptoAppList.html" method="POST">
                 <div class="edit">
@@ -91,99 +91,105 @@
                     </div>
                 </div>
                 <div id="normal">
-                    <p>種類</p>
+                    <label for="">種類:</label>
+                    <br>
                     <table>
-                            <tr>
-                                <th>名称</th>
-                                <th>単価</th>
-                                <th>枚数</th>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ黒S</td>
-                                <td>¥700</td>
-                                <td><p id="blackS"></p></td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ黒M</td>
-                                <td>¥700</td>
-                                <td><p id="blackM"></p></td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ黒L</td>
-                                <td>¥700</td>
-                                <td><p id="blackL"></p></td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ黒LL</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blackLL">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ黒3L</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="black3L">枚</td>
-                            </tr>
-                        </table>
-                        <table>
-                            <tr>
-                                <td>ポロシャツ青S</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blueS">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ青M</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blueM">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ青L</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blueL">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ青LL</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blueLL">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ポロシャツ青3L</td>
-                                <td>¥700</td>
-                                <td><input type="number" id="blue3L">枚</td>
-                            </tr>
-                            <tr>
-                                <td>エプロン</td>
-                                <td>¥800</td>
-                                <td><input type="number" id="apron">枚</td>
-                            </tr>
-                            <tr>
-                                <td>ヘッドタオル</td>
-                                <td>¥400</td>
-                                <td><input type="number" id="head_towel">枚</td>
-                            </tr>
-                            <tr>
-                                <td>フリース青S</td>
-                                <td>¥2000</td>
-                                <td><input type="number" id="fleece_blueS">枚</td>
-                            </tr>
-                            <tr>
-                                <td>フリース青M</td>
-                                <td>¥2000</td>
-                                <td><input type="number" id="fleece_blueM">枚</td>
-                            </tr>
-                            <tr>
-                                <td>フリース青L</td>
-                                <td>¥2000</td>
-                                <td><input type="number" id="fleece_blueL">枚</td>
-                            </tr>
-                            <tr>
-                                <td>フリース青XL</td>
-                                <td>¥2000</td>
-                                <td><input type="number" id="fleece_blueXL">枚</td>
-                            </tr>
-                        </table>
+                        <tr>
+                            <td>ポロシャツ黒S</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blackS">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ黒M</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blackM">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ黒L</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blackL">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ黒LL</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blackLL">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ黒3L</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="black3L">枚</td>
+                        </tr>
+                    </table>
+                    <table>
+                        <tr>
+                            <td>ポロシャツ青S</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blueS">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ青M</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blueM">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ青L</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blueL">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ青LL</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blueLL">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ポロシャツ青3L</td>
+                            <td>¥700</td>
+                            <td><input type="number" id="blue3L">枚</td>
+                        </tr>
+                        <tr>
+                    </table>  
+                    <table>  
+                            <td>エプロン</td>
+                            <td>¥800</td>
+                            <td><input type="number" id="apron">枚</td>
+                        </tr>
+                        <tr>
+                            <td>ヘッドタオル</td>
+                            <td>¥400</td>
+                            <td><input type="number" id="head_towel">枚</td>
+                        </tr>
+                        <tr>
+                            <td>フリース青S</td>
+                            <td>¥2000</td>
+                            <td><input type="number" id="fleece_blueS">枚</td>
+                        </tr>
+                        <tr>
+                            <td>フリース青M</td>
+                            <td>¥2000</td>
+                            <td><input type="number" id="fleece_blueM">枚</td>
+                        </tr>
+                        <tr>
+                            <td>フリース青L</td>
+                            <td>¥2000</td>
+                            <td><input type="number" id="fleece_blueL">枚</td>
+                        </tr>
+                        <tr>
+                            <td>フリース青XL</td>
+                            <td>¥2000</td>
+                            <td><input type="number" id="fleece_blueXL">枚</td>
+                        </tr>
+                    </table>
                 </div>
                 <div id="emergency">
-
+                    <label for="">種類：</label>
+                    <div class="edit_checkbox">
+                        <input type="checkbox" id="black">
+                        <label for="black">ポロシャツ黒LL</label>
+                    </div>
+                    <div class="edit_checkbox">
+                        <input type="checkbox" id="blue">
+                        <label for="blue">ポロシャツ青LL</label>
+                    </div>
                 </div>
                 <br>
                 <div class="edit">

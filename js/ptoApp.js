@@ -51,6 +51,8 @@ function PtoUpdate(){
     //日時
     var startDate = document.getElementById('startdate').value;
     var endDate = document.getElementById('enddate').value;
+    //電話承認者
+    var phoneApprover = document.getElementById('phoneApprover').value;
     //理由
     var reason = document.getElementById('reason_detail').value;
     if(staffNum == "" || name == "" || storeName == "" || startDate == "" || endDate == "" || reason == ""){
@@ -64,6 +66,7 @@ function PtoUpdate(){
             createdAt:createdAt,
             startDate:startDate,
             endDate:endDate,
+            phoneApprover:phoneApprover,
             reason:reason,
             storeName:storeName,
             status:"unapproved",
@@ -134,6 +137,8 @@ function overTimeUpdate(){
     var date = document.getElementById('date_ot').value;
     var startDate = document.getElementById('startDate_ot').value;
     var endDate = document.getElementById('endDate_ot').value;
+    //電話承認者
+    var phoneApprover = document.getElementById('phoneApprover').value;
     var storeName = document.getElementById('store_name_ot').value;
     var reason = document.getElementById('reason_detail_ot').value;
     if(name == "" || date == "" || startDate == "" || endDate == "" || storeName == "" || reason == ""){
@@ -149,6 +154,7 @@ function overTimeUpdate(){
             startDate:startDate,
             endDate:endDate,
             storeName:storeName,
+            phoneApprover:phoneApprover,
             reason:reason,
             status:"unapproved",
         });
