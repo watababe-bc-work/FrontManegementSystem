@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Front Manegement System</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/honbu.css">
+</head>
+<body>
+    <div class="logo">
+        <img src="honbuImages/logo.jpeg" alt="">
+    </div>
+    <form action="http://www.google.co.jp/search" method="get">
+        <input type="hidden" name="hl" value="ja">
+        <input type="textbox" id="googleSearch" name="q" maxLength="255" size="30" placeholder="Googleで検索またはURL">
+    </form>
+    <!-- ここからPC用表示 -->
+    <div class="PC">
+        <div class="contents">
+            <table>
+                <tr>
+                    <td>
+                        <a href=https://owner.hotenavi.com/asia/pc/index.html id="owner_site" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/owner.png" alt="">
+                            <p>オーナーサイト</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="kanri.php" id="demand" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/demand.png" alt="">
+                            <p>要望</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="shopreportlisthonbu.php?d=<?=$sr_basedate;?>" id="accident_report" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/accident.png" alt="">
+                            <p>事故報告</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="shopcancellisthonbu.php?d=<?=$sr_basedate;?>" id="entering_room_reset" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/cancel.png" alt="">
+                            <p>入室取消</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="http://watanabe-bc.work/approval/index.php" id="approval" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/approve.png" alt="">
+                            <p>承認</p>
+                        </a>
+                    </td>
+                </tr>  
+                <tr>  
+                    <td>
+                        <a href="founditemlisthonbu.php" id="found" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/found.png" alt="">
+                            <p>拾得物</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://s3.kingtime.jp/admin" id="KOT" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/KOT1.png" alt="">
+                            <p>KOT<br>(ワタナベ・水木)</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://s2.kingtime.jp/admin" id="KOT2" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/KOT2.png" alt="">
+                            <p>KOT<br>(クラージュ)</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=4" id="shift" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/shift.png" alt="">
+                            <p>シフト</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="interview.html" id="interview" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/interview.png" alt="">
+                            <p>面接</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="overtimeAppList.html" id="overtime" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/overtime.png" alt="">
+                            <p>残業申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="ptoAppList.html" id="ptoApp" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/ptoApp.png" alt="">
+                            <p>有給申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="certificateList.html" id="cirtificate" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/certificate.png" alt="">
+                            <p>証明書申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="uniformList.html" id="uniform" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/uniform.png" alt="">
+                            <p>ユニフォーム申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="popDemand.html" id="POPDemand" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/popDemand.png" alt="">
+                            <p>POP,Web<br>料金変更要望</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td>
+                        <a href="https://hakuho-building.com/youbou/" id="signboard" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/kanban.png" alt="">
+                            <p>看板</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://twics.tamurasouko.com/" id="stock" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/zaiko.png" alt="">
+                            <p>在庫</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=5" id="Guidline" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/Guidline.png" alt="">
+                            <p>ガイドライン</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://watanabe.bridgefor.hbs-net.ne.jp/Account/Login" id="payroll" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/brige.png" alt="">
+                            <p>給料明細</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=6" id="contact" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/all_stores_notification.png" alt="">
+                            <p>全店通達</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td>
+                        <a href="https://docs.google.com/spreadsheets/d/1WQp6gxCZ1-wCvdTz02kuTJ_q40Sn2BzyELWhx2k_mwk/edit?usp=sharing" id="headProgram" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/headquarters_program.png" alt="">
+                            <p>本部予定表</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="program.html" id="equipment_inspection" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/equipment_inspection.png" alt="">
+                            <p>設備点検予定</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="equipmentManual.html" id="equipmentManual" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/equipmentManual.png" alt="">
+                            <p>設備マニュアル</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="http://watanabe-bc.work/car/honbu.php" id="Vehicle" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/Vehicle.png" alt="">
+                            <p>車両</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://www.elc.co.jp/plus/" id="OfficialTrip" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/OfficialTrip.png" alt="">
+                            <p>出張</p>
+                        </a>
+                    </td>
+                </tr> 
+            </table>
+        </div>
+    </div>
+    <!-- ここからスマホ表示 -->
+    <div class="phone">
+        <div class="contents">
+            <table>
+                <tr>
+                    <td>
+                        <a href=https://owner.hotenavi.com/asia/pc/index.html id="owner_site" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/owner.png" alt="">
+                            <p>オーナーサイト</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="kanri.php" id="demand" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/demand.png" alt="">
+                            <p>要望</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="shopreportlisthonbu.php?d=<?=$sr_basedate;?>" id="accident_report" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/accident.png" alt="">
+                            <p>事故報告</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="shopcancellisthonbu.php?d=<?=$sr_basedate;?>" id="entering_room_reset" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/cancel.png" alt="">
+                            <p>入室取消</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="http://watanabe-bc.work/approval/index.php" id="approval" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/approve.png" alt="">
+                            <p>承認</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="founditemlisthonbu.php" id="found" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/found.png" alt="">
+                            <p>拾得物</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://s3.kingtime.jp/admin" id="KOT" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/KOT1.png" alt="">
+                            <p>KOT<br>(ワタナベ・水木)</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://s2.kingtime.jp/admin" id="KOT2" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/KOT2.png" alt="">
+                            <p>KOT<br>(クラージュ)</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=4" id="shift" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/shift.png" alt="">
+                            <p>シフト</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>   
+                    <td>
+                        <a href="interview.html" id="interview" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/interview.png" alt="">
+                            <p>面接</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="overtimeAppList.html" id="overtime" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/overtime.png" alt="">
+                            <p>残業申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="ptoAppList.html" id="ptoApp" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/ptoApp.png" alt="">
+                            <p>有給申請</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="certificateList.html" id="cirtificate" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/certificate.png" alt="">
+                            <p>証明書申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="uniformList.html" id="uniform" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/uniform.png" alt="">
+                            <p>ユニフォーム申請</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="popDemand.html" id="POPDemand" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/popDemand.png" alt="">
+                            <p>POP,Web<br>料金変更要望</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td>
+                        <a href="https://hakuho-building.com/youbou/" id="signboard" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/kanban.png" alt="">
+                            <p>看板</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://twics.tamurasouko.com/" id="stock" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/zaiko.png" alt="">
+                            <p>在庫</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=5" id="Guidline" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/Guidline.png" alt="">
+                            <p>ガイドライン</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://watanabe.bridgefor.hbs-net.ne.jp/Account/Login" id="payroll" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/brige.png" alt="">
+                            <p>給料明細</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="honbuslidelist.php?t=6" id="contact" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/all_stores_notification.png" alt="">
+                            <p>全店通達</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="https://docs.google.com/spreadsheets/d/1WQp6gxCZ1-wCvdTz02kuTJ_q40Sn2BzyELWhx2k_mwk/edit?usp=sharing" id="headProgram" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/headquarters_program.png" alt="">
+                            <p>本部予定表</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>    
+                    <td>
+                        <a href="program.html" id="equipment_inspection" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/equipment_inspection.png" alt="">
+                            <p>設備点検予定</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="equipmentManual.html" id="equipmentManual" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/equipmentManual.png" alt="">
+                            <p>設備マニュアル</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="http://watanabe-bc.work/car/honbu.php" id="Vehicle" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/Vehicle.png" alt="">
+                            <p>車両</p>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="https://www.elc.co.jp/plus/" id="OfficialTrip" target="_blank" rel="noopener noreferrer">
+                            <img src="honbuImages/OfficialTrip.png" alt="">
+                            <p>出張</p>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="" id="commingSoon">
+                            <img src="honbuImages/commingSoon.png" alt="">
+                            <p>未実装</p>
+                        </a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

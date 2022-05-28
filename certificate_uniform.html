@@ -19,153 +19,6 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <div class="certificate">
-        <h1>証明書等発行 申請書用フォーム</h1>
-        <div class="certificate_checklist">
-            <p>※ 余裕を持って申請してください。<br>証明の内容や都合によって1週間ほど後の発行になる場合もあります。</p>
-            <p>※ 入社後実働14日以上経過した者が発行することが出来ます。</p>
-        </div>
-        <button class="addCertificate_button" id="addButton" onclick="addCertificateContent()">+証明書等の発行申請をする</button>
-        <div class="backwhite" id="addForm">
-            <form action="certificate_uniform.html" method="POST">
-                <div class="edit">
-                    <p>申請日:<span id="order_date"></span></p>
-                </div>
-                <div class="edit">
-                    <label for="">社員番号：</label>
-                    <input type="text" id="staffNum">
-                    <label for="">氏名：</label>
-                    <input type="text" id="name">
-                    <label for="">所属店舗：</label>
-                    <select id="store_name">
-                        <option value="">店舗を選択</option>
-                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
-                        <option value="池袋グランド">池袋グランド</option>
-                        <option value="アトランタ">アトランタ</option>
-                        <option value="アメジスト">アメジスト</option>
-                        <option value="池袋バリバリ">池袋バリバリ</option>
-                        <option value="ウエストワン">ウエストワン</option>
-                        <option value="サード">サード</option>
-                        <option value="クイーン">クイーン</option>
-                        <option value="池袋セントラル">池袋セントラル</option>
-                        <option value="パークサイド">パークサイド</option>
-                        <option value="グランヴィラ">グランヴィラ</option>
-                        <option value="ブルゾン">ブルゾン</option>
-                        <option value="ピュア">ピュア</option>
-                        <option value="松戸グランド">松戸グランド</option>
-                        <option value="カップルズインハッピー">カップルズインハッピー</option>
-                        <option value="トニーワン">トニーワン</option>
-                        <option value="サーティワン">サーティワン</option>
-                        <option value="センチュリー">センチュリー</option>
-                        <option value="ガーネット">ガーネット</option>
-                        <option value="リトルバリ">リトルバリ</option>
-                        <option value="アジアンリゾート">アジアンリゾート</option>
-                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
-                        <option value="ロックス新宿">ロックス新宿</option>
-                        <option value="ブレス">ブレス</option>
-                        <option value="チェルシー">チェルシー</option>
-                        <option value="エルメ">エルメ</option>
-                        <option value="パリス">パリス</option>
-                        <option value="ダイヤモンド">ダイヤモンド</option>
-                        <option value="エイジア">エイジア</option>
-                        <option value="オニキス">オニキス</option>
-                        <option value="アモーレ">アモーレ</option>
-                        <option value="IF">IF</option>
-                        <option value="ココバリ">ココバリ</option>
-                        <option value="エメラルド">エメラルド</option>
-                        <option value="五反田バリバリ">五反田バリバリ</option>
-                        <option value="バリバリANNEX">バリバリANNEX</option>
-                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
-                        <option value="ZALA">ZALA</option>
-                    </select>
-                </div>
-                <div class="edit">
-                    <label for="">必要書類：</label>
-                    <select name="" id="paper" onchange="paperInput()">
-                        <option value="">書類の種類を選択</option>
-                        <option value="在職証明書">在職証明書</option>
-                        <option value="源泉徴収票">源泉徴収票</option>
-                        <option value="給与明細">給与明細</option>
-                        <option value="賃金台帳">賃金台帳</option>
-                        <option value="その他">その他</option>
-                    </select>
-                    <div id="paper_input">
-                        <!-- selectに応じてinputがはいる -->
-                    </div>
-                    <label for="">必要部数：</label>
-                    <input type="number" id="required_number">部
-                </div>
-                <div class="edit">
-                    <label for="">提出先：</label>
-                    <input type="text" id="submission_target">
-                </div>
-                <div class="edit">
-                    <label for="" id="reason_label">依頼理由：</label>
-                    <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
-                </div>
-                <div class="edit">
-                    <label for="">希望期日：</label>
-                    <input type="date" id="enddate">まで
-                </div>
-                <div class="edit note">
-                    <label for="" id="note_label">備考/連絡事項：</label>
-                    <textarea name="" cols="50" rows="5" id="note_detail"></textarea>
-                </div>
-            </form>
-            <div id="Alert"></div>
-            <div class="buttons">
-                <button type="submit" class="btn btn-success" onclick="certificateUpdate()">申請</button>
-            </div>
-        </div>
-        <div class="certificate_table">
-            <h1>証明書等発行 申請書一覧</h1>
-            <div class="certificate_table_select">
-                <label for="">自店舗を選択:</label>
-                <select id="store_name_search" onchange="showTable()">
-                    <option value="">自店舗を選択</option>
-                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
-                    <option value="池袋グランド">池袋グランド</option>
-                    <option value="アトランタ">アトランタ</option>
-                    <option value="アメジスト">アメジスト</option>
-                    <option value="池袋バリバリ">池袋バリバリ</option>
-                    <option value="ウエストワン">ウエストワン</option>
-                    <option value="サード">サード</option>
-                    <option value="クイーン">クイーン</option>
-                    <option value="池袋セントラル">池袋セントラル</option>
-                    <option value="パークサイド">パークサイド</option>
-                    <option value="グランヴィラ">グランヴィラ</option>
-                    <option value="ブルゾン">ブルゾン</option>
-                    <option value="ピュア">ピュア</option>
-                    <option value="松戸グランド">松戸グランド</option>
-                    <option value="カップルズインハッピー">カップルズインハッピー</option>
-                    <option value="トニーワン">トニーワン</option>
-                    <option value="サーティワン">サーティワン</option>
-                    <option value="センチュリー">センチュリー</option>
-                    <option value="ガーネット">ガーネット</option>
-                    <option value="リトルバリ">リトルバリ</option>
-                    <option value="アジアンリゾート">アジアンリゾート</option>
-                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
-                    <option value="ロックス新宿">ロックス新宿</option>
-                    <option value="ブレス">ブレス</option>
-                    <option value="チェルシー">チェルシー</option>
-                    <option value="エルメ">エルメ</option>
-                    <option value="パリス">パリス</option>
-                    <option value="ダイヤモンド">ダイヤモンド</option>
-                    <option value="エイジア">エイジア</option>
-                    <option value="オニキス">オニキス</option>
-                    <option value="アモーレ">アモーレ</option>
-                    <option value="IF">IF</option>
-                    <option value="ココバリ">ココバリ</option>
-                    <option value="エメラルド">エメラルド</option>
-                    <option value="五反田バリバリ">五反田バリバリ</option>
-                    <option value="バリバリANNEX">バリバリANNEX</option>
-                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
-                    <option value="ZALA">ZALA</option>
-                </select>
-            </div>
-            <div id="table_list"></div>
-        </div>
-    </div>
     <div class="uniform">
         <div>
             <h1>ユニフォーム 申請用フォーム</h1>
@@ -227,14 +80,14 @@
                         <label for="">要望内容</label>
                         <select id="demand_uni" onchange="demandChange()">
                             <option value="">要望内容を選択</option>
-                            <option value="購入">購入</option>
-                            <option value="店舗予備">店舗予備</option>
+                            <option value="追加購入">追加購入</option>
+                            <option value="忘れ購入">忘れ購入</option>
                         </select>
                     </div>
                     <div class="edit">
                         <div id="normal">
                             <label for="">種類</label>
-                            <p>購入する備品のみ、その枚数を記入してください。</p>
+                            <p>追加購入する備品のみ、その枚数を記入してください。</p>
                             <table>
                                 <tr>
                                     <th>名称</th>
@@ -398,7 +251,181 @@
             </div>
             <div id="table_list2"></div>
         </div>
-    </div>    
+    </div>  
+    <div class="certificate">
+            <h1>証明書等発行 申請書用フォーム</h1>
+            <div class="certificate_checklist">
+                <p>※ 余裕を持って申請してください。<br>証明の内容や都合によって1週間ほど後の発行になる場合もあります。</p>
+                <p>※ 入社後実働14日以上経過した者が発行することが出来ます。</p>
+            </div>
+            <button class="addCertificate_button" id="addButton" onclick="addCertificateContent()">+証明書等の発行申請をする</button>
+            <div class="backwhite" id="addForm">
+                <form action="certificate_uniform.html" method="POST">
+                    <div class="edit">
+                        <p>申請日:<span id="order_date"></span></p>
+                    </div>
+                    <div class="edit">
+                        <label for="">社員番号：</label>
+                        <input type="text" id="staffNum">
+                        <label for="">氏名：</label>
+                        <input type="text" id="name">
+                        <label for="">所属店舗：</label>
+                        <select id="store_name">
+                            <option value="">店舗を選択</option>
+                            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                            <option value="池袋グランド">池袋グランド</option>
+                            <option value="アトランタ">アトランタ</option>
+                            <option value="アメジスト">アメジスト</option>
+                            <option value="池袋バリバリ">池袋バリバリ</option>
+                            <option value="ウエストワン">ウエストワン</option>
+                            <option value="サード">サード</option>
+                            <option value="クイーン">クイーン</option>
+                            <option value="池袋セントラル">池袋セントラル</option>
+                            <option value="パークサイド">パークサイド</option>
+                            <option value="グランヴィラ">グランヴィラ</option>
+                            <option value="ブルゾン">ブルゾン</option>
+                            <option value="ピュア">ピュア</option>
+                            <option value="松戸グランド">松戸グランド</option>
+                            <option value="カップルズインハッピー">カップルズインハッピー</option>
+                            <option value="トニーワン">トニーワン</option>
+                            <option value="サーティワン">サーティワン</option>
+                            <option value="センチュリー">センチュリー</option>
+                            <option value="ガーネット">ガーネット</option>
+                            <option value="リトルバリ">リトルバリ</option>
+                            <option value="アジアンリゾート">アジアンリゾート</option>
+                            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                            <option value="ロックス新宿">ロックス新宿</option>
+                            <option value="ブレス">ブレス</option>
+                            <option value="チェルシー">チェルシー</option>
+                            <option value="エルメ">エルメ</option>
+                            <option value="パリス">パリス</option>
+                            <option value="ダイヤモンド">ダイヤモンド</option>
+                            <option value="エイジア">エイジア</option>
+                            <option value="オニキス">オニキス</option>
+                            <option value="アモーレ">アモーレ</option>
+                            <option value="IF">IF</option>
+                            <option value="ココバリ">ココバリ</option>
+                            <option value="エメラルド">エメラルド</option>
+                            <option value="五反田バリバリ">五反田バリバリ</option>
+                            <option value="バリバリANNEX">バリバリANNEX</option>
+                            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                            <option value="ZALA">ZALA</option>
+                        </select>
+                    </div>
+                    <div class="edit">
+                        <!-- <label for="">必要書類：</label>
+                        <select name="" id="paper" onchange="paperInput()">
+                            <option value="">書類の種類を選択</option>
+                            <option value="在職証明書">在職証明書</option>
+                            <option value="源泉徴収票">源泉徴収票</option>
+                            <option value="給与明細">給与明細</option>
+                            <option value="賃金台帳">賃金台帳</option>
+                            <option value="その他">その他</option>
+                        </select> -->
+                        <div class="checkboxes">
+                            <p>必要書類:</p>
+                            <input type="checkbox" id="certificate_of_employment" onchange="paperInput()">
+                            <label for="certificate_of_employment">在職証明書</label>
+    
+                            <input type="checkbox" id="tax" onchange="paperInput()">
+                            <label for="tax">源泉徴収票</label>
+                            <div id="tax_input">
+                                <input type="text" id="tax_withholding">年分
+                            </div>
+    
+                            <input type="checkbox" id="payroll" onchange="paperInput()">
+                            <label for="payroll">給与明細</label>
+                            <div id="payroll_input">
+                                期間：<input type="date" id="payroll_item_start">~<input type="date" id="payroll_item_end">
+                            </div>
+    
+                            <input type="checkbox" id="wage" onchange="paperInput()">
+                            <label for="wage">賃金台帳</label>
+                            <div id="wage_input">
+                                期間：<input type="date" id="wage_ledger_start">~<input type="date" id="wage_ledger_end">
+                            </div>
+    
+                            <input type="checkbox" id="otherCheck" onchange="paperInput()">
+                            <label for="otherCheck">その他</label>
+                            <div id="other_input">
+                                <input type="text" id="other">
+                            </div>
+                        </div>
+                        <br>
+                        <label for="">必要部数：</label>
+                        <input type="number" id="required_number">部
+                    </div>
+                    <div class="edit">
+                        <label for="">提出先：</label>
+                        <input type="text" id="submission_target">
+                    </div>
+                    <div class="edit">
+                        <label for="" id="reason_label">依頼理由：</label>
+                        <textarea name="" cols="50" rows="5" id="reason_detail"></textarea>
+                    </div>
+                    <div class="edit">
+                        <label for="">希望期日：</label>
+                        <input type="date" id="enddate">まで
+                    </div>
+                    <div class="edit note">
+                        <label for="" id="note_label">備考/連絡事項：</label>
+                        <textarea name="" cols="50" rows="5" id="note_detail"></textarea>
+                    </div>
+                </form>
+                <div id="Alert"></div>
+                <div class="buttons">
+                    <button type="submit" class="btn btn-success" onclick="certificateUpdate()">申請</button>
+                </div>
+            </div>
+            <div class="certificate_table">
+                <h1>証明書等発行 申請書一覧</h1>
+                <div class="certificate_table_select">
+                    <label for="">自店舗を選択:</label>
+                    <select id="store_name_search" onchange="showTable()">
+                        <option value="">自店舗を選択</option>
+                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                        <option value="池袋グランド">池袋グランド</option>
+                        <option value="アトランタ">アトランタ</option>
+                        <option value="アメジスト">アメジスト</option>
+                        <option value="池袋バリバリ">池袋バリバリ</option>
+                        <option value="ウエストワン">ウエストワン</option>
+                        <option value="サード">サード</option>
+                        <option value="クイーン">クイーン</option>
+                        <option value="池袋セントラル">池袋セントラル</option>
+                        <option value="パークサイド">パークサイド</option>
+                        <option value="グランヴィラ">グランヴィラ</option>
+                        <option value="ブルゾン">ブルゾン</option>
+                        <option value="ピュア">ピュア</option>
+                        <option value="松戸グランド">松戸グランド</option>
+                        <option value="カップルズインハッピー">カップルズインハッピー</option>
+                        <option value="トニーワン">トニーワン</option>
+                        <option value="サーティワン">サーティワン</option>
+                        <option value="センチュリー">センチュリー</option>
+                        <option value="ガーネット">ガーネット</option>
+                        <option value="リトルバリ">リトルバリ</option>
+                        <option value="アジアンリゾート">アジアンリゾート</option>
+                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                        <option value="ロックス新宿">ロックス新宿</option>
+                        <option value="ブレス">ブレス</option>
+                        <option value="チェルシー">チェルシー</option>
+                        <option value="エルメ">エルメ</option>
+                        <option value="パリス">パリス</option>
+                        <option value="ダイヤモンド">ダイヤモンド</option>
+                        <option value="エイジア">エイジア</option>
+                        <option value="オニキス">オニキス</option>
+                        <option value="アモーレ">アモーレ</option>
+                        <option value="IF">IF</option>
+                        <option value="ココバリ">ココバリ</option>
+                        <option value="エメラルド">エメラルド</option>
+                        <option value="五反田バリバリ">五反田バリバリ</option>
+                        <option value="バリバリANNEX">バリバリANNEX</option>
+                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                        <option value="ZALA">ZALA</option>
+                    </select>
+                </div>
+                <div id="table_list"></div>
+            </div>
+        </div>  
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

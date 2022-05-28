@@ -76,10 +76,13 @@ form{
 
     .edit{
         margin: 25px 0;
-        label{
-            margin-left:20px;
-            @include mq-up('xs') {
-                margin-left: 0;
+
+        .checkboxes{
+            p{
+                font-weight: 600;
+            }
+            label{
+                margin-right: 10px;
             }
         }
     }

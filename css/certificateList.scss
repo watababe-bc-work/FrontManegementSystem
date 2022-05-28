@@ -12,17 +12,16 @@ h1{
     background: white;
     margin-top: 50px;
     margin-bottom: 10px;
-    margin-left: 5%;
-    margin-right: 5%;
     padding: 20px 0;
     border-radius: 20px;
 
     th,td{
         font-size: 15px;
+        min-width: 100px;
     }
 
     button{
-        margin: 0 5px;
+        margin: 2px 5px;
     }
 
     .collectBack{

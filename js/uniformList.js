@@ -38,7 +38,7 @@ document.getElementById('prevButton').style.visibility = 'hidden';
       var stocklist = '<table class="table table-striped">'
       stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
-        if(postDoc.get('demandStatus') == "購入"){
+        if(postDoc.get('demandStatus') == "追加購入"){
             switch(postDoc.get('status')){
                 //承認
                   case 'approve':
@@ -107,7 +107,7 @@ function showTable(){
         var stocklist = '<table class="table table-striped">'
         stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == "購入"){
+            if(postDoc.get('demandStatus') == "追加購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
@@ -174,7 +174,7 @@ function editStatus(id){
         document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
         document.getElementById('name_edit').textContent = carrentDB.get('name');
         var demandStatus = carrentDB.get('demandStatus');
-        if(demandStatus == '購入'){
+        if(demandStatus == '追加購入'){
             document.getElementById('normal').style.display = "";
             document.getElementById('emergency').style.display = "none";
             document.getElementById('blackS').value = carrentDB.get('blackS');
@@ -252,7 +252,7 @@ function nextPegination(){
           var stocklist = '<table class="table table-striped">'
           stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == "購入"){
+            if(postDoc.get('demandStatus') == "追加購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
@@ -307,7 +307,7 @@ function returnTable(){
   var stocklist = '<table class="table table-striped">'
   stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
-    if(postDoc.get('demandStatus') == "購入"){
+    if(postDoc.get('demandStatus') == "追加購入"){
         switch(postDoc.get('status')){
             //承認
               case 'approve':
@@ -356,7 +356,7 @@ function returnTable(){
 
 //status編集
 function EditUpdate(id,status){
-    if(status == '購入'){
+    if(status == '追加購入'){
         var blackS = Number(document.getElementById('blackS').value);
         var blackM = Number(document.getElementById('blackM').value);
         var blackL = Number(document.getElementById('blackL').value);
@@ -387,7 +387,7 @@ function EditUpdate(id,status){
     //status
     var order_category = document.getElementById('order_category').value;
     var approver = document.getElementById('approver').value;
-    if(status == "購入"){
+    if(status == "追加購入"){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
             blackS:blackS,
@@ -437,7 +437,7 @@ function deleteContent(id,name){
     } 
 };
 
-//購入PDF作成
+//追加購入PDF作成
 function NormalPDF(id){
     (async () => {
       try {

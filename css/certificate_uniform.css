@@ -46,14 +46,12 @@ form .edit {
   margin: 25px 0;
 }
 
-form .edit label {
-  margin-left: 20px;
+form .edit .checkboxes p {
+  font-weight: 600;
 }
 
-@media screen and (max-width: 576px) {
-  form .edit label {
-    margin-left: 0;
-  }
+form .edit .checkboxes label {
+  margin-right: 10px;
 }
 
 form #subject {

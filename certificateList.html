@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Front Manegement System ~証明書等発行申請一覧~</title>
+    <title>証明書等発行申請一覧</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -87,6 +87,10 @@
                     </div>
                 </div>
                 <br>
+                <div id="papersCheck">
+                    <!-- 必要書類の状態が見れる -->
+                </div>
+                <br>
                 <div class="edit">
                     <label for="">処理：</label>
                     <select name="" id="order_category" onchange="change();">
@@ -98,6 +102,11 @@
                         <label for="">承認者</label>
                         <input type="text" id="approver">
                     </div>
+                </div>
+                <br>
+                <div class="edit">
+                    <label for="">備考/連絡事項</label>
+                    <p id="note_edit"></p>
                 </div>
             </form>
             <br>

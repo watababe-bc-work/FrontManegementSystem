@@ -138,7 +138,8 @@ function overTimeUpdate(){
     var startDate = document.getElementById('startDate_ot').value;
     var endDate = document.getElementById('endDate_ot').value;
     //電話承認者
-    var phoneApprover = document.getElementById('phoneApprover').value;
+    var phoneApprover = document.getElementById('phoneApprover_ot').value;
+    console.log(phoneApprover);
     var storeName = document.getElementById('store_name_ot').value;
     var reason = document.getElementById('reason_detail_ot').value;
     if(name == "" || date == "" || startDate == "" || endDate == "" || storeName == "" || reason == ""){
@@ -180,23 +181,23 @@ function showTableOt(){
         querySnapshot = await query.get();
 
         var stocklist = '<table class="table table-striped">'
-        stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請日時</th><th>状態</th><th>本部回答</th>';
+        stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>氏名</th><th>申請日時</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>本部回答</th>';
         querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
             //承認
             case 'approve':
                 var statusText = "承認";
-                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approvalPerson') +'</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
                 break;
             //不承認      
             case 'disapproval':
                 var statusText = "不承認";
-                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approvalPerson') +'</td><td>' + statusText + '</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
                 break;
             //未承認      
             default:
                 var statusText = "未承認";
-                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('staffNum') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('date') + " " + postDoc.get('startDate') + "~" + postDoc.get('endDate') +  '</td><td>'+ postDoc.get('phoneApprover') +'</td><td></td><td>' + statusText + '</td><td></td></tr></tbody>';
                 break;        
             }
         })

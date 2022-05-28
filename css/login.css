@@ -1,0 +1,126 @@
+body {
+  text-align: center;
+}
+
+.form {
+  margin-top: 60px;
+  margin-bottom: 40px;
+}
+
+@media screen and (max-width: 1200px) {
+  .form {
+    margin-top: 50px;
+    margin-bottom: 30px;
+  }
+}
+
+.form input {
+  border: solid 1px white;
+  font-size: 25px;
+  border-radius: 10px;
+  margin: 20px 0;
+  border: 2px solid gray;
+}
+
+.form input::-webkit-input-placeholder {
+  color: #666;
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.form input:-ms-input-placeholder {
+  color: #666;
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.form input::-ms-input-placeholder {
+  color: #666;
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.form input::placeholder {
+  color: #666;
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.form input[type="mail"] {
+  background-image: url("../honbuImages/email.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-indent: 40px;
+  background-size: 30px;
+  background-position-x: 10px;
+  background-position-y: 15px;
+  width: 400px;
+  height: 60px;
+}
+
+@media screen and (max-width: 1200px) {
+  .form input[type="mail"] {
+    background-size: 25px;
+    background-position-x: 10px;
+    background-position-y: 10px;
+    width: 300px;
+    height: 50px;
+  }
+}
+
+.form input[type="password"] {
+  background-image: url("../honbuImages/password.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  text-indent: 40px;
+  background-size: 30px;
+  background-position-x: 10px;
+  background-position-y: 15px;
+  width: 400px;
+  height: 60px;
+}
+
+@media screen and (max-width: 1200px) {
+  .form input[type="password"] {
+    background-size: 25px;
+    background-position-x: 10px;
+    background-position-y: 10px;
+    width: 300px;
+    height: 50px;
+  }
+}
+
+#login_button {
+  background: #FFEB00;
+  color: black;
+  font-size: 20px;
+  padding: 15px 0;
+  border-radius: 10px;
+  font-weight: bold;
+  border: none;
+  -webkit-box-shadow: 3px 3px 3px lightgray;
+          box-shadow: 3px 3px 3px lightgray;
+  margin-top: 60px;
+  width: 300px;
+}
+
+@media screen and (max-width: 1200px) {
+  #login_button {
+    margin-top: 40px;
+    font-size: 15px;
+    padding: 15px 80px;
+  }
+}
+
+#Alert {
+  font-size: 15px;
+  padding: 10px 0;
+  color: red;
+}
+
+#Alert {
+  font-size: 15px;
+  padding: 10px 0;
+  color: #38b48b;
+}
+/*# sourceMappingURL=login.css.map */

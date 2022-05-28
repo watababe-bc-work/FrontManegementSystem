@@ -41,17 +41,17 @@ document.getElementById('prevButton').style.visibility = 'hidden';
         //承認
           case 'approve':
               var statusText = "承認";
-              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
         //発送済み     
           case 'delivered':
               var statusText = "発送済み";
-              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
         //未承認      
           default:
               var statusText = "未承認";
-              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;        
         }
       })
@@ -90,17 +90,17 @@ function showTable(){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
               case 'delivered':
                   var statusText = "発送済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
           })
@@ -130,6 +130,29 @@ function editStatus(id){
         const carrentDB = await db.collection('certificates').doc(id).get();
         document.getElementById('name_edit').textContent = carrentDB.get('name');
         document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt');
+        document.getElementById('note_edit').textContent = carrentDB.get('note');
+
+        //必要書類確認
+        var paperCheck = carrentDB.get('paper');
+        var stocklist = "<label>必要書類</label>";
+        if(paperCheck.match(/在職証明書/)){
+            stocklist += '<p>在職証明書</p>';
+        }
+        if(paperCheck.match(/源泉徴収票/)){
+            stocklist += '<p>源泉徴収票('+ carrentDB.get('tax_withholding') +'年分)</p>';
+        }
+        if(paperCheck.match(/給与明細/)){
+            stocklist += '<p>給与明細(期間：'+ carrentDB.get('payroll_item_start') + '~' + carrentDB.get('payroll_item_end') +')</p>';
+        }
+        if(paperCheck.match(/賃金台帳/)){
+            stocklist += '<p>賃金台帳(期間：'+ carrentDB.get('wage_ledger_start') + '~' + carrentDB.get('wage_ledger_end') +')</p>';
+        }
+        if(paperCheck.match(/その他/)){
+            stocklist += '<p>その他'+ carrentDB.get('other') +'</p>';
+        }
+
+        document.getElementById('papersCheck').innerHTML = stocklist;
+
         var approver = carrentDB.get('approver');
         if(approver == null){
             document.getElementById('approver').value = "";
@@ -151,7 +174,7 @@ function editStatus(id){
         //編集送信ボタン生成
         document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\')">送信する</button>';
     } catch (err) {
-    console.log(`Error: ${JSON.stringify(err)}`)
+    console.log(err);
     }
 })();
 }
@@ -181,17 +204,17 @@ function nextPegination(){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
               case 'delivered':
                   var statusText = "発送済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
           })
@@ -216,17 +239,17 @@ function returnTable(){
     //承認
       case 'approve':
           var statusText = "承認";
-          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
     //発送済み     
       case 'delivered':
           var statusText = "発送済み";
-          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
     //未承認      
       default:
           var statusText = "未承認";
-          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a></td></tr></tbody>';
+          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;        
     }
   })
@@ -253,6 +276,20 @@ function EditUpdate(id){
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
     setTimeout("location.reload()",2000);
 }
+
+//削除
+function deleteContent(id,name){
+    var res = window.confirm(name + "さんの申請を削除しますか？");
+    if( res ) {
+        db.collection('certificates').doc(id).delete();
+        alert("削除されました。");
+        setTimeout("location.reload()",500);
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+};
 
 //PDF作成
 function createPDF(id){
@@ -288,6 +325,26 @@ function createPDF(id){
             default:
             break;
         }
+
+    //必要書類確認
+    var paperCheck = carrentDB.get('paper');
+    var stocklist = "";
+    if(paperCheck.match(/在職証明書/)){
+        stocklist += "在職証明書\n";
+    }
+    if(paperCheck.match(/源泉徴収票/)){
+        stocklist += '源泉徴収票('+ carrentDB.get('tax_withholding') +'年分)\n'
+    }
+    if(paperCheck.match(/給与明細/)){
+        stocklist += '給与明細(期間：'+ carrentDB.get('payroll_item_start') + '~' + carrentDB.get('payroll_item_end') +')\n';
+    }
+    if(paperCheck.match(/賃金台帳/)){
+        stocklist += '賃金台帳(期間：'+ carrentDB.get('wage_ledger_start') + '~' + carrentDB.get('wage_ledger_end') +')\n';
+    }
+    if(paperCheck.match(/その他/)){
+        stocklist += 'その他'+ carrentDB.get('other') +'\n';
+    }  
+
       //必要部数  
       var required_number = carrentDB.get('required_number');
       //提出先
@@ -383,1080 +440,219 @@ function createPDF(id){
           };
 
           //ここからPDFコード
-          switch(paper){
-            case "源泉徴収票":
-              //PDF作成処理
-                var docDef = {
-                    content: [
+          //PDF作成処理
+          var docDef = {
+            content: [
+                {
+                columns: [
+                    {
+                        width: '*',
+                        text: '証明書等発行申請書',
+                        margin: [ 0, 0, 0, 10 ],
+                        style: ['center','border'],
+                        fontSize: 20
+                    }
+                ],
+                columnGap: 10
+                },
+                {
+                columns: [
+                    {
+                        width: '*',
+                        text: '《 申請日 》' + createdAt,
+                        margin: [ 0, 0, 0, 10 ],
+                        style: ['right','border'],
+                        fontSize: 15
+                    }
+                ],
+                columnGap: 10
+                },
+                {
+                columns: [
+                    {
+                        width: '*',
+                        text: '《 所属店舗 》' + store,
+                        margin: [ 0, 0, 0, 10 ],
+                        style: ['right','border'],
+                        fontSize: 15
+                    }
+                ],
+                columnGap: 10
+                },
+                {
+                    columns: [
                         {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '証明書等発行申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 申請日 》' + createdAt,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 所属店舗 》' + store,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 社員番号 》' + staffNum,
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                            },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 氏名 》' + name + '       印',
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要書類:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: paper + '(' + tax_withholding + '年分)',
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要部数:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: required_number + "部",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '提出先:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: submission_target,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '依頼理由:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: reason,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '希望期日:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: endDate + "まで",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '備考/連絡事項:',
-                                    margin: [ 0, 10, 0, 0 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: note,
-                                    margin: [ 0, 0, 0, 50 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            table: {
-                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                                widths: [100,100],
-                                margin: [ 100, 0, 0, 0 ],
-                                style:['right'],
-                                body: [
-                                    [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                                    [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
-                                ]
-                            }
-                        },
-                    ],
-                    styles:{
-                        center:{
-                            alignment: 'center'
-                        },
-                        right:{
-                        alignment: 'right'
-                        },
-                        left:{
-                        alignment: 'left'
-                        },
-                        border:{
-                            decorationStyle:'dashed'
+                            width: '*',
+                            text: '《 社員番号 》' + staffNum,
+                            margin: [ 0, 0, 0, 10 ],
+                            style: ['right','border'],
+                            fontSize: 15
                         }
-                    },
-                    defaultStyle: {
-                        font: 'GenShin',
-                    },
-                };
-            break;
-            case "給与明細":
-                var docDef = {
-                    content: [
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '証明書等発行申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 申請日 》' + createdAt,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 所属店舗 》' + store,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 社員番号 》' + staffNum,
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                            },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 氏名 》' + name + '       印',
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要書類:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: paper + '(期間:' + payroll_item_start + '~' + payroll_item_end +')',
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要部数:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: required_number + "部",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '提出先:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: submission_target,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '依頼理由:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: reason,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '希望期日:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: endDate + "まで",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '備考/連絡事項:',
-                                    margin: [ 0, 10, 0, 0 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: note,
-                                    margin: [ 0, 0, 0, 50 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            table: {
-                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                                widths: [100,100],
-                                margin: [ 100, 0, 0, 0 ],
-                                style:['right'],
-                                body: [
-                                    [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                                    [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
-                                ]
-                            }
-                        },
                     ],
-                    styles:{
-                        center:{
-                            alignment: 'center'
-                        },
-                        right:{
-                        alignment: 'right'
-                        },
-                        left:{
-                        alignment: 'left'
-                        },
-                        border:{
-                            decorationStyle:'dashed'
+                    columnGap: 10
+                    },
+                {
+                    columns: [
+                        {
+                            width: '*',
+                            text: '《 氏名 》' + name + '       印',
+                            margin: [ 0, 0, 0, 10 ],
+                            style: ['right','border'],
+                            fontSize: 15
                         }
-                    },
-                    defaultStyle: {
-                        font: 'GenShin',
-                    },
-                };
-            break;
-            case "賃金台帳":
-                var docDef = {
-                    content: [
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '証明書等発行申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 申請日 》' + createdAt,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 所属店舗 》' + store,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 社員番号 》' + staffNum,
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                            },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 氏名 》' + name + '       印',
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要書類:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: paper + '(期間:' + wage_ledger_start + '~' + wage_ledger_end +')',
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要部数:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: required_number + "部",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '提出先:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: submission_target,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '依頼理由:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: reason,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '希望期日:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: endDate + "まで",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '備考/連絡事項:',
-                                    margin: [ 0, 10, 0, 0 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: note,
-                                    margin: [ 0, 0, 0, 50 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            table: {
-                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                                widths: [100,100],
-                                margin: [ 100, 0, 0, 0 ],
-                                style:['right'],
-                                body: [
-                                    [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                                    [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
-                                ]
-                            }
-                        },
                     ],
-                    styles:{
-                        center:{
-                            alignment: 'center'
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '必要書類:',
+                            margin: [ 0, 10, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 15
                         },
-                        right:{
-                        alignment: 'right'
-                        },
-                        left:{
-                        alignment: 'left'
-                        },
-                        border:{
-                            decorationStyle:'dashed'
+                        {
+                            width: '*',
+                            text: stocklist,
+                            margin: [ 0, 5, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 20
                         }
-                    },
-                    defaultStyle: {
-                        font: 'GenShin',
-                    },
-                };
-            break;
-            case "その他":
-                var docDef = {
-                    content: [
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '証明書等発行申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 申請日 》' + createdAt,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 所属店舗 》' + store,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 社員番号 》' + staffNum,
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                            },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 氏名 》' + name + '       印',
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要書類:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: paper + '(' + other + ')',
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要部数:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: required_number + "部",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '提出先:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: submission_target,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '依頼理由:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: reason,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '希望期日:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: endDate + "まで",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '備考/連絡事項:',
-                                    margin: [ 0, 10, 0, 0 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: note,
-                                    margin: [ 0, 0, 0, 50 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            table: {
-                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                                widths: [100,100],
-                                margin: [ 100, 0, 0, 0 ],
-                                style:['right'],
-                                body: [
-                                    [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                                    [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
-                                ]
-                            }
-                        },
                     ],
-                    styles:{
-                        center:{
-                            alignment: 'center'
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '必要部数:',
+                            margin: [ 0, 10, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 15
                         },
-                        right:{
-                        alignment: 'right'
-                        },
-                        left:{
-                        alignment: 'left'
-                        },
-                        border:{
-                            decorationStyle:'dashed'
+                        {
+                            width: '*',
+                            text: required_number + "部",
+                            margin: [ 0, 5, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 20
                         }
-                    },
-                    defaultStyle: {
-                        font: 'GenShin',
-                    },
-                };
-            break;
-            default:
-                //在職証明書
-                var docDef = {
-                    content: [
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '証明書等発行申請書',
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['center','border'],
-                                fontSize: 20
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 申請日 》' + createdAt,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '《 所属店舗 》' + store,
-                                margin: [ 0, 0, 0, 10 ],
-                                style: ['right','border'],
-                                fontSize: 15
-                            }
-                        ],
-                        columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 社員番号 》' + staffNum,
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                            },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: '《 氏名 》' + name + '       印',
-                                    margin: [ 0, 0, 0, 10 ],
-                                    style: ['right','border'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要書類:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: paper,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '必要部数:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: required_number + "部",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '提出先:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: submission_target,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '依頼理由:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: reason,
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '希望期日:',
-                                    margin: [ 0, 10, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                },
-                                {
-                                    width: '*',
-                                    text: endDate + "まで",
-                                    margin: [ 0, 5, 0, 10 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: 'auto',
-                                    text:  '備考/連絡事項:',
-                                    margin: [ 0, 10, 0, 0 ],
-                                    style: ['left'],
-                                    fontSize: 15
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            columns: [
-                                {
-                                    width: '*',
-                                    text: note,
-                                    margin: [ 0, 0, 0, 50 ],
-                                    style: ['left'],
-                                    fontSize: 20
-                                }
-                            ],
-                            columnGap: 10
-                        },
-                        {
-                            table: {
-                                headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-                                widths: [100,100],
-                                margin: [ 100, 0, 0, 0 ],
-                                style:['right'],
-                                body: [
-                                    [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                                    [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
-                                ]
-                            }
-                        },
                     ],
-                    styles:{
-                        center:{
-                            alignment: 'center'
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '提出先:',
+                            margin: [ 0, 10, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 15
                         },
-                        right:{
-                        alignment: 'right'
-                        },
-                        left:{
-                        alignment: 'left'
-                        },
-                        border:{
-                            decorationStyle:'dashed'
+                        {
+                            width: '*',
+                            text: submission_target,
+                            margin: [ 0, 5, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 20
                         }
-                    },
-                    defaultStyle: {
-                        font: 'GenShin',
-                    },
-                };
-            break;
-        }
+                    ],
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '依頼理由:',
+                            margin: [ 0, 10, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 15
+                        },
+                        {
+                            width: '*',
+                            text: reason,
+                            margin: [ 0, 5, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 20
+                        }
+                    ],
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '希望期日:',
+                            margin: [ 0, 10, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 15
+                        },
+                        {
+                            width: '*',
+                            text: endDate + "まで",
+                            margin: [ 0, 5, 0, 10 ],
+                            style: ['left'],
+                            fontSize: 20
+                        }
+                    ],
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: 'auto',
+                            text:  '備考/連絡事項:',
+                            margin: [ 0, 10, 0, 0 ],
+                            style: ['left'],
+                            fontSize: 15
+                        }
+                    ],
+                    columnGap: 10
+                },
+                {
+                    columns: [
+                        {
+                            width: '*',
+                            text: note,
+                            margin: [ 0, 0, 0, 50 ],
+                            style: ['left'],
+                            fontSize: 20
+                        }
+                    ],
+                    columnGap: 10
+                },
+                {
+                    table: {
+                        headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
+                        widths: [100,100],
+                        margin: [ 100, 0, 0, 0 ],
+                        style:['right'],
+                        body: [
+                            [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
+                            [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
+                        ]
+                    }
+                },
+            ],
+            styles:{
+                center:{
+                    alignment: 'center'
+                },
+                right:{
+                alignment: 'right'
+                },
+                left:{
+                alignment: 'left'
+                },
+                border:{
+                    decorationStyle:'dashed'
+                }
+            },
+            defaultStyle: {
+                font: 'GenShin',
+            },
+        };
           pdfMake.createPdf(docDef).print();
           //pdfMake.createPdf(docDef).download("残業申請書.pdf");
     } catch (err) {
