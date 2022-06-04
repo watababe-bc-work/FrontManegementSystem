@@ -1,0 +1,122 @@
+body{
+    text-align: center;
+    background: #d3d3d3;
+}
+
+h2{
+    margin: 30px 0;
+    color: #696969;
+    font-size: 30px;
+}
+
+.backwhite{
+    margin: 20px 10%;
+    padding: 10px 0;
+    border-radius: 20px;
+    box-shadow: #666666 10px 5px 5px;
+    background: white;
+}
+
+#addButton{
+    background: orange;
+    color: white;
+    border-radius: 50px;
+    font-size: 15px;
+    border: none;
+    margin: 5px 0;
+    padding: 5px 10px;
+}
+
+form{
+    font-size: 15px;
+
+    .edit{
+        margin: 25px 0;
+        label{
+            margin-left:20px;
+        }
+    }
+    #subject{
+        width: 50%;
+    }
+
+    #count{
+        width: 50px;
+    }
+
+    #status_desc_label,#process_content_label{
+        vertical-align: top;
+    }
+}
+
+.alert{
+    font-size: 15px;
+}
+
+.btn{
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.table_select{
+    label,select{
+        font-size: 15px;
+    }
+}
+
+#table_list{
+    font-size: 15px;
+    .collectBack{
+        background: #91B87E;
+        color: white;
+    }
+
+    .yetBack{
+        background: #E1DBCD;
+    }
+}
+
+.nextButton{
+    text-align: left;
+    margin-left: 5%;
+    .btn,
+    a.btn,
+    button.btn {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.5;
+      position: relative;
+      display: inline-block;
+      padding: 1rem 4rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      color: #212529;
+      border-radius: 0.5rem;
+      margin-bottom: 3%;
+    }
+
+    a.btn-radius-solid {
+        border: 1px solid #ccc;
+        background: #f1e767;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+        -webkit-box-shadow: inset 1px 1px 1px #fff;
+        box-shadow: inset 1px 1px 1px #fff;
+      }
+      
+      a.btn-radius-solid:hover {
+        background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+    }
+}

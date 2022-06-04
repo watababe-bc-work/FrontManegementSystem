@@ -25,6 +25,26 @@ body{
         opacity: 0.6;
     }
 
+    #userName{
+        background-image: url('../honbuImages/owner.png');
+        background-size:contain;
+        background-repeat: no-repeat;
+        text-indent: 40px;
+        background-size: 30px;
+        background-position-x: 10px;
+        background-position-y: 15px;
+        width: 400px;
+        height: 60px;
+
+        @media screen and (max-width: 1200px) {
+            background-size: 25px;
+            background-position-x: 10px;
+            background-position-y: 10px;
+            width: 300px;
+            height: 50px;
+        }
+    }
+
     input[type="mail"]{
         background-image: url('../honbuImages/email.png');
         background-size:contain;
@@ -86,13 +106,13 @@ body{
     }
 }
 
-#Alert{
+#Alert_danger{
     font-size: 15px;
     padding: 10px 0;
     color: red;
 }
 
-#Alert{
+#Alert_success{
     font-size: 15px;
     padding: 10px 0;
     color: #38b48b;

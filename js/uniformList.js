@@ -56,7 +56,7 @@ document.getElementById('prevButton').style.visibility = 'hidden';
                       stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
-        }else{
+        }else if(postDoc.get('demandStatus') == "忘れ購入"){
             switch(postDoc.get('status')){
                 //承認
                   case 'approve':
@@ -72,6 +72,24 @@ document.getElementById('prevButton').style.visibility = 'hidden';
                   default:
                       var statusText = "未承認";
                       stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      break;        
+            }
+        }else{
+            switch(postDoc.get('status')){
+                //承認
+                  case 'approve':
+                      var statusText = "承認";
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      break;
+                //発送済み     
+                  case 'delivered':
+                      var statusText = "発送済み";
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      break;
+                //未承認      
+                  default:
+                      var statusText = "未承認";
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
         }
@@ -125,7 +143,7 @@ function showTable(){
                           stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
-            }else{
+            }else if(postDoc.get('demandStatus') == "忘れ購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
@@ -141,6 +159,24 @@ function showTable(){
                       default:
                           var statusText = "未承認";
                           stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;        
+                }
+            }else{
+                switch(postDoc.get('status')){
+                    //承認
+                      case 'approve':
+                          var statusText = "承認";
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;
+                    //発送済み     
+                      case 'delivered':
+                          var statusText = "発送済み";
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;
+                    //未承認      
+                      default:
+                          var statusText = "未承認";
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }
@@ -177,6 +213,7 @@ function editStatus(id){
         if(demandStatus == '追加購入'){
             document.getElementById('normal').style.display = "";
             document.getElementById('emergency').style.display = "none";
+            document.getElementById('nameplate').style.display = "none";
             document.getElementById('blackS').value = carrentDB.get('blackS');
             document.getElementById('blackM').value = carrentDB.get('blackM');
             document.getElementById('blackL').value = carrentDB.get('blackL');
@@ -193,9 +230,10 @@ function editStatus(id){
             document.getElementById('fleece_blueM').value = carrentDB.get('fleece_blueM');
             document.getElementById('fleece_blueL').value = carrentDB.get('fleece_blueL');
             document.getElementById('fleece_blueXL').value = carrentDB.get('fleece_blueXL');
-        }else{
+        }else if(demandStatus == "忘れ購入"){
             document.getElementById('normal').style.display = "none";
             document.getElementById('emergency').style.display = "";  
+            document.getElementById('nameplate').style.display = "none";
             var category = carrentDB.get('category');
             if(category == "ポロシャツ青LL"){
                 document.getElementById('blue').checked = true;
@@ -204,7 +242,28 @@ function editStatus(id){
                 document.getElementById('black').checked = true;
                 document.getElementById('blue').checked = false;
             }
+        }else{
+            document.getElementById('normal').style.display = "none";
+            document.getElementById('emergency').style.display = "none";
+            document.getElementById('nameplate').style.display = "";
+            document.getElementById('shiftName').value = carrentDB.get('shiftName');
+            var nameplateColor = document.getElementById('nameplateColor');
+            switch(carrentDB.get('nameplateColor')){
+                case '白':
+                    nameplateColor.options[1].selected = true;
+                    break;
+                case '黒':
+                    nameplateColor.options[2].selected = true;
+                    break;
+                case '金':
+                    nameplateColor.options[3].selected = true;
+                    break;
+                default:
+                    order_category.options[0].selected = true;
+                    break;    
+            }
         }
+
         var approver = carrentDB.get('approver');
         if(approver == null){
             document.getElementById('approver').value = "";
@@ -270,7 +329,7 @@ function nextPegination(){
                           stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
-            }else{
+            }else if(postDoc.get('demandStatus') == "忘れ購入"){
                 switch(postDoc.get('status')){
                     //承認
                       case 'approve':
@@ -286,6 +345,24 @@ function nextPegination(){
                       default:
                           var statusText = "未承認";
                           stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;        
+                }
+            }else{
+                switch(postDoc.get('status')){
+                    //承認
+                      case 'approve':
+                          var statusText = "承認";
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;
+                    //発送済み     
+                      case 'delivered':
+                          var statusText = "発送済み";
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          break;
+                    //未承認      
+                      default:
+                          var statusText = "未承認";
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }
@@ -325,7 +402,7 @@ function returnTable(){
                   stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
         }
-    }else{
+    }else if(postDoc.get('demandStatus') == "忘れ購入"){
         switch(postDoc.get('status')){
             //承認
               case 'approve':
@@ -341,6 +418,24 @@ function returnTable(){
               default:
                   var statusText = "未承認";
                   stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('category') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  break;        
+        }
+    }else{
+        switch(postDoc.get('status')){
+            //承認
+              case 'approve':
+                  var statusText = "承認";
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  break;
+            //発送済み     
+              case 'delivered':
+                  var statusText = "発送済み";
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  break;
+            //未承認      
+              default:
+                  var statusText = "未承認";
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + "ネームプレート" + postDoc.get('nameplateColor') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
         }
     }
@@ -374,7 +469,7 @@ function EditUpdate(id,status){
         var fleece_blueL = Number(document.getElementById('fleece_blueL').value);
         var fleece_blueXL = Number(document.getElementById('fleece_blueXL').value);
         var sum = (blackS + blackM + blackL + blackLL + black3L + blueS + blueM + blueL + blueLL + blue3L) * 700 + (apron * 800) + (head_towel * 400) + (fleece_blueS + fleece_blueM + fleece_blueL + fleece_blueXL) * 2000;
-    }else{
+    }else if(status == '忘れ購入'){
         var checkBox = document.getElementById('black');
         var checkBox2 = document.getElementById('blue');
         var category = "";
@@ -383,6 +478,9 @@ function EditUpdate(id,status){
         }else if(checkBox2.checked){
             category = "ポロシャツ青LL";
         };
+    }else{
+        var shiftName = document.getElementById('shiftName').value;
+        var nameplateColor = document.getElementById('nameplateColor').value;
     }
     //status
     var order_category = document.getElementById('order_category').value;
@@ -410,10 +508,18 @@ function EditUpdate(id,status){
             status:order_category,
             approver:approver,
         });
-    }else{
+    }else if(status == '忘れ購入'){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
             category:category,
+            status:order_category,
+            approver:approver,
+        });
+    }else{
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            shiftName:shiftName,
+            nameplateColor:nameplateColor,
             status:order_category,
             approver:approver,
         });

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Front Manegement System</title>
+    <title>FMS 新規登録</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -20,18 +20,20 @@
     <div class="logo">
         <img src="honbuImages/logo.jpeg" alt="">
     </div>
-    <h1>ログイン</h1>
+    <h1>新規登録</h1>
     <div class="form">
+        <input type="text" id="userName" placeholder="登録ユーザー名(ex:ワタナベ)">
         <input type="mail" placeholder="  メールアドレス" class="input_margin" id="email_login"><br>
-        <input type="password" placeholder="  パスワード" class="input_margin" id="password_login">
+        <input type="password" placeholder="  新規パスワード" class="input_margin" id="password_login">
+        <input type="password" placeholder="  確認用" class="input_margin" id="password_check">
         <div id="Alert_success">
             <!-- Alert表示 -->
         </div>
         <div id="Alert_danger">
             <!-- Alert表示 -->
         </div>
-        <button onclick="login()" id="login_button">ログイン</button>
+        <button onclick="create()" id="login_button">新規登録</button>
     </div>
-    <script src="js/login.js"></script>
+    <script src="js/AccountCreate.js"></script>
 </body>
 </html>

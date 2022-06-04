@@ -169,6 +169,7 @@ function certificateUpdate(){
             wage_ledger_start:wage_ledger_start,
             wage_ledger_end:wage_ledger_end,
             other:other,
+            headquartersComment:"",
             status:"unapproved",
         });
         var Alert = document.getElementById('Alert');
@@ -201,17 +202,17 @@ function showTable(){
                 //承認
                 case 'approve':
                     var statusText = "承認";
-                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr></tbody>';
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;
                 //発送済み      
                 case 'delivered':
                     var statusText = "発送済み";
-                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr></tbody>';
+                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;
                 //未承認      
                 default:
                     var statusText = "未承認";
-                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr></tbody>';
+                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;        
             }
         })
@@ -227,6 +228,7 @@ function showTable(){
 //ユニフォーム申請
 document.getElementById('normal').style.display = "none";
 document.getElementById('emergency').style.display = "none";
+document.getElementById('nameplate').style.display = "none";
 
 //種類別の表示非表示
 function demandChange(){
@@ -235,9 +237,16 @@ function demandChange(){
         case "追加購入":
             document.getElementById('normal').style.display = "block";
             document.getElementById('emergency').style.display = "none";
+            document.getElementById('nameplate').style.display = "none";
         break;
         case "忘れ購入":
             document.getElementById('emergency').style.display = "block";
+            document.getElementById('normal').style.display = "none";
+            document.getElementById('nameplate').style.display = "none";
+        break;
+        case "ネームプレート":
+            document.getElementById('nameplate').style.display = "block";
+            document.getElementById('emergency').style.display = "none";
             document.getElementById('normal').style.display = "none";
         break;
     }
@@ -285,6 +294,10 @@ function uniformUpdate(){
                 category = "ポロシャツ青LL";
             };
         break;
+        case "ネームプレート":
+            var shiftName = document.getElementById('shiftName').value;
+            var nameplateColor = document.getElementById('nameplateColor').value;
+        break;
     }
 
     if(name == "" || storeName == "" || demandStatus == ""){
@@ -318,7 +331,7 @@ function uniformUpdate(){
                 sum:sum,
                 status:"unapproved",
             });
-        }else{
+        }else if(demandStatus == "忘れ購入"){
             //DBへ送信
             db.collection('uniforms').add({
                 stuffNum:stuffNum,
@@ -327,6 +340,18 @@ function uniformUpdate(){
                 storeName:storeName,
                 demandStatus:demandStatus,
                 category:category,
+                status:"unapproved",
+            });
+        }else{
+            //DBへ送信
+            db.collection('uniforms').add({
+                stuffNum:stuffNum,
+                name:name,
+                createdAt:createdAt,
+                storeName:storeName,
+                demandStatus:demandStatus,
+                shiftName:shiftName,
+                nameplateColor:nameplateColor,
                 status:"unapproved",
             });
         }
@@ -372,7 +397,7 @@ function showTableuni(){
                         stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;        
                     }
-            }else{
+            }else if(postDoc.get('demandStatus') == '忘れ購入'){
                 switch(postDoc.get('status')){
                     //承認
                     case 'approve':
@@ -388,6 +413,24 @@ function showTableuni(){
                     default:
                         var statusText = "未承認";
                         stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        break;        
+                }
+            }else{
+                switch(postDoc.get('status')){
+                    //承認
+                    case 'approve':
+                        var statusText = "承認";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        break;
+                    //不承認      
+                    case 'delivered':
+                        var statusText = "発送済み";
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        break;
+                    //未承認      
+                    default:
+                        var statusText = "未承認";
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
                         break;        
                 }
             }

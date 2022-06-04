@@ -131,6 +131,7 @@ function editStatus(id){
         document.getElementById('name_edit').textContent = carrentDB.get('name');
         document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt');
         document.getElementById('note_edit').textContent = carrentDB.get('note');
+        document.getElementById('headquartersComment').textContent = carrentDB.get('headquartersComment');
 
         //必要書類確認
         var paperCheck = carrentDB.get('paper');
@@ -267,10 +268,12 @@ function EditUpdate(id){
     //status
     var order_category = document.getElementById('order_category').value;
     var approver = document.getElementById('approver').value;
+    var headquartersComment = document.getElementById('headquartersComment').value;
     //DBへ送信
     db.collection('certificates').doc(id).update({
         status:order_category,
         approver:approver,
+        headquartersComment:headquartersComment,
     });
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
@@ -336,7 +339,7 @@ function createPDF(id){
         stocklist += '源泉徴収票('+ carrentDB.get('tax_withholding') +'年分)\n'
     }
     if(paperCheck.match(/給与明細/)){
-        stocklist += '給与明細(期間：'+ carrentDB.get('payroll_item_start') + '~' + carrentDB.get('payroll_item_end') +')\n';
+        stocklist += '給与明細(期間：'+ carrentDB.get('payroll_item_start') + '月度分~' + carrentDB.get('payroll_item_end') +'月度分)\n';
     }
     if(paperCheck.match(/賃金台帳/)){
         stocklist += '賃金台帳(期間：'+ carrentDB.get('wage_ledger_start') + '~' + carrentDB.get('wage_ledger_end') +')\n';
