@@ -29,6 +29,10 @@ form .edit label {
   margin-left: 20px;
 }
 
+form .edit input {
+  margin: 0 auto;
+}
+
 form #subject {
   width: 50%;
 }

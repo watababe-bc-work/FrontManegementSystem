@@ -71,6 +71,7 @@ $breakpoint-down: (
     p{
         font-size: 15px;
         margin: 20px;
+        display: inline-block;
     }
 
     form{
@@ -93,6 +94,14 @@ $breakpoint-down: (
         }
 
         input,select{
+            font-size: 15px;
+        }
+
+        #overview_label{
+            vertical-align: top;
+        }
+
+        #overview{
             font-size: 15px;
         }
     }
@@ -123,4 +132,14 @@ h1{
             font-size: 15px;
         }
     }
+}
+
+.loading{
+    font-size: 20px;
+    text-align: center;
+}
+
+.btn{
+    font-size: 15px;
+    margin-left: 10px;
 }

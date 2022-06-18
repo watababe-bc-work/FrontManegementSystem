@@ -109,7 +109,7 @@ function certificateUpdate(){
     var checkBox5 = document.getElementById('otherCheck');
     var paper = "";
     if(checkBox.checked){
-        paper = paper + "在職証明書,";
+        paper = paper + "在籍証明書,";
     }
     if(checkBox2.checked){
         paper = paper + "源泉徴収票、";
@@ -309,7 +309,7 @@ function uniformUpdate(){
             db.collection('uniforms').add({
                 stuffNum:stuffNum,
                 name:name,
-                createdAt:createdAt,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                 storeName:storeName,
                 demandStatus:demandStatus,
                 blackS:blackS,
@@ -336,7 +336,7 @@ function uniformUpdate(){
             db.collection('uniforms').add({
                 stuffNum:stuffNum,
                 name:name,
-                createdAt:createdAt,
+                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 storeName:storeName,
                 demandStatus:demandStatus,
                 category:category,
@@ -347,7 +347,7 @@ function uniformUpdate(){
             db.collection('uniforms').add({
                 stuffNum:stuffNum,
                 name:name,
-                createdAt:createdAt,
+                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                 storeName:storeName,
                 demandStatus:demandStatus,
                 shiftName:shiftName,
@@ -382,55 +382,55 @@ function showTableuni(){
             if(postDoc.get('demandStatus') == '追加購入'){
                 switch(postDoc.get('status')){
                     //承認
-                    case 'approve':
-                        var statusText = "承認";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                    case 'approval':
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
-                        var statusText = "発送済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        var statusText = "対応済み";
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;        
                     }
             }else if(postDoc.get('demandStatus') == '忘れ購入'){
                 switch(postDoc.get('status')){
                     //承認
-                    case 'approve':
-                        var statusText = "承認";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                    case 'approval':
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
-                        var statusText = "発送済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        var statusText = "対応済み";
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
                         break;        
                 }
             }else{
                 switch(postDoc.get('status')){
                     //承認
                     case 'approve':
-                        var statusText = "承認";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
-                        var statusText = "発送済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        var statusText = "対応済み";
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
                         break;        
                 }
             }

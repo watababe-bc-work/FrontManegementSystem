@@ -1,11 +1,11 @@
 body {
   text-align: center;
-  background: #add8e6;
+  background: #ebf6f7;
 }
 
 h2 {
   margin: 30px 0;
-  color: white;
+  color: #696969;
   font-size: 30px;
 }
 
@@ -16,6 +16,28 @@ h2 {
   -webkit-box-shadow: #666666 10px 5px 5px;
           box-shadow: #666666 10px 5px 5px;
   background: white;
+}
+
+#addForm form {
+  text-align: left;
+  margin-left: 20%;
+}
+
+@media screen and (max-width: 992px) {
+  #addForm form {
+    text-align: center;
+    margin-left: 0;
+  }
+}
+
+#addForm label {
+  width: 150px;
+}
+
+@media screen and (max-width: 992px) {
+  #addForm label {
+    width: auto;
+  }
 }
 
 #addButton {
@@ -40,6 +62,12 @@ form .edit label {
   margin-left: 20px;
 }
 
+@media screen and (max-width: 768px) {
+  form .edit label {
+    margin: 10px 0 10px 25px;
+  }
+}
+
 form #subject {
   width: 50%;
 }
@@ -48,12 +76,24 @@ form #count {
   width: 50px;
 }
 
-form .status_desc_label, form .process_content_label {
+form .process_content_label {
   vertical-align: top;
 }
 
-form #file {
-  margin: 0 auto;
+form #requester_name {
+  width: 60%;
+}
+
+@media screen and (max-width: 992px) {
+  form #requester_name {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  form textarea {
+    width: 80%;
+  }
 }
 
 .alert {
@@ -62,7 +102,7 @@ form #file {
 
 .btn {
   font-size: 15px;
-  margin: 0 5px;
+  margin: 10px 5px 0 5px;
 }
 
 .table_select {
@@ -71,6 +111,12 @@ form #file {
 
 .table_select label {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .table_select label {
+    margin: 10px 0 10px 20px;
+  }
 }
 
 .table_select button {
@@ -95,7 +141,6 @@ form #file {
 }
 
 #table_list .collectBack td {
-  border: 1px solid #f5f5f5;
   vertical-align: middle;
 }
 
@@ -104,8 +149,11 @@ form #file {
 }
 
 #table_list .yetBack td {
-  border: 1px solid #a9a9a9;
   vertical-align: middle;
+}
+
+#table_list td {
+  min-width: 80px;
 }
 
 .nextButton {
@@ -238,15 +286,4 @@ input, select, textarea {
 .modal .vertical {
   vertical-align: top;
 }
-
-#modalImgs img {
-  width: 400px;
-  height: 300px;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-#modalImgs p {
-  font-size: 20px;
-}
-/*# sourceMappingURL=accidentEntranceReset.css.map */
+/*# sourceMappingURL=report.css.map */

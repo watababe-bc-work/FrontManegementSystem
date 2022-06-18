@@ -136,8 +136,8 @@ function editStatus(id){
         //必要書類確認
         var paperCheck = carrentDB.get('paper');
         var stocklist = "<label>必要書類</label>";
-        if(paperCheck.match(/在職証明書/)){
-            stocklist += '<p>在職証明書</p>';
+        if(paperCheck.match(/在籍証明書/)){
+            stocklist += '<p>在籍証明書</p>';
         }
         if(paperCheck.match(/源泉徴収票/)){
             stocklist += '<p>源泉徴収票('+ carrentDB.get('tax_withholding') +'年分)</p>';
@@ -332,8 +332,8 @@ function createPDF(id){
     //必要書類確認
     var paperCheck = carrentDB.get('paper');
     var stocklist = "";
-    if(paperCheck.match(/在職証明書/)){
-        stocklist += "在職証明書\n";
+    if(paperCheck.match(/在籍証明書/)){
+        stocklist += "在籍証明書\n";
     }
     if(paperCheck.match(/源泉徴収票/)){
         stocklist += '源泉徴収票('+ carrentDB.get('tax_withholding') +'年分)\n'
@@ -498,7 +498,7 @@ function createPDF(id){
                     columns: [
                         {
                             width: '*',
-                            text: '《 氏名 》' + name + '       印',
+                            text: '《 氏名 》' + name,
                             margin: [ 0, 0, 0, 10 ],
                             style: ['right','border'],
                             fontSize: 15
@@ -633,7 +633,7 @@ function createPDF(id){
                         style:['right'],
                         body: [
                             [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
-                            [{text:' ',fontSize:20,alignment:'center'},{text:' ',fontSize:20,alignment:'center'}]
+                            [{text:' ',fontSize:30,alignment:'center'},{text:' ',fontSize:30,alignment:'center'}]
                         ]
                     }
                 },

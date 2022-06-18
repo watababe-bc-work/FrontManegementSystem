@@ -1,11 +1,43 @@
+@charset "utf-8";
+
+// media
+$sizes: xl, lg, md, sm, xs;
+
+$breakpoint-up: (
+    'xs': 'screen and (max-width: 576px)',
+    'sm': 'screen and (max-width: 768px)',
+    'md': 'screen and (max-width: 992px)',
+    'lg': 'screen and (max-width: 1200px)',
+    'xl': 'screen and (max-width: 1400px)',
+);
+
+$breakpoint-down: (
+    'xs': 'screen and (min-width: 577px)',
+    'sm': 'screen and (min-width: 769px)',
+    'md': 'screen and (min-width: 993px)',
+    'lg': 'screen and (min-width: 1201px)',
+    'xl': 'screen and (min-width: 1401px)',
+);
+
+@mixin mq-up($breakpoint: md) {
+    @media #{map-get($breakpoint-up, $breakpoint)} {
+        @content;
+    }
+}
+@mixin mq-dwn($breakpoint: md) {
+    @media #{map-get($breakpoint-down, $breakpoint)} {
+        @content;
+    }
+}
+
 body{
     text-align: center;
-    background: #add8e6;
+    background: #ebf6f7;
 }
 
 h2{
     margin: 30px 0;
-    color: white;
+    color: #696969;
     font-size: 30px;
 }
 
@@ -15,6 +47,25 @@ h2{
     border-radius: 20px;
     box-shadow: #666666 10px 5px 5px;
     background: white;
+}
+
+#addForm{
+    form{
+        text-align: left;
+        margin-left: 20%;
+
+        @include mq-up('md') {
+            text-align: center;
+            margin-left: 0;
+        }
+    }
+    label{
+        width: 150px;
+
+        @include mq-up('md') {
+            width: auto;
+        }
+    }
 }
 
 #addButton{
@@ -34,6 +85,9 @@ form{
         margin: 25px 0;
         label{
             margin-left:20px;
+            @include mq-up('sm') {
+                margin: 10px 0 10px 25px;
+            }
         }
     }
     #subject{
@@ -44,12 +98,22 @@ form{
         width: 50px;
     }
 
-    .status_desc_label,.process_content_label{
+    .process_content_label{
         vertical-align: top;
     }
 
-    #file{
-        margin: 0 auto;;
+    #requester_name{
+        width: 60%;
+
+        @include mq-up('md') {
+            width: 80%;
+        }
+    }
+
+    textarea{
+        @include mq-up('sm') {
+            width: 80%;
+        }
     }
 }
 
@@ -59,13 +123,17 @@ form{
 
 .btn{
     font-size: 15px;
-    margin: 0 5px;
+    margin: 10px 5px 0 5px;
 }
 
 .table_select{
     font-size: 15px;
     label{
         margin-left: 10px;
+
+        @include mq-up('sm') {
+            margin: 10px 0 10px 20px;
+        }
     }
 
     button{
@@ -89,7 +157,6 @@ form{
         color: white;
 
         td{
-            border: 1px solid #f5f5f5;
             vertical-align: middle;
         }
     }
@@ -98,9 +165,12 @@ form{
         background: #fdfbfb;
 
         td{
-            border: 1px solid #a9a9a9;
             vertical-align: middle;
         }
+    }
+
+    td{
+        min-width: 80px;
     }
 }
 
@@ -231,17 +301,5 @@ input,select,textarea{
 
     .vertical{
         vertical-align: top;
-    }
-}
-
-#modalImgs{
-    img{
-        width: 400px;
-        height: 300px;
-        object-fit: cover;
-    }
-
-    p{
-        font-size: 20px;
     }
 }

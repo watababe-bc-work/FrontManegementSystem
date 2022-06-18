@@ -42,6 +42,7 @@
 .modal p {
   font-size: 15px;
   margin: 20px;
+  display: inline-block;
 }
 
 .modal form .edit {
@@ -63,6 +64,14 @@
 }
 
 .modal form input, .modal form select {
+  font-size: 15px;
+}
+
+.modal form #overview_label {
+  vertical-align: top;
+}
+
+.modal form #overview {
   font-size: 15px;
 }
 
@@ -90,5 +99,15 @@ h1 {
 #contentList table tr {
   text-align: center;
   font-size: 15px;
+}
+
+.loading {
+  font-size: 20px;
+  text-align: center;
+}
+
+.btn {
+  font-size: 15px;
+  margin-left: 10px;
 }
 /*# sourceMappingURL=equipmentManual.css.map */

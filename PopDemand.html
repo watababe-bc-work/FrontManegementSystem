@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Front Manegement System ~POP要望~</title>
+    <title>FMS ~POP要望~</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -11,6 +11,9 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+    <!-- 画像追加必要JS -->
+    <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/fengyuanchen/compressorjs/dist/compressor.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -104,6 +107,7 @@
                     <option value="普通紙">普通紙</option>
                     <option value="内照紙">内照紙</option>
                     <option value="シール紙">シール紙</option>
+                    <option value="その他">その他</option>
                 </select>
             
             
@@ -135,7 +139,7 @@
             <div class="edit" id="sizes">
                 <label for="">サイズ：</label>
                 <select name="" id="size_checkBox">
-                    <option value="">サイズを選択・記入する</option>
+                    <option value="">サイズを選択</option>
                     <option value="名刺サイズ">名刺サイズ</option>
                     <option value="A6">A6</option>
                     <option value="A5">A5</option>
@@ -153,6 +157,10 @@
             <div class="edit">
                 <label for="" id="demand_detail_label">要望詳細：</label>
                 <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
+            </div>
+            <div class="edit">
+                <label for="">ファイル添付:</label>
+                <input type="file" id="file" multiple>
             </div>
         </form>
         <div id="collectAlert"></div>

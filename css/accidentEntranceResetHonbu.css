@@ -48,12 +48,8 @@ form #count {
   width: 50px;
 }
 
-form .status_desc_label, form .process_content_label {
+form .status_desc_label, form .process_content_label, form .headquartersComment_label {
   vertical-align: top;
-}
-
-form #file {
-  margin: 0 auto;
 }
 
 .alert {
@@ -185,7 +181,7 @@ input, select, textarea {
 }
 
 .modal form .edit {
-  margin: 3% 5px;
+  margin: 1% 5px;
   display: inline-block;
 }
 
@@ -235,6 +231,10 @@ input, select, textarea {
   width: 80%;
 }
 
+.modal .modal__content h2 {
+  color: black;
+}
+
 .modal .vertical {
   vertical-align: top;
 }
@@ -244,9 +244,10 @@ input, select, textarea {
   height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
+  margin: 0 0 10px 0;
 }
 
 #modalImgs p {
   font-size: 20px;
 }
-/*# sourceMappingURL=accidentEntranceReset.css.map */
+/*# sourceMappingURL=accidentEntranceResetHonbu.css.map */

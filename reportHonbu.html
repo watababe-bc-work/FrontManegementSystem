@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>報告 一覧</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/reportHonbu.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+    <h2>報告 一覧</h2>
+    <div class="table_select">
+        <label for="">店舗検索:</label>
+        <select id="store_name_search">
+            <option value="">自店舗を選択</option>
+            <option value="池袋グランド">池袋グランド</option>
+            <option value="アトランタ">アトランタ</option>
+            <option value="アメジスト">アメジスト</option>
+            <option value="池袋バリバリ">池袋バリバリ</option>
+            <option value="ウエストワン">ウエストワン</option>
+            <option value="サード">サード</option>
+            <option value="クイーン">クイーン</option>
+            <option value="池袋セントラル">池袋セントラル</option>
+            <option value="パークサイド">パークサイド</option>
+            <option value="グランヴィラ">グランヴィラ</option>
+            <option value="ブルゾン">ブルゾン</option>
+            <option value="ピュア">ピュア</option>
+            <option value="松戸グランド">松戸グランド</option>
+            <option value="カップルズインハッピー">カップルズインハッピー</option>
+            <option value="トニーワン">トニーワン</option>
+            <option value="サーティワン">サーティワン</option>
+            <option value="センチュリー">センチュリー</option>
+            <option value="ガーネット">ガーネット</option>
+            <option value="リトルバリ">リトルバリ</option>
+            <option value="アジアンリゾート">アジアンリゾート</option>
+            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+            <option value="ロックス新宿">ロックス新宿</option>
+            <option value="ブレス">ブレス</option>
+            <option value="チェルシー">チェルシー</option>
+            <option value="エルメ">エルメ</option>
+            <option value="パリス">パリス</option>
+            <option value="ダイヤモンド">ダイヤモンド</option>
+            <option value="エイジア">エイジア</option>
+            <option value="オニキス">オニキス</option>
+            <option value="アモーレ">アモーレ</option>
+            <option value="IF">IF</option>
+            <option value="ココバリ">ココバリ</option>
+            <option value="エメラルド">エメラルド</option>
+            <option value="五反田バリバリ">五反田バリバリ</option>
+            <option value="バリバリANNEX">バリバリANNEX</option>
+            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+            <option value="ZALA">ZALA</option>
+        </select>
+        <label for="">日付検索：</label>
+        <input type="date" name="" id="StartDate_search">から
+        <input type="date" id="EndDate_search">まで 
+        <label for="">項目検索:</label>
+        <select name="" id="demand_input_search">
+            <option value="">項目を選択</option>
+            <option value="両替">両替</option>
+            <option value="小口">小口</option>
+        </select>
+    </div>
+    <!-- <div class="table_select">
+        <label for="demand_choice_search">項目検索:</label>
+        <input list="demand_search" id="demand_input_search" name="demand_choice_search" placeholder="テキスト入力or選択">
+        <datalist id="demand_search">
+            <option value="両替">両替</option>
+            <option value="小口">小口</option>
+            <option value="拾得物">拾得物</option>
+        </datalist>
+        <label for="">フロント名</label>
+        <input type="text" id="requesterName_search">
+        <label for="">指示者</label>
+        <input type="text" id="orderPerson_name_search">
+    </div> -->
+    <br>
+    <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
+    <button type="submit" class="btn btn-secondary" onclick="cancel()">検索欄リセット</button>
+    <div id="table_list">
+        <!-- <table class="table table-striped">
+            <tr>
+                <th>発生日時</th>
+                <th>依頼区分</th>
+                <th>フロント名</th>
+                <th>指示者</th>
+                <th>場所・部屋番号</th>
+                <th>IN時間</th>
+                <th>OUT時間/取消時間</th>
+                <th>利用プラン/金額</th>
+                <th>日報訂正</th>
+                <th>状態</th>
+                <th>機能</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>2022/06/01</td>
+                    <td>入室取消</td>
+                    <td>奥原 宗汰</td>
+                    <td>中浦さん</td>
+                    <td>201</td>
+                    <td>12:00</td>
+                    <td>13:00</td>
+                    <td>フリータイム 11600円</td>
+                    <td>マイナス有り</td>
+                    <td>状況</td>
+                    <td><button onclick="">編集</button></td>
+                </tr>
+            </tbody>
+        </table> -->
+    </div>
+    <!-- 編集モーダルウィンドウ内容 -->
+    <div class="modal js-modal">
+        <div class="modal__bg js-modal-close"></div>
+        <div class="modal__content">
+            <h2>編集</h2>
+            <form action="report.html" method="POST">
+                <div class="edit">
+                    <label for="">発生日時：</label>
+                    <p id="order_date_edit"></p>
+
+                    <label for="">フロント名：</label>
+                    <input type="text" id="requester_name_edit">
+                </div>
+            
+                <div class="edit">
+
+                    <label for="status_choice_edit">項目:</label>
+                    <select name="" id="demand_input_edit">
+                        <option value="">項目を選択</option>
+                        <option value="両替">両替</option>
+                        <option value="小口">小口</option>
+                    </select>
+                </div>
+    
+                <div class="edit">
+                    <label for="" class="process_content_label">処理内容：</label>
+                    <textarea name="" cols="50" rows="5" id="process_content_edit"></textarea>
+                </div>
+            </form>
+            <br>
+            <div id="collectAlert_edit">
+                <!-- 編集完了のAlert -->
+            </div>
+            <div id="edit_submit_button"></div>
+            <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
+    <div class="nextButton">
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/reportHonbu.js"></script>
+    <script src="js/modal.js"></script>
+</body>
+</html>

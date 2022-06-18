@@ -70,7 +70,7 @@
             <!-- DB情報取得 -->
         </div>
     </div>
-     <!-- 新規登録モーダルウィンドウ内容 -->
+     <!-- 編集モーダルウィンドウ内容 -->
      <div class="modal js-modal">
         <div class="modal__bg js-modal-close"></div>
         <div class="modal__content uniform">
@@ -206,10 +206,10 @@
                 <div class="edit">
                     <label for="">処理：</label>
                     <select name="" id="order_category">
-                        <option value="unapproval">処理を選択する</option>
-                        <option value="approve">承認</option>
-                        <option value="delivered">発送済み</option>
-                    </select>
+                            <option value="unapproval">処理を選択する</option>
+                            <option value="delivered">対応済み</option>
+                            <option value="approval">完了</option>
+                        </select>
                     <div>
                         <label for="">承認者</label>
                         <input type="text" id="approver">

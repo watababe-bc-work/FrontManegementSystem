@@ -1,11 +1,11 @@
 body {
   text-align: center;
-  background: #add8e6;
+  background: #ebf6f7;
 }
 
 h2 {
   margin: 30px 0;
-  color: white;
+  color: #696969;
   font-size: 30px;
 }
 
@@ -48,12 +48,8 @@ form #count {
   width: 50px;
 }
 
-form .status_desc_label, form .process_content_label {
+form .status_desc_label, form .process_content_label, form .headquartersComment_label {
   vertical-align: top;
-}
-
-form #file {
-  margin: 0 auto;
 }
 
 .alert {
@@ -67,10 +63,24 @@ form #file {
 
 .table_select {
   font-size: 15px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .table_select {
+    text-align: center;
+    margin: 10px 20px;
+  }
 }
 
 .table_select label {
   margin-left: 10px;
+}
+
+@media screen and (max-width: 768px) {
+  .table_select label {
+    margin: 10px 20px;
+  }
 }
 
 .table_select button {
@@ -95,7 +105,6 @@ form #file {
 }
 
 #table_list .collectBack td {
-  border: 1px solid #f5f5f5;
   vertical-align: middle;
 }
 
@@ -104,8 +113,11 @@ form #file {
 }
 
 #table_list .yetBack td {
-  border: 1px solid #a9a9a9;
   vertical-align: middle;
+}
+
+#table_list td {
+  min-width: 100px;
 }
 
 .nextButton {
@@ -185,7 +197,7 @@ input, select, textarea {
 }
 
 .modal form .edit {
-  margin: 3% 5px;
+  margin: 1% 5px;
   display: inline-block;
 }
 
@@ -207,6 +219,12 @@ input, select, textarea {
 
 .modal form label {
   font-size: 15px;
+}
+
+@media screen and (max-width: 768px) {
+  .modal form label {
+    margin: 10px 0 10px 100px;
+  }
 }
 
 .modal form #headquartersCommentLabel {
@@ -238,15 +256,4 @@ input, select, textarea {
 .modal .vertical {
   vertical-align: top;
 }
-
-#modalImgs img {
-  width: 400px;
-  height: 300px;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-#modalImgs p {
-  font-size: 20px;
-}
-/*# sourceMappingURL=accidentEntranceReset.css.map */
+/*# sourceMappingURL=reportHonbu.css.map */

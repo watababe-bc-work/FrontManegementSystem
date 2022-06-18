@@ -56,6 +56,8 @@ window.onload = function () {
 
 //追加
 function POPDemandUpdate(){
+    var collectAlert = document.getElementById('collectAlert');
+    collectAlert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
     //依頼区分
     var orderCategory = document.getElementById('order_category').value;
     //依頼日
@@ -84,46 +86,136 @@ function POPDemandUpdate(){
     var coveringFare = document.getElementById('covering_fare').value;
     //要望詳細
     var demandDetail = document.getElementById('demand_detail').value;
-
-    if(orderCategory == "POP"){
-        //DBへ送信
-        db.collection('POPDemands').add({
-            orderCategory: orderCategory,
-            orderDate: orderDate,
-            preferredDate:preferredDate,
-            storeName:storeName,
-            requesterName:requesterName,
-            subject:subject,
-            output:output,
-            processing:processing,
-            number:number,
-            sizeCheckBox:sizeCheckBox,
-            sizeDerection:sizeDerection,
-            horizontal:horizontal,
-            vertical:vertical,
-            coveringFare:coveringFare,
-            demandDetail:demandDetail,
-            status:'未完了',
-            supportPerson:'',
-            CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-    }else{
-        //DBへ送信
-        db.collection('POPDemands').add({
-            orderCategory: orderCategory,
-            orderDate: orderDate,
-            preferredDate:preferredDate,
-            storeName:storeName,
-            requesterName:requesterName,
-            subject:subject,
-            WebSite:WebSite,
-            demandDetail:demandDetail,
-            status:'未完了',
-            CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        });
-    }
     var collectAlert = document.getElementById('collectAlert');
-    collectAlert.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
+    //写真データ
+    var fileList = [];
+    var fileNameList = [];
+
+    (async () => {
+        try{
+            switch(orderCategory){
+                case '':
+                    collectAlert.innerHTML = '<div class="alert alert-danger" role="alert">依頼区分を選択してください。</div>'; 
+                    break;
+                case 'POP':
+                    //画像を配列に配置
+                    var files = document.getElementById('file').files;
+                    for (let file of files) {
+                        if(fileNameList.includes(file.name)){
+        
+                        }else{
+                            fileList.push(file);
+                            fileNameList.push(file.name);
+                            console.log(fileList);
+                        }
+                    }
+                    //DBへ送信
+                    var res = await db.collection('POPDemands').add({
+                        orderCategory: orderCategory,
+                        orderDate: orderDate,
+                        preferredDate:preferredDate,
+                        storeName:storeName,
+                        requesterName:requesterName,
+                        subject:subject,
+                        output:output,
+                        processing:processing,
+                        number:number,
+                        sizeCheckBox:sizeCheckBox,
+                        sizeDerection:sizeDerection,
+                        horizontal:horizontal,
+                        vertical:vertical,
+                        coveringFare:coveringFare,
+                        demandDetail:demandDetail,
+                        status:'未完了',
+                        photoCount:fileList.length,
+                        supportPerson:'',
+                        CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    });    
+                    //写真アップロード
+                    var uploads = [];
+                    var i = 0;
+                    for (var file of fileList) {
+                        //画像を圧縮する
+                        var img = new Compressor(file, {
+                            quality: 0.5,
+                            success(result) {
+                                console.log('圧縮完了');
+                                fileList[i] = result;
+                            },
+                            maxWidth:1000,
+                            maxHeight: 400,
+                            mimeType: 'image/png'
+                        });
+                        var storageRef = firebase.storage().ref('POPDemand/' + res.id + '/' + 'uploadImage' + i);
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
+                    }
+                    //すべての画像のアップロード完了を待つ
+                    Promise.all(uploads).then(function () {
+                        (async () => {
+                            try{
+                                console.log('アップロード完了');
+                                collectAlert.innerHTML = '<div class="alert alert-success" role="alert">追加完了!リロードします。</div>';
+                                setTimeout("location.reload()",2000);
+                            } catch(err){
+        
+                            }
+                        })();
+                    });
+                    break;
+                case 'Web':
+                    //画像を配列に配置
+                    var files = document.getElementById('file').files;
+                    for (let file of files) {
+                        if(fileNameList.includes(file.name)){
+        
+                        }else{
+                            fileList.push(file);
+                            fileNameList.push(file.name);
+                            console.log(fileList);
+                        }
+                    }
+                    //DBへ送信
+                    var res = await db.collection('POPDemands').add({
+                        orderCategory: orderCategory,
+                        orderDate: orderDate,
+                        preferredDate:preferredDate,
+                        storeName:storeName,
+                        requesterName:requesterName,
+                        subject:subject,
+                        WebSite:WebSite,
+                        demandDetail:demandDetail,
+                        status:'未完了',
+                        photoCount:fileList.length,
+                        CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    });
+                    //storageへアップロード
+                    var uploads = [];
+                    var i = 0;
+                    for (var file of fileList) {
+                        var storageRef = firebase.storage().ref('POPDemand/' + res.id + '/' + 'uploadfile' + i);
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
+                    }
+                    //すべての画像のアップロード完了を待つ
+                    Promise.all(uploads).then(function () {
+                        (async () => {
+                            try{
+                                console.log('アップロード完了');
+                                collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+                                setTimeout("location.reload()",2000);
+                            } catch(err){
+        
+                            }
+                        })();
+                    });
+                    break;
+                default:break;    
+            }
+        } catch(err){
+
+        }
+    })();
 }
 
 //pdf出力

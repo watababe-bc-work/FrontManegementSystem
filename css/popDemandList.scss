@@ -63,21 +63,31 @@ body{
         form{
             .edit{
                 margin: 3% 5px;
+                font-size: 15px;
                 div{
                     display: inline-block;
+                    margin-right: 10px;
     
                     p{
                         display: inline-block;
                     }
                 }
             }
-    
-            label{
-                font-size: 15px;
+
+            #subject{
+                width: 60%;
             }
-    
-            input,select{
-                font-size: 15px;
+
+            #number{
+                width: 50px;
+            }
+
+            #horizontal,#vertical,#covering_fare{
+                width: 80px;
+            }
+
+            #demand_detail_label{
+                vertical-align: top;
             }
         }
     
@@ -398,5 +408,18 @@ body{
             background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
             background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
         }
+    }
+}
+
+#modalImgs{
+    img{
+        width: 400px;
+        height: 300px;
+        object-fit: cover;
+        margin: 0 0 10px 0;
+    }
+
+    p{
+        font-size: 20px;
     }
 }

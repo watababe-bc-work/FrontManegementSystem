@@ -44,12 +44,8 @@ form{
         width: 50px;
     }
 
-    .status_desc_label,.process_content_label{
+    .status_desc_label,.process_content_label,.headquartersComment_label{
         vertical-align: top;
-    }
-
-    #file{
-        margin: 0 auto;;
     }
 }
 
@@ -182,7 +178,7 @@ input,select,textarea{
 
     form{
         .edit{
-            margin: 3% 5px;
+            margin: 1% 5px;
             display: inline-block;
             label{
                 display: inline-block;
@@ -227,6 +223,10 @@ input,select,textarea{
         top: 50%;
         transform: translate(-50%,-50%);
         width: 80%;
+
+        h2{
+            color: black;
+        }
     }
 
     .vertical{
@@ -239,6 +239,7 @@ input,select,textarea{
         width: 400px;
         height: 300px;
         object-fit: cover;
+        margin: 0 0 10px 0; 
     }
 
     p{

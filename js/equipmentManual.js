@@ -29,18 +29,24 @@ window.onload = function () {
 function equipmentManualUpdate(){
     //タイトル
     var title = document.getElementById('title').value;
+    //店舗名
+    var storename = document.getElementById('store_name').value;
     //ファイル名
     var pdf = document.getElementById('pdfname').files[0];
     var pdfname = document.getElementById('pdfname').files[0].name;
+    //概要
+    var overview = document.getElementById('overview').value;
     console.log(pdfname)
-    if(title == "" || pdf == ""){
+    if(title == "" || pdf == "" || storename == ""){
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
         //DBへ送信
         db.collection('equipmentManuals').add({
             title:title,
+            storename:storename,
             pdfname:pdfname,
+            overview:overview,
             createdAt:firebase.firestore.FieldValue.serverTimestamp(),
         });
         var storageRef = firebase.storage().ref('equipmentManual/' + pdfname);
@@ -56,16 +62,17 @@ function equipmentManualUpdate(){
     try {
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+      document.getElementById('contentList').innerHTML = "<p class='loading'>ロード中...</p>"
       var prevTask = Promise.resolve;
       query = await db.collection('equipmentManuals').orderBy('createdAt', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
       var i = 0;
       var stocklist = '<table class="table table-striped">'
-      stocklist += '<tr><th>作成日</th><th>タイトル</th><th>編集</th>';
+      stocklist += '<tr><th>作成日</th><th>店舗名</th><th>タイトル</th><th>概要</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
         const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
         prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
-            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('title') + '</td><td><a href="' + url + '" target = "_blank">PDFファイル表示</a></td></tr></tbody>';
+            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
             document.getElementById('contentList').innerHTML = stocklist;
             i++;
             if(querySnapshot.length == i){
@@ -80,3 +87,18 @@ function equipmentManualUpdate(){
         console.log(err);
     }
 })();
+
+//削除
+function deleteContent(id,name){
+    var res = window.confirm(name + "の内容を削除しますか？");
+    if( res ) {
+        db.collection('equipmentManuals').doc(id).delete();
+        firebase.storage().ref('/equipmentManual/' + name).delete();
+        alert("削除されました。");
+        setTimeout("location.reload()",500);
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+};
