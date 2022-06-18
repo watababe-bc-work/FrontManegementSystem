@@ -83,8 +83,12 @@ h1 {
   font-size: 15px;
 }
 
-.modal form input, .modal form select {
+.modal form input, .modal form select, .modal form textarea {
   font-size: 15px;
+}
+
+.modal form #headquartersCommentLabel {
+  vertical-align: top;
 }
 
 .modal .alert {

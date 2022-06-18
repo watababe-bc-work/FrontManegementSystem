@@ -62,22 +62,32 @@ body {
 
 .popDemand .modal form .edit {
   margin: 3% 5px;
+  font-size: 15px;
 }
 
 .popDemand .modal form .edit div {
   display: inline-block;
+  margin-right: 10px;
 }
 
 .popDemand .modal form .edit div p {
   display: inline-block;
 }
 
-.popDemand .modal form label {
-  font-size: 15px;
+.popDemand .modal form #subject {
+  width: 60%;
 }
 
-.popDemand .modal form input, .popDemand .modal form select {
-  font-size: 15px;
+.popDemand .modal form #number {
+  width: 50px;
+}
+
+.popDemand .modal form #horizontal, .popDemand .modal form #vertical, .popDemand .modal form #covering_fare {
+  width: 80px;
+}
+
+.popDemand .modal form #demand_detail_label {
+  vertical-align: top;
 }
 
 .popDemand .modal .alert {
@@ -392,5 +402,17 @@ body {
 .price .nextButton a.btn-radius-solid:hover {
   background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
   background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+}
+
+#modalImgs img {
+  width: 400px;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin: 0 0 10px 0;
+}
+
+#modalImgs p {
+  font-size: 20px;
 }
 /*# sourceMappingURL=popDemandList.css.map */

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>事故報告・入室取消 要望一覧</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
+    <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/accidentEntranceResetHonbu.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+    <h2>事故報告・入室取消 要望一覧</h2>
+    <div class="table_select">
+        <p>検索</p>
+        <label for="">店舗:</label>
+        <select id="store_name_search">
+            <option value="">自店舗を選択</option>
+            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+            <option value="池袋グランド">池袋グランド</option>
+            <option value="アトランタ">アトランタ</option>
+            <option value="アメジスト">アメジスト</option>
+            <option value="池袋バリバリ">池袋バリバリ</option>
+            <option value="ウエストワン">ウエストワン</option>
+            <option value="サード">サード</option>
+            <option value="クイーン">クイーン</option>
+            <option value="池袋セントラル">池袋セントラル</option>
+            <option value="パークサイド">パークサイド</option>
+            <option value="グランヴィラ">グランヴィラ</option>
+            <option value="ブルゾン">ブルゾン</option>
+            <option value="ピュア">ピュア</option>
+            <option value="松戸グランド">松戸グランド</option>
+            <option value="カップルズインハッピー">カップルズインハッピー</option>
+            <option value="トニーワン">トニーワン</option>
+            <option value="サーティワン">サーティワン</option>
+            <option value="センチュリー">センチュリー</option>
+            <option value="ガーネット">ガーネット</option>
+            <option value="リトルバリ">リトルバリ</option>
+            <option value="アジアンリゾート">アジアンリゾート</option>
+            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+            <option value="ロックス新宿">ロックス新宿</option>
+            <option value="ブレス">ブレス</option>
+            <option value="チェルシー">チェルシー</option>
+            <option value="エルメ">エルメ</option>
+            <option value="パリス">パリス</option>
+            <option value="ダイヤモンド">ダイヤモンド</option>
+            <option value="エイジア">エイジア</option>
+            <option value="オニキス">オニキス</option>
+            <option value="アモーレ">アモーレ</option>
+            <option value="IF">IF</option>
+            <option value="ココバリ">ココバリ</option>
+            <option value="エメラルド">エメラルド</option>
+            <option value="五反田バリバリ">五反田バリバリ</option>
+            <option value="バリバリANNEX">バリバリANNEX</option>
+            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+            <option value="ZALA">ZALA</option>
+        </select>
+        <label for="">日付:</label>
+        <input type="date" name="" id="StartDate_search">から
+        <input type="date" id="EndDate_search">まで 
+        <label for="">依頼区分:</label>
+        <select name="" id="order_category_search">
+            <option value="">区分を選択する</option>
+            <option value="入室取消">入室取消</option>
+            <option value="退店取消">退店取消</option>
+            <option value="複数名利用">複数名利用</option>
+            <option value="操作ミス・未回収">操作ミス・未回収</option>
+        </select>
+        <br>
+        <label for="">依頼者:</label>
+        <input type="text" id="requester_name_search">
+        <label for="">指示者:</label>
+        <input type="text" id="orderPerson_name_search">
+        <br>
+        <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
+        <button type="submit" class="btn btn-secondary" onclick="cancel()">検索欄リセット</button>
+    </div>
+    <div id="table_list">
+        <!-- <table class="table table-striped">
+            <tr>
+                <th>発生日時</th>
+                <th>依頼区分</th>
+                <th>依頼者</th>
+                <th>指示者</th>
+                <th>場所・部屋番号</th>
+                <th>IN時間</th>
+                <th>OUT時間/取消時間</th>
+                <th>利用プラン/金額</th>
+                <th>日報訂正</th>
+                <th>状態</th>
+                <th>機能</th>
+            </tr>
+            <tbody>
+                <tr>
+                    <td>2022/06/01</td>
+                    <td>入室取消</td>
+                    <td>奥原 宗汰</td>
+                    <td>中浦さん</td>
+                    <td>201</td>
+                    <td>12:00</td>
+                    <td>13:00</td>
+                    <td>フリータイム 11600円</td>
+                    <td>マイナス有り</td>
+                    <td>状況</td>
+                    <td><button onclick="">編集</button></td>
+                </tr>
+            </tbody>
+        </table> -->
+    </div>
+    <!-- 編集モーダルウィンドウ内容 -->
+    <div class="modal js-modal">
+        <div class="modal__bg js-modal-close"></div>
+        <div class="modal__content">
+            <h2>編集</h2>
+            <form action="accidentEntranceReset.html" method="POST">
+                <div class="edit">
+                        <label for="">発生日時：</label>
+                        <p id="order_date_edit"></p>
+                        <label for="">依頼区分：</label>
+                        <select name="" id="order_category_edit">
+                            <option value="">区分を選択する</option>
+                            <option value="入室取消">入室取消</option>
+                            <option value="退店取消">退店取消</option>
+                            <option value="複数名利用">複数名利用</option>
+                            <option value="操作ミス・未回収">操作ミス・未回収</option>
+                        </select>
+                    </div>
+        
+                    <div class="edit">
+                        <label for="">依頼者氏名：</label>
+                        <input type="text" id="requester_name_edit">
+        
+                        <label for="">指示者氏名：</label>
+                        <input type="text" id="orderPerson_name_edit">
+                    </div>
+                
+                    <div class="edit">
+                        <label for="">場所/部屋番号：</label>
+                        <input type="text" id="place_edit">
+                        <label for="">in時間</label>
+                        <input type="time" id="inTime_edit">
+                        <label for="">OUT時間/取り消し時間</label>
+                        <input type="time" id="outTime_edit">
+                    </div> 
+                    <div class="edit">
+                        <label for="">プラン/金額</label>
+                        <input type="text" id="planAndprice_edit">
+                        <label for="">訂正</label>
+                        <select name="" id="correction_edit">
+                            <option value="">無し</option>
+                            <option value="プラス有り">プラス有り</option>
+                            <option value="マイナス有り">マイナス有り</option>
+                        </select>
+                        <label for="">件数</label>
+                        <input type="number" id="count_edit">
+                    </div>
+                    <div class="edit">
+                        <label for="">金額</label>
+                        <input type="text" id="price_edit">
+                        <label for="">出金その他</label>
+                        <input type="text" id="withdrawal_edit">
+                        <label for="">入金その他</label>
+                        <input type="text" id="moneyReceived_edit">
+                    </div>
+                    <div class="edit">
+                        <label for="" class="status_desc_label">状況説明：</label>
+                        <textarea name="" cols="50" rows="5" id="status_desc_edit"></textarea>
+                    </div>
+                    <div class="edit">
+                        <label for="" class="process_content_label">処理内容：</label>
+                        <textarea name="" cols="50" rows="5" id="process_content_edit"></textarea>
+                    </div>
+                    <div class="edit">
+                        <label for="">状態:</label>
+                        <select name="" id="status">
+                            <option value="未了">未了</option>
+                            <option value="完了">完了</option>
+                        </select>
+                        <label for="" class="headquartersComment_label">本部コメント：</label>
+                        <textarea name="" id="headquartersComment" cols="50" rows="5"></textarea>
+                    </div>
+            </form>
+            <br>
+            <div id="collectAlert_edit">
+                <!-- 編集完了のAlert -->
+            </div>
+            <div id="edit_submit_button"></div>
+            <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
+    <!-- 画像モーダルウィンドウ内容 -->
+    <div class="modal js-modal1">
+        <div class="modal__bg js-modal-close1"></div>
+        <div class="modal__content">
+            <h2>画像</h2>
+            <form action="accidentEntranceReset.html" method="POST">
+                <div id="modalImgs">
+                    <!-- DBから画像を取得 -->
+                </div>
+            </form>
+            <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
+    <div class="nextButton">
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/accidentEntranceResetHonbu.js"></script>
+    <script src="js/modal.js"></script>
+</body>
+</html>

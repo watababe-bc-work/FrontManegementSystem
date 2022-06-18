@@ -11,6 +11,8 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+    <!-- 画像表示必要JS -->
+    <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -37,7 +39,7 @@
             <div class="modal__bg js-modal-close"></div>
             <div class="modal__content">
                 <h2>状況変更</h2>
-                <form action="popDemand.html" method="POST">
+                <form action="popDemandList.html" method="POST">
                     <div class="edit">
                         <div>
                             <label for="">区分：</label>
@@ -49,26 +51,84 @@
                         </div>
                         <div>
                             <label for="">納品日：</label>
-                            <input type="date" id="orderDate">
+                            <input type="date" id="preferredDate">
                         </div>
-                    </div>
-                    <div class="edit">
                         <div>
                             <label for="">店舗名：</label>
                             <p id="store_name"></p>
                         </div>
-                        <div>
-                            <label for="">件名：</label>
-                            <input type="text" id="subject">
+                    </div>
+                    <div class="edit">
+                        <label for="">件名：</label>
+                        <input type="text" id="subject">
+                    </div>
+                    <div id="pop">
+                        <div class="edit">
+                            <div>
+                                <label for="" id="outputs">出力：</label>
+                                <select name="" id="output">
+                                    <option value="">出力を選択する</option>
+                                    <option value="塩ビシート(看板)">塩ビシート(看板)</option>
+                                    <option value="内照シート(看板)">内照シート(看板)</option>
+                                    <option value="普通紙">普通紙</option>
+                                    <option value="内照紙">内照紙</option>
+                                    <option value="シール紙">シール紙</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="" id="processings">加工：</label>
+                                <select name="" id="processing">
+                                    <option value="">加工を選択する</option>
+                                    <option value="グロス">グロス</option>
+                                    <option value="マット">マット</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="" id="numbers">枚数：</label>
+                                <input type="text" id="number">
+                            </div>
                         </div>
-                        <div>
-                            <label for="">状況:</label>
-                            <select name="" id="status">
-                                <option value="">状況を選択する</option>
-                                <option value="未完了">未完了</option>
-                                <option value="完了">完了</option>
-                                <option value="依頼中">依頼中</option>
+                        <div class="edit">
+                            <div>
+                                <label for="">サイズ：</label>
+                                <select name="" id="size_checkBox">
+                                    <option value="">サイズを選択</option>
+                                    <option value="名刺サイズ">名刺サイズ</option>
+                                    <option value="A6">A6</option>
+                                    <option value="A5">A5</option>
+                                    <option value="A4">A4</option>
+                                    <option value="A3">A3</option>
+                                    <option value="A1">A1</option>
+                                </select>
+                            </div>
+                            <div>
+                                <select name="" id="size_derection">
+                                    <option value="">向きを選択</option>
+                                    <option value="縦">縦</option>
+                                    <option value="横">横</option>
+                                </select>
+                                横<input type="text" id="horizontal">mm × 縦<input type="text" id="vertical">mm + 貼り代<input type="text" id="covering_fare">mm
+                            </div>
+                        </div>
+                    </div>
+                    <div id="web">
+                        <div class="edit">
+                            <label for="">Webサイト</label>
+                            <select name="" id="website">
+                                <option value="">-</option>
+                                <option value="公式HP">公式HP</option>
+                                <option value="ハピホテ">ハピホテ</option>
+                                <option value="カップルズ">カップルズ</option>
+                                <option value="予約サイト">予約サイト</option>
+                                <option value="Twitter">Twitter</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div>
+                            <label for="" id="demand_detail_label">要望詳細：</label>
+                            <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
                         </div>
                     </div>
                     <div class="edit">
@@ -80,6 +140,15 @@
                             <label for="">対応者:</label>
                             <input type="text" id="supportPerson">
                         </div>
+                        <div>
+                            <label for="">状況:</label>
+                            <select name="" id="status">
+                                <option value="">状況を選択する</option>
+                                <option value="未完了">未完了</option>
+                                <option value="完了">完了</option>
+                                <option value="依頼中">依頼中</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
                 <br>
@@ -88,6 +157,17 @@
                 </div>
                 <div id="edit_submit_button"></div>
                 <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+        </div> 
+        <!-- 画像モーダルウィンドウ内容 -->
+        <div class="modal js-modal2">
+            <div class="modal__bg js-modal-close2"></div>
+            <div class="modal__content">
+                <h2>画像/データファイル</h2>
+                <div id="modalImgs">
+                    <!-- DBから画像を取得 -->
+                </div>
+                <a class="js-modal-close2" href=""><button class="btn btn-outline-info">閉じる</button></a>
             </div>
         </div> 
         <div class="nextButton">

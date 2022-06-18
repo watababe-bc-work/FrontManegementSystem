@@ -80,8 +80,12 @@ h1{
             font-size: 15px;
         }
 
-        input,select{
+        input,select,textarea{
             font-size: 15px;
+        }
+
+        #headquartersCommentLabel{
+            vertical-align: top;
         }
     }
 

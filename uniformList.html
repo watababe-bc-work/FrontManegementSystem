@@ -70,7 +70,7 @@
             <!-- DB情報取得 -->
         </div>
     </div>
-     <!-- 新規登録モーダルウィンドウ内容 -->
+     <!-- 編集モーダルウィンドウ内容 -->
      <div class="modal js-modal">
         <div class="modal__bg js-modal-close"></div>
         <div class="modal__content uniform">
@@ -191,14 +191,25 @@
                         <label for="blue">ポロシャツ青LL</label>
                     </div>
                 </div>
+                <div id="nameplate">
+                    <label for="">登録シフト名：</label>
+                    <input type="text" id="shiftName">
+                    <label for="">種類：</label>
+                    <select id="nameplateColor">
+                        <option value="">種類を選択</option>
+                        <option value="白">白</option>
+                        <option value="黒">黒</option>
+                        <option value="金">金(フロント)</option>
+                    </select>
+                </div>
                 <br>
                 <div class="edit">
                     <label for="">処理：</label>
-                    <select name="" id="order_category" onchange="change();">
-                        <option value="unapproval">処理を選択する</option>
-                        <option value="approve">承認</option>
-                        <option value="delivered">発送済み</option>
-                    </select>
+                    <select name="" id="order_category">
+                            <option value="unapproval">処理を選択する</option>
+                            <option value="delivered">対応済み</option>
+                            <option value="approval">完了</option>
+                        </select>
                     <div>
                         <label for="">承認者</label>
                         <input type="text" id="approver">

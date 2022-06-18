@@ -1,0 +1,253 @@
+body {
+  text-align: center;
+  background: #add8e6;
+}
+
+h2 {
+  margin: 30px 0;
+  color: white;
+  font-size: 30px;
+}
+
+.backwhite {
+  margin: 20px 10%;
+  padding: 10px 0;
+  border-radius: 20px;
+  -webkit-box-shadow: #666666 10px 5px 5px;
+          box-shadow: #666666 10px 5px 5px;
+  background: white;
+}
+
+#addButton {
+  background: orange;
+  color: white;
+  border-radius: 50px;
+  font-size: 15px;
+  border: none;
+  margin: 5px 0;
+  padding: 5px 10px;
+}
+
+form {
+  font-size: 15px;
+}
+
+form .edit {
+  margin: 25px 0;
+}
+
+form .edit label {
+  margin-left: 20px;
+}
+
+form #subject {
+  width: 50%;
+}
+
+form #count {
+  width: 50px;
+}
+
+form .status_desc_label, form .process_content_label, form .headquartersComment_label {
+  vertical-align: top;
+}
+
+.alert {
+  font-size: 15px;
+}
+
+.btn {
+  font-size: 15px;
+  margin: 0 5px;
+}
+
+.table_select {
+  font-size: 15px;
+}
+
+.table_select label {
+  margin-left: 10px;
+}
+
+.table_select button {
+  margin: 10px 0;
+}
+
+.table > tbody > tr > th, .table td, .table th {
+  vertical-align: middle !important;
+}
+
+#table_list {
+  font-size: 15px;
+}
+
+#table_list .table_title {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#table_list .collectBack {
+  background: #91B87E;
+  color: white;
+}
+
+#table_list .collectBack td {
+  border: 1px solid #f5f5f5;
+  vertical-align: middle;
+}
+
+#table_list .yetBack {
+  background: #fdfbfb;
+}
+
+#table_list .yetBack td {
+  border: 1px solid #a9a9a9;
+  vertical-align: middle;
+}
+
+.nextButton {
+  text-align: left;
+  margin-left: 5%;
+}
+
+.nextButton .btn,
+.nextButton a.btn,
+.nextButton button.btn {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+  margin-bottom: 3%;
+}
+
+.nextButton a.btn-radius-solid {
+  border: 1px solid #ccc;
+  background: #f1e767;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  -webkit-box-shadow: inset 1px 1px 1px #fff;
+  box-shadow: inset 1px 1px 1px #fff;
+}
+
+.nextButton a.btn-radius-solid:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
+}
+
+input, select, textarea {
+  font-size: 15px;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  overflow: auto;
+  overflow: scroll;
+}
+
+.modal h2 {
+  font-size: 25px;
+  margin: 20px 0;
+}
+
+.modal button {
+  width: 150px;
+  height: 40px;
+  margin: 5px 20px;
+  font-size: 15px;
+}
+
+.modal p {
+  font-size: 15px;
+  margin: 10px;
+}
+
+.modal form .edit {
+  margin: 1% 5px;
+  display: inline-block;
+}
+
+.modal form .edit label {
+  display: inline-block;
+}
+
+.modal form .edit p {
+  display: inline-block;
+}
+
+.modal form #subject_edit {
+  width: 50%;
+}
+
+.modal form #count_edit {
+  width: 50px;
+}
+
+.modal form label {
+  font-size: 15px;
+}
+
+.modal form #headquartersCommentLabel {
+  vertical-align: top;
+}
+
+.modal .alert {
+  font-size: 15px;
+}
+
+.modal .modal__bg {
+  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.modal .modal__content {
+  background: #fff;
+  left: 50%;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 80%;
+}
+
+.modal .modal__content h2 {
+  color: black;
+}
+
+.modal .vertical {
+  vertical-align: top;
+}
+
+#modalImgs img {
+  width: 400px;
+  height: 300px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin: 0 0 10px 0;
+}
+
+#modalImgs p {
+  font-size: 20px;
+}
+/*# sourceMappingURL=accidentEntranceResetHonbu.css.map */

@@ -21,3 +21,15 @@ $(function(){
         return false;
     });
 });
+
+//モーダルウィンドウ
+$(function(){
+    $(document).on('click','.js-modal-open2',function(){
+        $('.js-modal2').fadeIn();
+        return false;
+    });
+    $('.js-modal-close2').on('click',function(){
+        $('.js-modal2').fadeOut();
+        return false;
+    });
+});

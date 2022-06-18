@@ -21,7 +21,7 @@
 <body>
     <div class="uniform">
         <div>
-            <h1>ユニフォーム 申請用フォーム</h1>
+            <h1>ユニフォーム・ネームプレート 申請用フォーム</h1>
             <button class="adduniformContent_button" id="addButton" onclick="adduniformContent()">+ユニフォーム申請をする</button>
             <div class="backwhite" id="addForm2">
                 <form action="certificate_uniform.html" method="POST">
@@ -82,6 +82,7 @@
                             <option value="">要望内容を選択</option>
                             <option value="追加購入">追加購入</option>
                             <option value="忘れ購入">忘れ購入</option>
+                            <option value="ネームプレート">ネームプレート</option>
                         </select>
                     </div>
                     <div class="edit">
@@ -190,6 +191,17 @@
                                 <label for="blue">ポロシャツ青LL</label>
                             </div>
                         </div>
+                        <div id="nameplate">
+                            <label for="">登録シフト名：</label>
+                            <input type="text" id="shiftName">
+                            <label for="">種類：</label>
+                            <select id="nameplateColor">
+                                <option value="">種類を選択</option>
+                                <option value="白">白</option>
+                                <option value="黒">黒</option>
+                                <option value="金">金(フロント)</option>
+                            </select>
+                        </div>
                     </div>
                 </form>
                 <div id="Alert2"></div>
@@ -199,11 +211,10 @@
             </div>
         </div>
         <div>
-            <h1>ユニフォーム申請 要望一覧</h1>
+            <h1>ユニフォーム・ネームプレート申請 要望一覧</h1>
             <div class="certificate_checklist">
                 <p>※ こちらから申請書のPDFが印刷できます。</p>
                 <p>申請者は、「申請印」と「受取印」に押印し、ユニフォームと共に「受領書(本人控え)」を受け取ってください。</p>
-                <p>フロントは、ユニフォーム補充の店舗要望の際にこの申請書を添付してください。(FAX不要)</p>
             </div>
             <div class="certificate_table_select">
                 <label for="">自店舗を選択:</label>
@@ -316,7 +327,7 @@
                         <!-- <label for="">必要書類：</label>
                         <select name="" id="paper" onchange="paperInput()">
                             <option value="">書類の種類を選択</option>
-                            <option value="在職証明書">在職証明書</option>
+                            <option value="在籍証明書">在籍証明書</option>
                             <option value="源泉徴収票">源泉徴収票</option>
                             <option value="給与明細">給与明細</option>
                             <option value="賃金台帳">賃金台帳</option>
@@ -325,7 +336,7 @@
                         <div class="checkboxes">
                             <p>必要書類:</p>
                             <input type="checkbox" id="certificate_of_employment" onchange="paperInput()">
-                            <label for="certificate_of_employment">在職証明書</label>
+                            <label for="certificate_of_employment">在籍証明書</label>
     
                             <input type="checkbox" id="tax" onchange="paperInput()">
                             <label for="tax">源泉徴収票</label>
@@ -336,7 +347,7 @@
                             <input type="checkbox" id="payroll" onchange="paperInput()">
                             <label for="payroll">給与明細</label>
                             <div id="payroll_input">
-                                期間：<input type="date" id="payroll_item_start">~<input type="date" id="payroll_item_end">
+                                期間：<input type="month" id="payroll_item_start">度分~<input type="month" id="payroll_item_end">度分
                             </div>
     
                             <input type="checkbox" id="wage" onchange="paperInput()">

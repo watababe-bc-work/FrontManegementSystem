@@ -33,9 +33,12 @@ firebase.auth().onAuthStateChanged(user => {
 function login(){
     var email = document.getElementById('email_login').value;
     var password = document.getElementById('password_login').value;
-    document.getElementById('Alert').innerHTML = '<div class="alertCheck alert-danger" role="alert">ログイン確認中です...</div>';
+    document.getElementById('Alert_success').innerHTML = '<div class="alertCheck alert-success" role="alert">ログイン確認中です...</div>';
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => {
+        document.getElementById('Alert_success').innerHTML = '<div class="alert alert-success" role="alert">アカウント作成が完了しました。そのままページをお閉じください。</div>';
+    })
     .catch(function(error) {
-        document.getElementById('Alert').innerHTML = '<div class="alert alert-danger" role="alert">メールアドレスまたはパスワードが誤っています。</div>';
+        document.getElementById('Alert_danger').innerHTML = '<div class="alert alert-danger" role="alert">メールアドレスまたはパスワードが誤っています。</div>';
     });
 } 
