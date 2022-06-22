@@ -29,11 +29,13 @@ h2{
 
 form{
     font-size: 15px;
+    text-align: left;
+    margin: 0 0 0 25%;
 
     .edit{
-        margin: 25px 0;
+        margin: 15px 0;
         label{
-            margin-left:20px;
+            width: 150px;
         }
     }
     #subject{
@@ -48,8 +50,18 @@ form{
         vertical-align: top;
     }
 
-    #file{
-        margin: 0 auto;;
+    .files{
+        display: inline-block;
+    }
+
+    #orderPersonLabel{
+        width: 100px;
+        margin: 0 0 0 20px;
+    }
+    
+    #outTimeLabel{
+        margin: 0 0 0 20px;
+        width: 70px;
     }
 }
 
@@ -166,6 +178,7 @@ input,select,textarea{
     h2{
         font-size: 25px;
         margin: 20px 0;
+        color: black;
     }
 
     button{
@@ -180,10 +193,13 @@ input,select,textarea{
         margin: 10px;
     }
 
+    #edit_submit_button{
+        display: inline-block;
+    }
+
     form{
         .edit{
-            margin: 3% 5px;
-            display: inline-block;
+            margin: 10px 0;
             label{
                 display: inline-block;
             }
@@ -206,6 +222,16 @@ input,select,textarea{
 
         #headquartersCommentLabel{
             vertical-align: top;
+        }
+
+        #orderPersonLabel_modal{
+            width: 100px;
+            margin: 0 0 0 20px;
+        }
+        
+        #outTimeLabel_modal{
+            margin: 0 0 0 20px;
+            width: 70px;
         }
     }
 
@@ -235,10 +261,12 @@ input,select,textarea{
 }
 
 #modalImgs{
+    text-align: center;
     img{
         width: 400px;
         height: 300px;
         object-fit: cover;
+        margin:  20px 5px;
     }
 
     p{

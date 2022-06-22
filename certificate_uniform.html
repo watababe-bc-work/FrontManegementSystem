@@ -26,7 +26,8 @@
             <div class="backwhite" id="addForm2">
                 <form action="certificate_uniform.html" method="POST">
                     <div class="edit">
-                        <p>申請日：<span id="order_date2"></span></p>
+                        <label for="">申請日：</label>
+                        <input type="date" id="order_date2">
                     </div>
                     <div class="edit">
                         <label for="">社員番号：</label>
@@ -74,6 +75,13 @@
                             <option value="バリバリANNEX">バリバリANNEX</option>
                             <option value="HOTEL グランバリ">HOTEL グランバリ</option>
                             <option value="ZALA">ZALA</option>
+                        </select>
+                    </div>
+                    <div class="edit">
+                        <label for="">納品書</label>
+                        <select name="" id="delivery_slip">
+                            <option value="">なし</option>
+                            <option value="○">有り</option>
                         </select>
                     </div>
                     <div class="edit">
@@ -273,7 +281,8 @@
             <div class="backwhite" id="addForm">
                 <form action="certificate_uniform.html" method="POST">
                     <div class="edit">
-                        <p>申請日:<span id="order_date"></span></p>
+                        <label for="">申請日：</label>
+                        <input type="date" id="order_date">
                     </div>
                     <div class="edit">
                         <label for="">社員番号：</label>

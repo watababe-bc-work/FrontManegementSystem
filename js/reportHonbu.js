@@ -30,7 +30,7 @@ document.getElementById('nextButton').style.visibility = 'hidden';
     // 省略 
     // (Cloud Firestoreのインスタンスを初期化してdbにセット)
 
-    query = await db.collection('reports').orderBy('orderDate', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
+    query = await db.collection('reports').orderBy('CreatedAt', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
     querySnapshot = await query.get();
 
     var stocklist = '<table class="table">'
@@ -137,8 +137,6 @@ function EditUpdate(id){
     //DBへ送信
     db.collection('reports').doc(id).update({
         requesterName:requesterName,
-        orderPersonName,orderPersonName,
-        place:place,
         demand:demand,
         process_content:process_content,
     });

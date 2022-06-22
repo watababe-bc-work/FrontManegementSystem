@@ -33,11 +33,13 @@ function equipmentManualUpdate(){
     var storename = document.getElementById('store_name').value;
     //ファイル名
     var pdf = document.getElementById('pdfname').files[0];
-    var pdfname = document.getElementById('pdfname').files[0].name;
+    if(pdf != null){
+        var pdfname = document.getElementById('pdfname').files[0].name;
+    }
     //概要
     var overview = document.getElementById('overview').value;
     console.log(pdfname)
-    if(title == "" || pdf == "" || storename == ""){
+    if(title == "" || pdf == null || storename == ""){
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
@@ -102,3 +104,44 @@ function deleteContent(id,name){
         alert("キャンセルしました。");
     } 
 };
+
+//検索
+function search(){
+    var store = document.getElementById('store_name_search').value;
+    (async () => {
+        try {
+        // 省略 
+        // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+    
+        query = await db.collection('equipmentManuals'); // firebase.firestore.QuerySnapshotのインスタンスを取得
+
+        //店舗での検索
+        if(store != ""){
+            query = query.where('storename','==',store);
+        }else{
+        }
+        console.log(query);
+        querySnapshot = await query.orderBy('createdAt', 'desc').get();
+
+        var i = 0;
+        var stocklist = '<table class="table table-striped">'
+        stocklist += '<tr><th>作成日</th><th>店舗名</th><th>タイトル</th><th>概要</th><th>編集</th>';
+        querySnapshot.forEach((postDoc) => {
+          const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
+          var prevTask = Promise.resolve;
+          prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
+              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
+              document.getElementById('contentList').innerHTML = stocklist;
+              i++;
+              if(querySnapshot.length == i){
+                  stocklist += '</table>';
+                }
+          }).catch(error => {
+              console.log(error);
+          }).catch(() => {});
+        });
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}

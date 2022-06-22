@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>事故報告・入室取消 要望一覧</title>
+    <title>事故報告 要望一覧</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -22,13 +22,12 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <h2>事故報告・入室取消 要望一覧</h2>
+    <h2>事故報告 要望一覧</h2>
     <div class="table_select">
         <p>検索</p>
         <label for="">店舗:</label>
         <select id="store_name_search">
             <option value="">自店舗を選択</option>
-            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
             <option value="池袋グランド">池袋グランド</option>
             <option value="アトランタ">アトランタ</option>
             <option value="アメジスト">アメジスト</option>
@@ -70,14 +69,15 @@
         <label for="">日付:</label>
         <input type="date" name="" id="StartDate_search">から
         <input type="date" id="EndDate_search">まで 
-        <label for="">依頼区分:</label>
-        <select name="" id="order_category_search">
+        <label for="ordercategoryLabel_search">依頼区分:</label>
+        <input list="order_category_list_search" id="order_category_search" name="ordercategoryLabel_search" placeholder="テキスト入力or選択">
+        <datalist id="order_category_list_search">
             <option value="">区分を選択する</option>
             <option value="入室取消">入室取消</option>
             <option value="退店取消">退店取消</option>
             <option value="複数名利用">複数名利用</option>
             <option value="操作ミス・未回収">操作ミス・未回収</option>
-        </select>
+        </datalist>
         <br>
         <label for="">依頼者:</label>
         <input type="text" id="requester_name_search">
@@ -87,6 +87,9 @@
         <button type="submit" class="btn btn-success" onclick="search()">検索する</button>
         <button type="submit" class="btn btn-secondary" onclick="cancel()">検索欄リセット</button>
     </div>
+    <div class="csvButton">
+        <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
     <div id="table_list">
         <!-- <table class="table table-striped">
             <tr>
@@ -94,9 +97,9 @@
                 <th>依頼区分</th>
                 <th>依頼者</th>
                 <th>指示者</th>
-                <th>場所・部屋番号</th>
+                <th>部屋番号</th>
                 <th>IN時間</th>
-                <th>OUT時間/取消時間</th>
+                <th>OUT時間</th>
                 <th>利用プラン/金額</th>
                 <th>日報訂正</th>
                 <th>状態</th>
@@ -126,71 +129,77 @@
             <h2>編集</h2>
             <form action="accidentEntranceReset.html" method="POST">
                 <div class="edit">
-                        <label for="">発生日時：</label>
-                        <p id="order_date_edit"></p>
-                        <label for="">依頼区分：</label>
-                        <select name="" id="order_category_edit">
-                            <option value="">区分を選択する</option>
-                            <option value="入室取消">入室取消</option>
-                            <option value="退店取消">退店取消</option>
-                            <option value="複数名利用">複数名利用</option>
-                            <option value="操作ミス・未回収">操作ミス・未回収</option>
-                        </select>
-                    </div>
-        
-                    <div class="edit">
-                        <label for="">依頼者氏名：</label>
-                        <input type="text" id="requester_name_edit">
-        
-                        <label for="">指示者氏名：</label>
-                        <input type="text" id="orderPerson_name_edit">
-                    </div>
-                
-                    <div class="edit">
-                        <label for="">場所/部屋番号：</label>
-                        <input type="text" id="place_edit">
-                        <label for="">in時間</label>
-                        <input type="time" id="inTime_edit">
-                        <label for="">OUT時間/取り消し時間</label>
-                        <input type="time" id="outTime_edit">
-                    </div> 
-                    <div class="edit">
-                        <label for="">プラン/金額</label>
-                        <input type="text" id="planAndprice_edit">
-                        <label for="">訂正</label>
-                        <select name="" id="correction_edit">
-                            <option value="">無し</option>
-                            <option value="プラス有り">プラス有り</option>
-                            <option value="マイナス有り">マイナス有り</option>
-                        </select>
-                        <label for="">件数</label>
-                        <input type="number" id="count_edit">
-                    </div>
-                    <div class="edit">
-                        <label for="">金額</label>
-                        <input type="text" id="price_edit">
-                        <label for="">出金その他</label>
-                        <input type="text" id="withdrawal_edit">
-                        <label for="">入金その他</label>
-                        <input type="text" id="moneyReceived_edit">
-                    </div>
-                    <div class="edit">
-                        <label for="" class="status_desc_label">状況説明：</label>
-                        <textarea name="" cols="50" rows="5" id="status_desc_edit"></textarea>
-                    </div>
-                    <div class="edit">
-                        <label for="" class="process_content_label">処理内容：</label>
-                        <textarea name="" cols="50" rows="5" id="process_content_edit"></textarea>
-                    </div>
-                    <div class="edit">
-                        <label for="">状態:</label>
-                        <select name="" id="status">
-                            <option value="未了">未了</option>
-                            <option value="完了">完了</option>
-                        </select>
-                        <label for="" class="headquartersComment_label">本部コメント：</label>
-                        <textarea name="" id="headquartersComment" cols="50" rows="5"></textarea>
-                    </div>
+                    <label for="">発生日時：</label>
+                    <p id="order_date_edit"></p>
+                </div>
+                <div class="edit">
+                    <label for="ordercategoryLabel_edit">依頼区分:</label>
+                    <input list="order_category_list_edit" id="order_category_edit" name="ordercategoryLabel_edit" placeholder="テキスト入力or選択">
+                    <datalist id="order_category_list_edit">
+                        <option value="">区分を選択する</option>
+                        <option value="入室取消">入室取消</option>
+                        <option value="退店取消">退店取消</option>
+                        <option value="複数名利用">複数名利用</option>
+                        <option value="操作ミス・未回収">操作ミス・未回収</option>
+                    </datalist>
+                </div>
+    
+                <div class="edit">
+                    <label for="">依頼者氏名：</label>
+                    <input type="text" id="requester_name_edit">
+    
+                    <label for="" id="orderPersonLabel_modal">指示者氏名：</label>
+                    <input type="text" id="orderPerson_name_edit">
+                </div>
+            
+                <div class="edit">
+                    <label for="">部屋番号：</label>
+                    <input type="text" id="place_edit">
+                </div> 
+                <div class="edit">
+                    <label for="">in時間</label>
+                    <input type="time" id="inTime_edit">
+                    <label for="" id="outTimeLabel_modal">OUT時間</label>
+                    <input type="time" id="outTime_edit">
+                </div>
+                <div class="edit">
+                    <label for="">プラン/金額</label>
+                    <input type="text" id="planAndprice_edit">
+                </div>
+                <div class="edit">
+                    <label for="">訂正</label>
+                    <select name="" id="correction_edit">
+                        <option value="">無し</option>
+                        <option value="プラス有り">プラス有り</option>
+                        <option value="マイナス有り">マイナス有り</option>
+                    </select>
+                </div>
+                <div class="edit">
+                    <label for="">件数</label>
+                    <input type="number" id="count_edit">
+                </div>
+                <div class="edit">
+                    <label for="">金額</label>
+                    <input type="text" id="price_edit">
+                </div>
+                <div class="edit">
+                    <label for="">入金その他</label>
+                    <input type="text" id="moneyReceived_edit">
+                    <label for="" id="withdrawal_label">出金その他</label>
+                    <input type="text" id="withdrawal_edit">
+                </div>
+                <div class="edit">
+                    <label for="" class="status_desc_label">状況説明：</label>
+                    <textarea name="" cols="50" rows="3" id="status_desc_edit"></textarea>
+                </div>
+                <div class="edit">
+                    <label for="" class="process_content_label">処理内容：</label>
+                    <textarea name="" cols="50" rows="3" id="process_content_edit"></textarea>
+                </div>
+                <div class="edit">
+                    <label for="" class="headquartersComment_label">本部コメント：</label>
+                    <textarea name="" id="headquartersComment" cols="50" rows="3"></textarea>
+                </div>
             </form>
             <br>
             <div id="collectAlert_edit">
@@ -205,11 +214,9 @@
         <div class="modal__bg js-modal-close1"></div>
         <div class="modal__content">
             <h2>画像</h2>
-            <form action="accidentEntranceReset.html" method="POST">
-                <div id="modalImgs">
-                    <!-- DBから画像を取得 -->
-                </div>
-            </form>
+            <div id="modalImgs">
+                <!-- DBから画像を取得 -->
+            </div>
             <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
         </div>
     </div> 

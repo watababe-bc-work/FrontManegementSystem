@@ -49,10 +49,19 @@ document.getElementById('nextButton').style.visibility = 'hidden';
 
 //フォームの初期非表示
 document.getElementById('addForm').style.display = "none";
+var addForm = false;
 
 //ボタンpushでフォーム表示
 function addContent(){
-    document.getElementById('addForm').style.display = "block";
+    if(addForm){
+        document.getElementById('addForm').style.display = "none";
+        document.getElementById('addButton').textContent = "+事故報告申請をする";
+        addForm = false;
+    }else{
+        document.getElementById('addForm').style.display = "block";
+        document.getElementById('addButton').textContent = "-事故報告申請を閉じる";
+        addForm = true;
+    }
 }
 
 //写真添付の画像数判定
@@ -83,7 +92,7 @@ function Update(){
     var requesterName = document.getElementById('requester_name').value;
     //指示者氏名
     var orderPersonName = document.getElementById('orderPerson_name').value;
-    //場所/部屋番号
+    //部屋番号
     var place = document.getElementById('place').value;
     //in時間
     var inTime = document.getElementById('inTime').value;
@@ -141,7 +150,6 @@ function Update(){
                 status_desc:status_desc,
                 process_content:process_content,
                 headquartersComment:'',
-                status:'未了',
                 photoCount:fileList.length,
                 CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
             });
@@ -198,21 +206,10 @@ function showTable(){
         querySnapshot = await query.get();
 
         var stocklist = '<table class="table">'
-        stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>場所・部屋番号</th><th>IN時間</th><th>OUT時間/取消時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
+        stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>部屋番号</th><th>IN時間</th><th>OUT時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "6">本部コメント</th></tr>';
         querySnapshot.forEach((postDoc) => {
-            switch(postDoc.get('status')){
-                //完了
-                case '完了':
-                    var statusText = "完了";
-                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                    break;
-                //未了    
-                case '未了':
-                    var statusText = "未了";
-                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                    break;
-            }
-        })
+            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('place') +'\')">削除</button></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+        });
         stocklist += '</table>';
         document.getElementById('table_list').innerHTML = stocklist;
 
@@ -248,21 +245,10 @@ function nextPegination(){
             }
   
             var stocklist = '<table class="table">'
-            stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>場所・部屋番号</th><th>IN時間</th><th>OUT時間/取消時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
+            stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>部屋番号</th><th>IN時間</th><th>OUT時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
             querySnapshot.forEach((postDoc) => {
-                switch(postDoc.get('status')){
-                    //完了
-                    case '完了':
-                        var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                        break;
-                    //未了    
-                    case '未了':
-                        var statusText = "未了";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                        break;
-                }
-            })
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('place') +'\')">削除</button></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+            });
             stocklist += '</table>';
             document.getElementById('table_list').innerHTML = stocklist;
     
@@ -278,21 +264,10 @@ function nextPegination(){
     querySnapshot = currentQueryList.pop();
   
     var stocklist = '<table class="table">'
-    stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>場所・部屋番号</th><th>IN時間</th><th>OUT時間/取消時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
+    stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>部屋番号</th><th>IN時間</th><th>OUT時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
     querySnapshot.forEach((postDoc) => {
-        switch(postDoc.get('status')){
-            //完了
-            case '完了':
-                var statusText = "完了";
-                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                break;
-            //未了    
-            case '未了':
-                var statusText = "未了";
-                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                break;
-        }
-    })
+        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('place') +'\')">削除</button></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+    });
     stocklist += '</table>';
     document.getElementById('table_list').innerHTML = stocklist;
   
@@ -310,29 +285,12 @@ function editStatus(id){
         //発生日時
         document.getElementById('order_date_edit').textContent = carrentDB.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'});
         //依頼区分
-        var order_category_edit = document.getElementById('order_category_edit');
-        switch(carrentDB.get('orderCategory')){
-            case '入室取消':
-                order_category_edit.options[1].selected = true;
-                break;
-            case '退店取消':
-                order_category_edit.options[2].selected = true;
-                break;
-            case '複数名利用':
-                order_category_edit.options[3].selected = true;
-                break;    
-            case '操作ミス・未回収':
-                order_category_edit.options[4].selected = true;
-                break;
-            default:
-                order_category_edit.options[0].selected = true;
-                break;    
-        }
+        document.getElementById('order_category_edit').value = carrentDB.get('orderCategory');
         //依頼者氏名
         document.getElementById('requester_name_edit').value = carrentDB.get('requesterName');
         //指示者氏名
         document.getElementById('orderPerson_name_edit').value = carrentDB.get('orderPersonName');
-        //場所/部屋番号
+        //部屋番号
         document.getElementById('place_edit').value = carrentDB.get('place');
         //in時間
         document.getElementById('inTime_edit').value = carrentDB.get('inTime');
@@ -381,7 +339,7 @@ function EditUpdate(id){
     var requesterName = document.getElementById('requester_name_edit').value;
     //指示者氏名
     var orderPersonName = document.getElementById('orderPerson_name_edit').value;
-    //場所/部屋番号
+    //部屋番号
     var place = document.getElementById('place_edit').value;
     //in時間
     var inTime = document.getElementById('inTime_edit').value;
@@ -470,21 +428,10 @@ function search(){
         backQueryList.push(querySnapshot);
 
         var stocklist = '<table class="table">'
-        stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>場所・部屋番号</th><th>IN時間</th><th>OUT時間/取消時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>状態</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "7">本部コメント</th></tr>';
+        stocklist += '<tr class="table_title"><th>発生日時</th><th>依頼区分</th><th>依頼者</th><th>指示者</th><th>部屋番号</th><th>IN時間</th><th>OUT時間</th><th>利用プラン/金額</th><th>日報訂正</th><th>機能</th><tr class="table_title"><th colspan = "5">状況説明</th><th colspan = "6">本部コメント</th></tr>';
         querySnapshot.forEach((postDoc) => {
-            switch(postDoc.get('status')){
-                //完了
-                case '完了':
-                    var statusText = "完了";
-                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                    break;
-                //未了    
-                case '未了':
-                    var statusText = "未了";
-                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
-                    break;
-            }
-        })
+            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>' + postDoc.get('orderCategory') + '</td><td>' + postDoc.get('requesterName') + '</td><td>' + postDoc.get('orderPersonName') + '</td><td>'+ postDoc.get('place') +'</td><td>'+ postDoc.get('inTime') +'</td><td>'+ postDoc.get('outTime') +'</td><td>'+ postDoc.get('planAndprice') +'</td><td>'+ postDoc.get('correction') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('place') +'\')">削除</button></td></tr><tr><td colspan = "5">'+ postDoc.get('status_desc') +'</td><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+        });
         stocklist += '</table>';
         document.getElementById('table_list').innerHTML = stocklist;
 
@@ -509,15 +456,19 @@ function modalImages(id){
     (async () => {
         try {
             const querySnapshot = await db.collection('AccidentAndCancel').doc(id).get();
+            document.getElementById('modalImgs').innerHTML = '<p></p>';  
             //写真の枚数を取得
             var photoCount = querySnapshot.get('photoCount');
-            if(photoCount == 0){
+            if(photoCount == 0 || photoCount == undefined){
                 document.getElementById('modalImgs').innerHTML = '<p>画像はありません。</p>';     
             }else{
                 for(var i = 0; i < photoCount; i++){
+                    document.getElementById('modalImgs').innerHTML = '<p>画像ロード中...</p>';  
                     var storageImageRef = firebase.storage().ref('/accidentEntranceReset/' + id + '/' + 'uploadImage' + i);
+                    var stocklist = '';
                     prevTask = Promise.all([prevTask,storageImageRef.getDownloadURL()]).then(([_,url])=>{
-                        var stocklist = "<img src = " + "'" + url + "'" + "></img>";
+                        console.log(url);
+                        stocklist += "<img src = " + "'" + url + "'" + "></img>";
                         document.getElementById('modalImgs').innerHTML = stocklist;
                     }).catch(error => {
                     }).catch(() => {});
@@ -528,4 +479,36 @@ function modalImages(id){
         }
 
     })();
-}
+};
+
+//削除
+function deleteContent(id,name,place){
+    var res = window.confirm("場所:" + place + "の" + name + "さんの申請を削除しますか？");
+    if( res ) {
+        (async () => {
+            try {
+                const carrentDB = await db.collection('AccidentAndCancel').doc(id).get();
+                if(carrentDB.get('photoCount') == 0 || carrentDB.get('photoCount') == undefined){
+
+                }else{
+                    for(var i = 0;i < carrentDB.get('photoCount');i++){
+                        //削除するフォルダへの参照を作成
+                        var storageImageRef = firebase.storage().ref('/accidentEntranceReset/' + id + '/' + 'uploadImage' + i);
+                        storageImageRef.delete();
+                    }
+                }
+                //firestoreを削除
+                db.collection('AccidentAndCancel').doc(id).delete();  
+                alert("削除されました。");
+                setTimeout("location.reload()",500);
+            } catch (err) {
+            console.log(err);
+            }
+    
+        })();
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+};

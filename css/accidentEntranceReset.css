@@ -30,14 +30,16 @@ h2 {
 
 form {
   font-size: 15px;
+  text-align: left;
+  margin: 0 0 0 25%;
 }
 
 form .edit {
-  margin: 25px 0;
+  margin: 15px 0;
 }
 
 form .edit label {
-  margin-left: 20px;
+  width: 150px;
 }
 
 form #subject {
@@ -52,8 +54,18 @@ form .status_desc_label, form .process_content_label {
   vertical-align: top;
 }
 
-form #file {
-  margin: 0 auto;
+form .files {
+  display: inline-block;
+}
+
+form #orderPersonLabel {
+  width: 100px;
+  margin: 0 0 0 20px;
+}
+
+form #outTimeLabel {
+  margin: 0 0 0 20px;
+  width: 70px;
 }
 
 .alert {
@@ -170,6 +182,7 @@ input, select, textarea {
 .modal h2 {
   font-size: 25px;
   margin: 20px 0;
+  color: black;
 }
 
 .modal button {
@@ -184,9 +197,12 @@ input, select, textarea {
   margin: 10px;
 }
 
-.modal form .edit {
-  margin: 3% 5px;
+.modal #edit_submit_button {
   display: inline-block;
+}
+
+.modal form .edit {
+  margin: 10px 0;
 }
 
 .modal form .edit label {
@@ -211,6 +227,16 @@ input, select, textarea {
 
 .modal form #headquartersCommentLabel {
   vertical-align: top;
+}
+
+.modal form #orderPersonLabel_modal {
+  width: 100px;
+  margin: 0 0 0 20px;
+}
+
+.modal form #outTimeLabel_modal {
+  margin: 0 0 0 20px;
+  width: 70px;
 }
 
 .modal .alert {
@@ -239,11 +265,16 @@ input, select, textarea {
   vertical-align: top;
 }
 
+#modalImgs {
+  text-align: center;
+}
+
 #modalImgs img {
   width: 400px;
   height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
+  margin: 20px 5px;
 }
 
 #modalImgs p {

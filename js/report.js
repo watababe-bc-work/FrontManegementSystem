@@ -96,7 +96,7 @@ function showTable(){
         // 省略 
         // (Cloud Firestoreのインスタンスを初期化してdbにセット)
     
-        query = await db.collection('reports').where('storeName','==',store).orderBy('orderDate', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
+        query = await db.collection('reports').where('storeName','==',store).orderBy('CreatedAt', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
         querySnapshot = await query.get();
 
         var stocklist = '<table class="table">'
@@ -206,7 +206,6 @@ function EditUpdate(id){
         requesterName:requesterName,
         demand:demand,
         process_content:process_content,
-        found_article:found_article,
     });
 
     var collectAlert = document.getElementById('collectAlert_edit');
@@ -258,7 +257,7 @@ function search(){
             }
         }
         console.log(query);
-        querySnapshot = await query.orderBy('orderDate', 'desc').get();
+        querySnapshot = await query.orderBy('CreatedAt', 'desc').get();
 
         //前回のDBとして保存
         backQueryList.push(querySnapshot);

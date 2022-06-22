@@ -30,8 +30,21 @@ window.onload = function () {
     var year = date.getFullYear()
     var month = date.getMonth() + 1
     var day = date.getDate()
-    document.getElementById("order_date").textContent = "令和" + (year - 2018) + "年" + month + "月" + day + "日";
-    document.getElementById("order_date2").textContent = "令和" + (year - 2018) + "年" + month + "月" + day + "日";
+    
+    var toTwoDigits = function (num, digit) {
+        num += ''
+        if (num.length < digit) {
+        num = '0' + num
+        }
+        return num
+    }
+    
+    var yyyy = toTwoDigits(year, 4)
+    var mm = toTwoDigits(month, 2)
+    var dd = toTwoDigits(day, 2)
+    var ymd = yyyy + "-" + mm + "-" + dd;
+    document.getElementById("order_date").value = ymd;
+    document.getElementById("order_date2").value = ymd;
 }
 
 function addCertificateContent(){
@@ -254,16 +267,18 @@ function demandChange(){
 
 //DBへ追加
 function uniformUpdate(){
+    //申請日
+    var orderDate = document.getElementById('order_date2').value;
     //社員番号
     var stuffNum = document.getElementById('stuffNum_uni').value;
     //氏名
     var name = document.getElementById('name_uni').value;
-    //申請日
-    var createdAt = document.getElementById('order_date2').textContent;
     //店舗名
     var storeName = document.getElementById('store_name_uni').value;
     //種類
     var demandStatus = document.getElementById('demand_uni').value;
+    //納品書
+    var deliverySlip = document.getElementById('delivery_slip').value;
     switch(demandStatus){
         case "追加購入":
             var blackS = Number(document.getElementById('blackS').value);
@@ -307,6 +322,7 @@ function uniformUpdate(){
         if(demandStatus == "追加購入"){
             //DBへ送信
             db.collection('uniforms').add({
+                orderDate:orderDate,
                 stuffNum:stuffNum,
                 name:name,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -330,10 +346,12 @@ function uniformUpdate(){
                 fleece_blueXL:fleece_blueXL,
                 sum:sum,
                 status:"unapproved",
+                deliverySlip:deliverySlip,
             });
         }else if(demandStatus == "忘れ購入"){
             //DBへ送信
             db.collection('uniforms').add({
+                orderDate:orderDate,
                 stuffNum:stuffNum,
                 name:name,
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -341,10 +359,12 @@ function uniformUpdate(){
                 demandStatus:demandStatus,
                 category:category,
                 status:"unapproved",
+                deliverySlip:deliverySlip,
             });
         }else{
             //DBへ送信
             db.collection('uniforms').add({
+                orderDate:orderDate,
                 stuffNum:stuffNum,
                 name:name,
                 createdAt:firebase.firestore.FieldValue.serverTimestamp(),
@@ -353,6 +373,7 @@ function uniformUpdate(){
                 shiftName:shiftName,
                 nameplateColor:nameplateColor,
                 status:"unapproved",
+                deliverySlip:deliverySlip,
             });
         }
         var Alert = document.getElementById('Alert2');

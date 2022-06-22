@@ -386,13 +386,32 @@ function EditUpdate(id){
     }
 }
 
+
 //削除
 function deleteContent(id,date){
     var res = window.confirm(date + "の内容を削除しますか？");
     if( res ) {
-        db.collection('POPDemands').doc(id).delete();
-        alert("削除されました。");
-        setTimeout("location.reload()",500);
+        (async () => {
+            try {
+                const carrentDB = await db.collection('POPDemands').doc(id).get();
+                if(carrentDB.get('photoCount') == 0 || carrentDB.get('photoCount') == undefined){
+
+                }else{
+                    for(var i = 0;i < carrentDB.get('photoCount');i++){
+                        //削除するフォルダへの参照を作成
+                        var storageImageRef = firebase.storage().ref('/POPDemand/' + id + '/' + 'uploadImage' + i);
+                        storageImageRef.delete();
+                    }
+                }
+                //firestoreを削除
+                db.collection('POPDemands').doc(id).delete();
+                alert("削除されました。");
+                setTimeout("location.reload()",500);
+            } catch (err) {
+            console.log(err);
+            }
+    
+        })();
     }
     else {
         // キャンセルならアラートボックスを表示
