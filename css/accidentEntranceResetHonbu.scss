@@ -162,6 +162,7 @@ input,select,textarea{
     h2{
         font-size: 25px;
         margin: 20px 0;
+        color: black;
     }
 
     button{
@@ -176,12 +177,18 @@ input,select,textarea{
         margin: 10px;
     }
 
+    #edit_submit_button{
+        display: inline-block;
+    }
+
     form{
+        text-align: left;
+        margin: 0 0 0 20%;
         .edit{
-            margin: 1% 5px;
-            display: inline-block;
+            margin: 10px 0;
             label{
                 display: inline-block;
+                width: 180px;
             }
             p{
                 display: inline-block;
@@ -203,6 +210,21 @@ input,select,textarea{
         #headquartersCommentLabel{
             vertical-align: top;
         }
+
+        #orderPersonLabel_modal{
+            width: 100px;
+            margin: 0 0 0 20px;
+        }
+        
+        #outTimeLabel_modal{
+            margin: 0 0 0 20px;
+            width: 70px;
+        }
+
+        #withdrawal_label{
+            margin: 0 0 0 20px;
+            width: 100px;
+        }
     }
 
     .alert{
@@ -223,10 +245,6 @@ input,select,textarea{
         top: 50%;
         transform: translate(-50%,-50%);
         width: 80%;
-
-        h2{
-            color: black;
-        }
     }
 
     .vertical{
@@ -235,14 +253,60 @@ input,select,textarea{
 }
 
 #modalImgs{
+    text-align: center;
     img{
         width: 400px;
         height: 300px;
         object-fit: cover;
-        margin: 0 0 10px 0; 
+        margin:  20px 5px;
     }
 
     p{
         font-size: 20px;
+    }
+}
+
+.csvButton{
+    text-align: left;
+    margin-top: 30px;
+    margin-left: 10px;
+    .btn,
+    a.btn,
+    button.btn {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.5;
+      position: relative;
+      display: inline-block;
+      padding: 1rem 4rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      color: #212529;
+      border-radius: 0.5rem;
+    }
+
+    a.btn-radius-solid {
+        border: 1px solid #ccc;
+        background: #f1e767;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+        -webkit-box-shadow: inset 1px 1px 1px #fff;
+        box-shadow: inset 1px 1px 1px #fff;
+      }
+      
+      a.btn-radius-solid:hover {
+        background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
     }
 }

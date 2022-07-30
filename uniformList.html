@@ -22,7 +22,7 @@
     <div class="search">
         <p>検索</p>
         <label for="">店舗：</label>
-        <select id="store_name_search" onchange="showTable()">
+        <select id="store_name_search">
             <option value="">店舗を選択</option>
             <option value="ワタナベ商事本部">ワタナベ商事本部</option>
             <option value="池袋グランド">池袋グランド</option>
@@ -63,7 +63,21 @@
             <option value="HOTEL グランバリ">HOTEL グランバリ</option>
             <option value="ZALA">ZALA</option>
         </select>
+        <label for="">日付:</label>
+        <input type="date" name="" id="StartDate_search">から
+        <input type="date" id="EndDate_search">まで 
+        <br>
+        <div class="demand_search">
+            <label for="">項目でのソート：</label>
+            <input type="checkbox" id="add_purchase_search" value="追加購入"><label for="add_purchase_search">追加購入</label>
+            <input type="checkbox" id="forget_purchase_search" value="忘れ購入"><label for="forget_purchase_search">忘れ購入</label>
+            <input type="checkbox" id="nameplate_search" value="ネームプレート"><label for="nameplate_search">ネームプレート</label>
+        </div>
+        <button class="btn btn-success" onclick="search()">検索</button>
         <button class="btn btn-secondary" onclick="cancel()">検索リセット</button>
+    </div>
+    <div class="csvButton">
+        <a id="download" href="javascript:void(0);" class="btn btn-radius-solid" onclick="handleDownload();">テーブルをCSVファイルでダウンロードする<i class="fas fa-angle-right fa-position-right"></i></a>
     </div>
     <div class="youbouTable">
         <div id="table_list">
@@ -214,6 +228,13 @@
                         <label for="">承認者</label>
                         <input type="text" id="approver">
                     </div>
+                </div>
+                <div class="edit">
+                    <label for="">納品書</label>
+                    <select name="" id="delivery_slip">
+                        <option value="">なし</option>
+                        <option value="○">有り</option>
+                    </select>
                 </div>
             </form>
             <br>

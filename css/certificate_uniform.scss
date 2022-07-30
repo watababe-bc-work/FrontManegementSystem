@@ -230,3 +230,83 @@ table{
 .yetBack{
     background: white;
 }
+
+.modal{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+    overflow: scroll;
+
+    h2{
+        font-size: 25px;
+        margin: 20px 0;
+    }
+
+    button{
+        width: 150px;
+        height: 40px;
+        margin: 5px 20px;
+        font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 10px;
+    }
+
+    form{
+        .edit{
+            margin: 3% 5px;
+            display: inline-block;
+            div{
+                display: inline-block;
+                label{
+                    display: inline-block;
+                }
+                p{
+                    display: inline-block;
+                }
+            }
+        }
+
+        label{
+            font-size: 15px;
+        }
+
+        input,select,textarea{
+            font-size: 15px;
+        }
+
+        #headquartersCommentLabel{
+            vertical-align: top;
+        }
+    }
+
+    .alert{
+        font-size: 15px;
+    }
+
+    .modal__bg{
+        background: rgba(0,0,0,0.8);
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+    .modal__content{
+        background: #fff;
+        left: 50%;
+        padding: 40px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 60%;
+    }
+
+    .vertical{
+        vertical-align: top;
+    }
+}

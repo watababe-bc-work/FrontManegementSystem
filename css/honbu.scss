@@ -89,10 +89,17 @@ form{
 
         @media screen and (min-width: 1500px) {
             position: absolute;
+            top: 60%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+
+        @media screen and (min-width: 2000px) {
+            position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%,-50%);
-          }
+        }  
 
         @include mq-up('md') {
             border-collapse: separate;
@@ -110,6 +117,12 @@ form{
 
     a:hover{
         background-color: rgba(128,128,128,0.5);
+    }
+
+    img{ 
+        @media screen and (min-width: 1500px) {
+            width: 50px; 
+        }  
     }
 
     td{

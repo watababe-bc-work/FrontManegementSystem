@@ -30,13 +30,13 @@ document.getElementById('nextButton').style.visibility = 'hidden';
     // 省略 
     // (Cloud Firestoreのインスタンスを初期化してdbにセット)
 
-    query = await db.collection('reports').orderBy('orderDate', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
+    query = await db.collection('reports').orderBy('CreatedAt', 'desc').limit(10); // firebase.firestore.QuerySnapshotのインスタンスを取得
     querySnapshot = await query.get();
 
     var stocklist = '<table class="table">'
     stocklist += '<tr class="table_title"><th>発生日時</th><th>店舗名</th><th>項目</th><th>フロント名</th><th>処理内容</th><th>機能</th></tr>';
     querySnapshot.forEach((postDoc) => {
-        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
+        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
     })
     stocklist += '</table>';
     document.getElementById('table_list').innerHTML = stocklist;
@@ -74,7 +74,7 @@ function nextPegination(){
             var stocklist = '<table class="table">'
             stocklist += '<tr class="table_title"><th>発生日時</th><th>店舗名</th><th>項目</th><th>フロント名</th><th>処理内容</th><th>機能</th></tr>';
             querySnapshot.forEach((postDoc) => {
-                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
+                stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
             })
             stocklist += '</table>';
             document.getElementById('table_list').innerHTML = stocklist;
@@ -93,7 +93,7 @@ function nextPegination(){
     var stocklist = '<table class="table">'
     stocklist += '<tr class="table_title"><th>発生日時</th><th>店舗名</th><th>項目</th><th>フロント名</th><th>処理内容</th><th>機能</th></tr>';
     querySnapshot.forEach((postDoc) => {
-        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
+        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
     })
     stocklist += '</table>';
     document.getElementById('table_list').innerHTML = stocklist;
@@ -113,8 +113,18 @@ function editStatus(id){
           document.getElementById('order_date_edit').textContent = carrentDB.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'});
           //フロント名
           document.getElementById('requester_name_edit').value = carrentDB.get('requesterName');
+          //店舗名
+          document.getElementById('storeName_edit').textContent = carrentDB.get('storeName');
           //項目
           document.getElementById('demand_input_edit').value = carrentDB.get('demand');
+          //両替時間
+          var exchangeForm = document.getElementById('exchangeForm_edit');
+            if(carrentDB.get('demand') == "両替"){
+                exchangeForm.style.display = "block";
+                document.getElementById('exchange_edit').value = carrentDB.get('exchangeDate');
+            }else{
+                exchangeForm.style.display = "none";
+            }
           //処理内容
           document.getElementById('process_content_edit').value = carrentDB.get('process_content');
           //編集送信ボタン生成
@@ -131,15 +141,16 @@ function EditUpdate(id){
     var requesterName = document.getElementById('requester_name_edit').value;
     //項目
     var demand = document.getElementById('demand_input_edit').value;
+    //両替時間
+    var exchangeDate = document.getElementById('exchange_edit').value;
     //処理内容
     var process_content = document.getElementById('process_content_edit').value;
 
     //DBへ送信
     db.collection('reports').doc(id).update({
         requesterName:requesterName,
-        orderPersonName,orderPersonName,
-        place:place,
         demand:demand,
+        exchangeDate:exchangeDate,
         process_content:process_content,
     });
 
@@ -197,7 +208,7 @@ function search(){
         var stocklist = '<table class="table">'
         stocklist += '<tr class="table_title"><th>発生日時</th><th>店舗名</th><th>項目</th><th>フロント名</th><th>処理内容</th><th>機能</th></tr>';
         querySnapshot.forEach((postDoc) => {
-            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('orderDate') +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
+            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('CreatedAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric',hour:'numeric',minute:'numeric'}) +'</td><td>'+ postDoc.get('storeName') +'</td><td>'+ postDoc.get('demand') +'</td><td>' + postDoc.get('requesterName') + '</td><td>'+ postDoc.get('process_content') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('requesterName') +'\',\''+ postDoc.get('demand') +'\')">削除</button></td></tr></tbody>';
         })
         stocklist += '</table>';
         document.getElementById('table_list').innerHTML = stocklist;

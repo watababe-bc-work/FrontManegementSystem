@@ -18,6 +18,14 @@ h2 {
   background: white;
 }
 
+.registerMove {
+  margin: 0 0 20px 0;
+}
+
+.topMove {
+  margin: 20px 0 0 0;
+}
+
 #addButton {
   background: orange;
   color: white;

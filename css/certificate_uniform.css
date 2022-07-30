@@ -209,4 +209,87 @@ table {
 .yetBack {
   background: white;
 }
+
+.modal {
+  display: none;
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  width: 100%;
+  text-align: center;
+  overflow: auto;
+  overflow: scroll;
+}
+
+.modal h2 {
+  font-size: 25px;
+  margin: 20px 0;
+}
+
+.modal button {
+  width: 150px;
+  height: 40px;
+  margin: 5px 20px;
+  font-size: 15px;
+}
+
+.modal p {
+  font-size: 15px;
+  margin: 10px;
+}
+
+.modal form .edit {
+  margin: 3% 5px;
+  display: inline-block;
+}
+
+.modal form .edit div {
+  display: inline-block;
+}
+
+.modal form .edit div label {
+  display: inline-block;
+}
+
+.modal form .edit div p {
+  display: inline-block;
+}
+
+.modal form label {
+  font-size: 15px;
+}
+
+.modal form input, .modal form select, .modal form textarea {
+  font-size: 15px;
+}
+
+.modal form #headquartersCommentLabel {
+  vertical-align: top;
+}
+
+.modal .alert {
+  font-size: 15px;
+}
+
+.modal .modal__bg {
+  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+.modal .modal__content {
+  background: #fff;
+  left: 50%;
+  padding: 40px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 60%;
+}
+
+.modal .vertical {
+  vertical-align: top;
+}
 /*# sourceMappingURL=certificate_uniform.css.map */

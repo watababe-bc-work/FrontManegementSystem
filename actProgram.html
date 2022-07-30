@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>行動予定表</title>
+
+    <!--FireBase-->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
+    <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/actProgram.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+</head>
+<body>
+    <h2 class="title">行動予定表</h2>
+    <div class="day">
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前の日へ</a>
+        <p id="today"></p>
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次の日へ<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
+    <table>
+        <tbody>
+            <tr>
+                <th>-運営-</th>
+            </tr>
+            <tr>
+                <th rowspan="3">東北エリア</th>
+                <td class="bg-blue">熊谷 大</td>
+                <td class="bg-blue"><input id="kumatani" type="text"></td>
+                <td class="bg-white">塩谷</td>
+                <td class="bg-white"><input id="shiotani" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">柴原</td>
+                <td class="bg-blue"><input id="shibahara" type="text"></td>
+                <td class="bg-white">高工</td>
+                <td class="bg-white"><input id="takaku" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">佐伯</td>
+                <td class="bg-blue"><input id="saeki" type="text"></td>
+                <td class="bg-white">中村 司</td>
+                <td class="bg-white"><input id="nakamuraTsukasa" type="text"></td>
+            </tr>
+            <tr>
+                <th rowspan="2">西南エリア</th>
+                <td class="bg-blue">白井</td>
+                <td class="bg-blue"><input id="shirai" type="text"></td>
+                <td class="bg-white">清水</td>
+                <td class="bg-white"><input id="shimizu" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">渡部 るみ子</td>
+                <td class="bg-blue"><input id="watanabeRumiko" type="text"></td>  
+            </tr>
+            <tr>
+                <th>-メンテナンス-</th>
+            </tr>
+            <tr>
+                <th rowspan="3">工事1</th>
+                <td class="bg-blue">吉田</td>
+                <td class="bg-blue"><input id="yoshida" type="text"></td>
+                <td class="bg-white">マクスド</td>
+                <td class="bg-white"><input id="masukudo" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">工藤</td>
+                <td class="bg-blue"><input id="kudou" type="text"></td>
+                <td class="bg-white">雲類鷲</td>
+                <td class="bg-white"><input id="uruwashi" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">木村</td>
+                <td class="bg-blue"><input id="kimura" type="text"></td>  
+            </tr>
+            <tr>
+                <th rowspan="2">工事2</th>
+                <td class="bg-blue">長澤</td>
+                <td class="bg-blue"><input id="nagasawa" type="text"></td>
+                <td class="bg-white">佐藤</td>
+                <td class="bg-white"><input id="satou" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">小島</td>
+                <td class="bg-blue"><input id="kojima" type="text"></td>  
+            </tr>
+            <tr>
+                <th rowspan="4">制作・企画</th>
+                <td class="bg-blue">山田</td>
+                <td class="bg-blue"><input id="yamada" type="text"></td>
+                <td class="bg-white">的井</td>
+                <td class="bg-white"><input id="matoi" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">石田</td>
+                <td class="bg-blue"><input id="ishida" type="text"></td>
+                <td class="bg-white">茂呂</td>
+                <td class="bg-white"><input id="toro" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">島野</td>
+                <td class="bg-blue"><input id="shimano" type="text"></td>
+                <td class="bg-white">山岸</td>
+                <td class="bg-white"><input id="yamagishi" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">中浦</td>
+                <td class="bg-blue"><input id="nakaura" type="text"></td>
+                <td class="bg-white">平井</td>
+                <td class="bg-white"><input id="hirai" type="text"></td>
+            </tr>
+            <tr>
+                <th>-総合管理-</th>
+            </tr>
+            <tr>
+                <th>人事</th>
+                <td class="bg-blue">須田</td>
+                <td class="bg-blue"><input id="suda" type="text"></td>
+                <td class="bg-white">高橋幹也</td>
+                <td class="bg-white"><input id="takahashiMikiya" type="text"></td>
+            </tr>
+            <tr>
+                <th rowspan="2">遅番</th>
+                <td class="bg-blue">田邊</td>
+                <td class="bg-blue"><input id="tanabe" type="text"></td>
+                <td class="bg-white">戸井</td>
+                <td class="bg-white"><input id="doi" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">井上</td>
+                <td class="bg-blue"><input id="inoue" type="text"></td>  
+            </tr>
+            <tr>
+                <th rowspan="3">事務</th>
+                <td class="bg-blue">駒野</td>
+                <td class="bg-blue"><input id="komano" type="text"></td>
+                <td class="bg-white">岡村</td>
+                <td class="bg-white"><input id="okamura" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">石井</td>
+                <td class="bg-blue"><input id="ishi" type="text"></td>
+                <td class="bg-white">濵田</td>
+                <td class="bg-white"><input id="hamada" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">奥原</td>
+                <td class="bg-blue"><input id="okuhara" type="text"></td>
+                <td class="bg-white">仲田</td>
+                <td class="bg-white"><input id="nakata" type="text"></td>
+            </tr>
+            <tr>
+                <th rowspan="2">POP</th>
+                <td class="bg-blue">岩田ゆかり</td>
+                <td class="bg-blue"><input id="iwataYukari" type="text"></td>
+                <td class="bg-white">中西</td>
+                <td class="bg-white"><input id="nakanishi" type="text"></td>
+            </tr>
+            <tr>
+                <td class="bg-blue">水村</td>
+                <td class="bg-blue"><input id="mizumura" type="text"></td>
+            </tr>
+            <tr>
+                <th>内部調査</th>
+                <td class="bg-blue">中村 豪</td>
+                <td class="bg-blue"><input id="nakamuragou" type="text"></td>
+            </tr>
+            <tr>
+                <th>要望対応</th>
+                <td class="bg-blue">久保田</td>
+                <td class="bg-blue"><input id="kubota" type="text"></td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="collectAlert">
+        <!-- 編集完了のAlert -->
+    </div>
+    <div class="UpdateButton">
+        <button class="btn btn-success" onclick="update()">更新する</button>
+    </div>
+    <!-- jqueryの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <!-- bootstrapの読み込み -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/actProgram.js"></script>
+</body>
+</html>

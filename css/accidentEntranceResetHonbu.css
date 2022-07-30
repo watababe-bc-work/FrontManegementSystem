@@ -166,6 +166,7 @@ input, select, textarea {
 .modal h2 {
   font-size: 25px;
   margin: 20px 0;
+  color: black;
 }
 
 .modal button {
@@ -180,13 +181,22 @@ input, select, textarea {
   margin: 10px;
 }
 
-.modal form .edit {
-  margin: 1% 5px;
+.modal #edit_submit_button {
   display: inline-block;
+}
+
+.modal form {
+  text-align: left;
+  margin: 0 0 0 20%;
+}
+
+.modal form .edit {
+  margin: 10px 0;
 }
 
 .modal form .edit label {
   display: inline-block;
+  width: 180px;
 }
 
 .modal form .edit p {
@@ -207,6 +217,21 @@ input, select, textarea {
 
 .modal form #headquartersCommentLabel {
   vertical-align: top;
+}
+
+.modal form #orderPersonLabel_modal {
+  width: 100px;
+  margin: 0 0 0 20px;
+}
+
+.modal form #outTimeLabel_modal {
+  margin: 0 0 0 20px;
+  width: 70px;
+}
+
+.modal form #withdrawal_label {
+  margin: 0 0 0 20px;
+  width: 100px;
 }
 
 .modal .alert {
@@ -231,12 +256,12 @@ input, select, textarea {
   width: 80%;
 }
 
-.modal .modal__content h2 {
-  color: black;
-}
-
 .modal .vertical {
   vertical-align: top;
+}
+
+#modalImgs {
+  text-align: center;
 }
 
 #modalImgs img {
@@ -244,10 +269,54 @@ input, select, textarea {
   height: 300px;
   -o-object-fit: cover;
      object-fit: cover;
-  margin: 0 0 10px 0;
+  margin: 20px 5px;
 }
 
 #modalImgs p {
   font-size: 20px;
+}
+
+.csvButton {
+  text-align: left;
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.csvButton .btn,
+.csvButton a.btn,
+.csvButton button.btn {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  position: relative;
+  display: inline-block;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+}
+
+.csvButton a.btn-radius-solid {
+  border: 1px solid #ccc;
+  background: #f1e767;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  -webkit-box-shadow: inset 1px 1px 1px #fff;
+  box-shadow: inset 1px 1px 1px #fff;
+}
+
+.csvButton a.btn-radius-solid:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
 }
 /*# sourceMappingURL=accidentEntranceResetHonbu.css.map */

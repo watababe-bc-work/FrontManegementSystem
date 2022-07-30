@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>FMS ~POP要望~</title>
+    <title>POP,Web,料金変更 申請</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -11,7 +11,6 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
-    <!-- 画像追加必要JS -->
     <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
     <script src="https://cdn.jsdelivr.net/gh/fengyuanchen/compressorjs/dist/compressor.min.js"></script>
 
@@ -21,10 +20,13 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <link rel="stylesheet" href="css/popDemand.css">
+    <link rel="stylesheet" href="css/priceChangeDemand.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
-    <h1>POP・Web要望 新規作成</h1>
+    
+
+ <h1>POP要望 新規作成</h1>
     <a href="popDemandList.html"><button class="btn btn-info">要望一覧へ</button></a>
     <div class="backwhite">
         <form action="popDemand.html" method="POST">
@@ -107,7 +109,6 @@
                     <option value="普通紙">普通紙</option>
                     <option value="内照紙">内照紙</option>
                     <option value="シール紙">シール紙</option>
-                    <option value="その他">その他</option>
                 </select>
             
             
@@ -139,7 +140,7 @@
             <div class="edit" id="sizes">
                 <label for="">サイズ：</label>
                 <select name="" id="size_checkBox">
-                    <option value="">サイズを選択</option>
+                    <option value="">サイズを選択・記入する</option>
                     <option value="名刺サイズ">名刺サイズ</option>
                     <option value="A6">A6</option>
                     <option value="A5">A5</option>
@@ -159,7 +160,7 @@
                 <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
             </div>
             <div class="edit">
-                <label for="">ファイル添付:</label>
+                <label for="">ファイル添付</label>
                 <input type="file" id="file" multiple>
             </div>
         </form>
@@ -181,5 +182,7 @@
     <script src="js/popDemand.js"></script>
     <script src="js/pdfmake/pdfmake.min.js"></script>
     <script src="js/pdfmake/vfs_fonts.js"></script>
+    
+    
 </body>
 </html>
