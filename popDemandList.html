@@ -11,8 +11,9 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
-    <!-- 画像表示必要JS -->
+    <!-- 画像モーダル必要JS -->
     <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/fengyuanchen/compressorjs/dist/compressor.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -167,6 +168,12 @@
                 <div id="modalImgs">
                     <!-- DBから画像を取得 -->
                 </div>
+                <div class="modalImgForm">
+                    <label for="">ファイル追加：</label>
+                    <input type="file" id="file_modal" multiple>
+                    <div id="modalImgAlert"></div>
+                </div>
+                <div id="modalImgButton"></div>
                 <a class="js-modal-close2" href=""><button class="btn btn-outline-info">閉じる</button></a>
             </div>
         </div> 

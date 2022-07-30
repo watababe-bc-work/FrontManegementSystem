@@ -28,19 +28,19 @@ document.getElementById('prevButton').style.visibility = 'hidden';
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
   
-      query = await db.collection('certificates').orderBy('createdAt', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+      query = await db.collection('certificates').orderBy('addDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
 
       //前回のDBとして保存
       backQueryList.push(querySnapshot);
 
       var stocklist = '<table class="table table-striped">'
-      stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>承認者</th><th>編集</th>';
+      stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>完了者</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
         switch(postDoc.get('status')){
-        //承認
+        //完了
           case 'approve':
-              var statusText = "承認";
+              var statusText = "完了";
               stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
         //発送済み     
@@ -48,9 +48,9 @@ document.getElementById('prevButton').style.visibility = 'hidden';
               var statusText = "発送済み";
               stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
-        //未承認      
+        //未完了      
           default:
-              var statusText = "未承認";
+              var statusText = "未完了";
               stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;        
         }
@@ -77,19 +77,19 @@ function showTable(){
         // 省略 
         // (Cloud Firestoreのインスタンスを初期化してdbにセット)
     
-        query = await db.collection('certificates').where('storeName','==',store).orderBy('createdAt', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+        query = await db.collection('certificates').where('storeName','==',store).orderBy('addDate', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
         querySnapshot = await query.get();
 
         //前回のDBとして保存
         backQueryList.push(querySnapshot);
 
         var stocklist = '<table class="table table-striped">'
-        stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>承認者</th><th>編集</th>';
+        stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>完了者</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
-            //承認
+            //完了
               case 'approve':
-                  var statusText = "承認";
+                  var statusText = "完了";
                   stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
@@ -97,9 +97,9 @@ function showTable(){
                   var statusText = "発送済み";
                   stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
-            //未承認      
+            //未完了      
               default:
-                  var statusText = "未承認";
+                  var statusText = "未完了";
                   stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
@@ -149,7 +149,7 @@ function editStatus(id){
             stocklist += '<p>賃金台帳(期間：'+ carrentDB.get('wage_ledger_start') + '~' + carrentDB.get('wage_ledger_end') +')</p>';
         }
         if(paperCheck.match(/その他/)){
-            stocklist += '<p>その他'+ carrentDB.get('other') +'</p>';
+            stocklist += '<p>その他('+ carrentDB.get('other') +')</p>';
         }
 
         document.getElementById('papersCheck').innerHTML = stocklist;
@@ -199,12 +199,12 @@ function nextPegination(){
           }
 
           var stocklist = '<table class="table table-striped">'
-          stocklist += '<tr><th>依頼日時</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>承認者</th><th>状態</th><th>承認者</th><th>編集</th>';
+          stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>完了者</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
-            //承認
+            //完了
               case 'approve':
-                  var statusText = "承認";
+                  var statusText = "完了";
                   stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
@@ -212,9 +212,9 @@ function nextPegination(){
                   var statusText = "発送済み";
                   stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
-            //未承認      
+            //未完了      
               default:
-                  var statusText = "未承認";
+                  var statusText = "未完了";
                   stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
@@ -234,12 +234,12 @@ function returnTable(){
   querySnapshot = currentQueryList.pop();
 
   var stocklist = '<table class="table table-striped">'
-  stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>承認者</th><th>編集</th>';
+  stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>必要書類</th><th>部数</th><th>提出先</th><th>依頼内容</th><th>希望期日</th><th>状態</th><th>完了者</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
     switch(postDoc.get('status')){
-    //承認
+    //完了
       case 'approve':
-          var statusText = "承認";
+          var statusText = "完了";
           stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
     //発送済み     
@@ -247,9 +247,9 @@ function returnTable(){
           var statusText = "発送済み";
           stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td><button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
-    //未承認      
+    //未完了      
       default:
-          var statusText = "未承認";
+          var statusText = "未完了";
           stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>' + postDoc.get('required_number') + '枚</td><td>'+ postDoc.get('submission_target') +'</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td>'+ '' +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;        
     }
@@ -632,7 +632,7 @@ function createPDF(id){
                         margin: [ 100, 0, 0, 0 ],
                         style:['right'],
                         body: [
-                            [{text:'承認印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
+                            [{text:'完了印',fontSize:15,alignment:'center'},{text:'経理印',fontSize:15,alignment:'center'}],
                             [{text:' ',fontSize:30,alignment:'center'},{text:' ',fontSize:30,alignment:'center'}]
                         ]
                     }

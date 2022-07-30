@@ -25,6 +25,7 @@ window.onload = function () {
     showProcess(today, calendar);
     //createDB();
 };
+
 // 前の月表示
 function prev(){
     showDate.setMonth(showDate.getMonth() - 1);

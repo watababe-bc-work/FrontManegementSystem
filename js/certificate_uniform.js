@@ -92,7 +92,42 @@ function certificateUpdate(){
     //氏名
     var name = document.getElementById('name').value;
     //申請日
-    var createdAt = document.getElementById('order_date').textContent;
+    var createdAt = document.getElementById('order_date').value;
+    var d = new Date(createdAt);
+    //和暦に変換
+    var w = {
+        '令和': '2019/05/01',
+        '平成': '1989/01/08',
+        '昭和': '1926/12/25',
+        '大正': '1912/07/30',
+        '明治': '1868/01/25'
+    };
+    var y = d.getFullYear();
+    var r = d.toLocaleDateString('ja-JP-u-ca-japanese');
+    r = r.replace(/^.*?(\d{1,2}).+?$/g, '$1');
+    var getDate = function(x, r, d) {
+        createdAt = x + r + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日';
+    } 
+    // 1年は元年と表記
+    if (Number(r) === 1) r = '元';
+    
+    if (d >= new Date(w['令和'])) {
+        if (r > 30) r -= 30;
+        r = r === 1 ? '元' : r;
+        getDate('令和', r, d);
+    }
+    else if (d >= new Date(w['平成'])) {
+        getDate('平成', r, d);
+    }
+    else if (d >= new Date(w['昭和'])) {
+        getDate('昭和', r, d);
+    }
+    else if (d >= new Date(w['大正'])) {
+        getDate('大正', r, d);
+    }
+    else if (d >= new Date(w['明治'])) {
+        getDate('明治', r, d);
+    }
     //所属店舗
     var storeName = document.getElementById('store_name').value;
     //必要書類
@@ -156,7 +191,7 @@ function certificateUpdate(){
     var endDateCheck = new Date(endDate).getTime();
     //備考
     var note = document.getElementById('note_detail').value;
-    if(staffNum == "" || name == "" || storeName == "" || reason == "" || paper == "" || required_number == ""){
+    if(createdAt == "" || staffNum == "" || name == "" || storeName == "" || reason == "" || paper == "" || required_number == ""){
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
@@ -184,6 +219,7 @@ function certificateUpdate(){
             other:other,
             headquartersComment:"",
             status:"unapproved",
+            addDate:firebase.firestore.FieldValue.serverTimestamp(),
         });
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
@@ -298,6 +334,43 @@ function uniformUpdate(){
             var fleece_blueL = Number(document.getElementById('fleece_blueL').value);
             var fleece_blueXL = Number(document.getElementById('fleece_blueXL').value);
             var sum = (blackS + blackM + blackL + blackLL + black3L + blueS + blueM + blueL + blueLL + blue3L) * 700 + (apron * 800) + (head_towel * 400) + (fleece_blueS + fleece_blueM + fleece_blueL + fleece_blueXL) * 2000;
+
+            if(name == "" || storeName == "" || demandStatus == "" || sum == 0){
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
+            }else{
+                //DBへ送信
+                db.collection('uniforms').add({
+                    orderDate:orderDate,
+                    stuffNum:stuffNum,
+                    name:name,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    storeName:storeName,
+                    demandStatus:demandStatus,
+                    blackS:blackS,
+                    blackM:blackM,
+                    blackL:blackL,
+                    blackLL:blackLL,
+                    black3L:black3L,
+                    blueS:blueS,
+                    blueM:blueM,
+                    blueL:blueL,
+                    blueLL:blueLL,
+                    blue3L:blue3L,
+                    apron:apron,
+                    head_towel:head_towel,
+                    fleece_blueS:fleece_blueS,
+                    fleece_blueM:fleece_blueM,
+                    fleece_blueL:fleece_blueL,
+                    fleece_blueXL:fleece_blueXL,
+                    sum:sum,
+                    status:"unapproved",
+                    deliverySlip:deliverySlip,
+                });
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
+                setTimeout("location.reload()",2000);
+            }
         break;
         case "忘れ購入":
             var checkBox = document.getElementById('black');
@@ -308,77 +381,58 @@ function uniformUpdate(){
             }else if(checkBox2.checked){
                 category = "ポロシャツ青LL";
             };
+
+            if(name == "" || storeName == "" || demandStatus == "" || category == ""){
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
+            }else{
+                //DBへ送信
+                db.collection('uniforms').add({
+                    orderDate:orderDate,
+                    stuffNum:stuffNum,
+                    name:name,
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+                    storeName:storeName,
+                    demandStatus:demandStatus,
+                    category:category,
+                    status:"unapproved",
+                    deliverySlip:deliverySlip,
+                });
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
+                setTimeout("location.reload()",2000);
+            }
         break;
         case "ネームプレート":
             var shiftName = document.getElementById('shiftName').value;
             var nameplateColor = document.getElementById('nameplateColor').value;
-        break;
-    }
 
-    if(name == "" || storeName == "" || demandStatus == ""){
-        var Alert = document.getElementById('Alert2');
-        Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
-    }else{
-        if(demandStatus == "追加購入"){
-            //DBへ送信
-            db.collection('uniforms').add({
-                orderDate:orderDate,
-                stuffNum:stuffNum,
-                name:name,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                storeName:storeName,
-                demandStatus:demandStatus,
-                blackS:blackS,
-                blackM:blackM,
-                blackL:blackL,
-                blackLL:blackLL,
-                black3L:black3L,
-                blueS:blueS,
-                blueM:blueM,
-                blueL:blueL,
-                blueLL:blueLL,
-                blue3L:blue3L,
-                apron:apron,
-                head_towel:head_towel,
-                fleece_blueS:fleece_blueS,
-                fleece_blueM:fleece_blueM,
-                fleece_blueL:fleece_blueL,
-                fleece_blueXL:fleece_blueXL,
-                sum:sum,
-                status:"unapproved",
-                deliverySlip:deliverySlip,
-            });
-        }else if(demandStatus == "忘れ購入"){
-            //DBへ送信
-            db.collection('uniforms').add({
-                orderDate:orderDate,
-                stuffNum:stuffNum,
-                name:name,
-                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-                storeName:storeName,
-                demandStatus:demandStatus,
-                category:category,
-                status:"unapproved",
-                deliverySlip:deliverySlip,
-            });
-        }else{
-            //DBへ送信
-            db.collection('uniforms').add({
-                orderDate:orderDate,
-                stuffNum:stuffNum,
-                name:name,
-                createdAt:firebase.firestore.FieldValue.serverTimestamp(),
-                storeName:storeName,
-                demandStatus:demandStatus,
-                shiftName:shiftName,
-                nameplateColor:nameplateColor,
-                status:"unapproved",
-                deliverySlip:deliverySlip,
-            });
-        }
-        var Alert = document.getElementById('Alert2');
-        Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
-        setTimeout("location.reload()",2000);
+            if(name == "" || storeName == "" || demandStatus == "" || shiftName == "" || nameplateColor == ""){
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
+            }else{
+                //DBへ送信
+                db.collection('uniforms').add({
+                    orderDate:orderDate,
+                    stuffNum:stuffNum,
+                    name:name,
+                    createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+                    storeName:storeName,
+                    demandStatus:demandStatus,
+                    shiftName:shiftName,
+                    nameplateColor:nameplateColor,
+                    status:"unapproved",
+                    deliverySlip:deliverySlip,
+                });
+                var Alert = document.getElementById('Alert2');
+                Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
+                setTimeout("location.reload()",2000);
+            }
+        break;
+        default:
+            var Alert = document.getElementById('Alert2');
+            Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>'; 
+        break;
     }
 }
 
@@ -405,17 +459,17 @@ function showTableuni(){
                     //承認
                     case 'approval':
                         var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
                         var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;        
                     }
             }else if(postDoc.get('demandStatus') == '忘れ購入'){
@@ -423,17 +477,17 @@ function showTableuni(){
                     //承認
                     case 'approval':
                         var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
                         var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button>' +'</td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
                         break;        
                 }
             }else{
@@ -441,17 +495,17 @@ function showTableuni(){
                     //承認
                     case 'approve':
                         var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
                         break;
                     //不承認      
                     case 'delivered':
                         var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
                         break;
                     //未承認      
                     default:
                         var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td></td></tr></tbody>';
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
                         break;        
                 }
             }
@@ -464,6 +518,194 @@ function showTableuni(){
         }
     })();
 }
+
+//DB編集
+//編集用モーダルウィンドウ
+function editStatus(id){
+    (async () => {
+      try {
+          const carrentDB = await db.collection('uniforms').doc(id).get();
+  
+          document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
+          document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
+          document.getElementById('name_edit').textContent = carrentDB.get('name');
+          var demandStatus = carrentDB.get('demandStatus');
+          if(demandStatus == '追加購入'){
+              document.getElementById('normal_edit').style.display = "";
+              document.getElementById('emergency_edit').style.display = "none";
+              document.getElementById('nameplate_edit').style.display = "none";
+              document.getElementById('blackS_edit').value = carrentDB.get('blackS');
+              document.getElementById('blackM_edit').value = carrentDB.get('blackM');
+              document.getElementById('blackL_edit').value = carrentDB.get('blackL');
+              document.getElementById('blackLL_edit').value = carrentDB.get('blackLL');
+              document.getElementById('black3L_edit').value = carrentDB.get('black3L');
+              document.getElementById('blueS_edit').value = carrentDB.get('blueS');
+              document.getElementById('blueM_edit').value = carrentDB.get('blueM');
+              document.getElementById('blueL_edit').value = carrentDB.get('blueL');
+              document.getElementById('blueLL_edit').value = carrentDB.get('blueLL');
+              document.getElementById('blue3L_edit').value = carrentDB.get('blue3L');
+              document.getElementById('apron_edit').value = carrentDB.get('apron');
+              document.getElementById('head_towel_edit').value = carrentDB.get('head_towel');
+              document.getElementById('fleece_blueS_edit').value = carrentDB.get('fleece_blueS');
+              document.getElementById('fleece_blueM_edit').value = carrentDB.get('fleece_blueM');
+              document.getElementById('fleece_blueL_edit').value = carrentDB.get('fleece_blueL');
+              document.getElementById('fleece_blueXL_edit').value = carrentDB.get('fleece_blueXL');
+          }else if(demandStatus == "忘れ購入"){
+              document.getElementById('normal_edit').style.display = "none";
+              document.getElementById('emergency_edit').style.display = "";  
+              document.getElementById('nameplate_edit').style.display = "none";
+              var category = carrentDB.get('category');
+              if(category == "ポロシャツ青LL"){
+                  document.getElementById('blue_edit').checked = true;
+                  document.getElementById('black_edit').checked = false;
+              }else{
+                  document.getElementById('black_edit').checked = true;
+                  document.getElementById('blue_edit').checked = false;
+              }
+          }else{
+              document.getElementById('normal_edit').style.display = "none";
+              document.getElementById('emergency_edit').style.display = "none";
+              document.getElementById('nameplate_edit').style.display = "";
+              document.getElementById('shiftName_edit').value = carrentDB.get('shiftName');
+              var nameplateColor = document.getElementById('nameplateColor_edit');
+              switch(carrentDB.get('nameplateColor')){
+                  case '白':
+                      nameplateColor.options[1].selected = true;
+                      break;
+                  case '黒':
+                      nameplateColor.options[2].selected = true;
+                      break;
+                  case '金':
+                      nameplateColor.options[3].selected = true;
+                      break;
+                  default:
+                      order_category.options[0].selected = true;
+                      break;    
+              }
+          }
+  
+          var approver = carrentDB.get('approver');
+          if(approver == null){
+              document.getElementById('approver_edit').value = "";
+          }else{
+              document.getElementById('approver_edit').value = approver;
+          }
+          var order_category = document.getElementById('order_category_edit');
+          switch(carrentDB.get('status')){
+              case 'approval':
+                  order_category.options[2].selected = true;
+                  break;
+              case 'delivered':
+                  order_category.options[1].selected = true;
+                  break;
+              default:
+                  order_category.options[0].selected = true;
+                  break;    
+          }
+          //納品書
+          var deliverySlip = document.getElementById('delivery_slip_edit');
+          switch(carrentDB.get('deliverySlip')){
+              case '○':
+                  deliverySlip.options[1].selected = true;
+              break;
+              default:
+                  deliverySlip.options[0].selected = true;
+              break;        
+          }
+          //編集送信ボタン生成
+          document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\',\''+ demandStatus +'\')">送信する</button>';
+      } catch (err) {
+      console.log(`Error: ${JSON.stringify(err)}`)
+      }
+  })();
+}
+
+//status編集
+function EditUpdate(id,status){
+    if(status == '追加購入'){
+        var blackS = Number(document.getElementById('blackS_edit').value);
+        var blackM = Number(document.getElementById('blackM_edit').value);
+        var blackL = Number(document.getElementById('blackL_edit').value);
+        var blackLL = Number(document.getElementById('blackLL_edit').value);
+        var black3L = Number(document.getElementById('black3L_edit').value);
+        var blueS = Number(document.getElementById('blueS_edit').value);
+        var blueM = Number(document.getElementById('blueM_edit').value);
+        var blueL = Number(document.getElementById('blueL_edit').value);
+        var blueLL = Number(document.getElementById('blueLL_edit').value);
+        var blue3L = Number(document.getElementById('blue3L_edit').value);
+        var apron = Number(document.getElementById('apron_edit').value);
+        var head_towel = Number(document.getElementById('head_towel_edit').value);
+        var fleece_blueS = Number(document.getElementById('fleece_blueS_edit').value);
+        var fleece_blueM = Number(document.getElementById('fleece_blueM_edit').value);
+        var fleece_blueL = Number(document.getElementById('fleece_blueL_edit').value);
+        var fleece_blueXL = Number(document.getElementById('fleece_blueXL_edit').value);
+        var sum = (blackS + blackM + blackL + blackLL + black3L + blueS + blueM + blueL + blueLL + blue3L) * 700 + (apron * 800) + (head_towel * 400) + (fleece_blueS + fleece_blueM + fleece_blueL + fleece_blueXL) * 2000;
+    }else if(status == '忘れ購入'){
+        var checkBox = document.getElementById('black_edit');
+        var checkBox2 = document.getElementById('blue_edit');
+        var category = "";
+        if(checkBox.checked){
+            category = "ポロシャツ黒LL";
+        }else if(checkBox2.checked){
+            category = "ポロシャツ青LL";
+        };
+    }else{
+        var shiftName = document.getElementById('shiftName_edit').value;
+        var nameplateColor = document.getElementById('nameplateColor_edit').value;
+    }
+    //共通項目
+    var order_category = document.getElementById('order_category_edit').value;
+    var approver = document.getElementById('approver_edit').value;
+    var deliverySlip = document.getElementById('delivery_slip_edit').value;
+    if(status == "追加購入"){
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            blackS:blackS,
+            blackM:blackM,
+            blackL:blackL,
+            blackLL:blackLL,
+            black3L:black3L,
+            blueS:blueS,
+            blueM:blueM,
+            blueL:blueL,
+            blueLL:blueLL,
+            blue3L:blue3L,
+            apron:apron,
+            head_towel:head_towel,
+            fleece_blueS:fleece_blueS,
+            fleece_blueM:fleece_blueM,
+            fleece_blueL:fleece_blueL,
+            fleece_blueXL:fleece_blueXL,
+            sum:sum,
+            deliverySlip:deliverySlip,
+            status:order_category,
+            approver:approver,
+        });
+    }else if(status == '忘れ購入'){
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            category:category,
+            deliverySlip:deliverySlip,
+            status:order_category,
+            approver:approver,
+        });
+    }else{
+        //DBへ送信
+        db.collection('uniforms').doc(id).update({
+            shiftName:shiftName,
+            nameplateColor:nameplateColor,
+            deliverySlip:deliverySlip,
+            status:order_category,
+            approver:approver,
+        });
+    }
+    var collectAlert = document.getElementById('collectAlert_edit');
+    collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+    // setTimeout("$('.js-modal').fadeOut();f",2000);
+    setTimeout("location.reload()",2000);
+}
+
+
 
 //追加購入PDF作成
 function NormalPDF(id){

@@ -46,6 +46,8 @@ var currentQueryList = [];
 var backQueryList = [];
 document.getElementById('prevButton').style.visibility = 'hidden';
 document.getElementById('nextButton').style.visibility = 'hidden';
+var exchangeForm = document.getElementById('exchangeForm');
+exchangeForm.style.display = "none";
 
 //フォームの初期非表示
 document.getElementById('addForm').style.display = "none";
@@ -55,8 +57,20 @@ function addContent(){
     document.getElementById('addForm').style.display = "block";
 }
 
+//項目が両替だったら両替時間inputを表示
+function checkExchange(){
+    if(document.getElementById('demand_input').value == "両替"){
+        exchangeForm.style.display = "block";
+    }else{
+        exchangeForm.style.display = "none";
+    }
+}
+
 //追加
 function Update(){
+    //ボタン押した瞬間に複数送信できないようにボタンpushを拒否
+    const button = document.getElementById("UpdateButton");
+    button.disabled = true;
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
     //発生日時
@@ -67,21 +81,30 @@ function Update(){
     var requesterName = document.getElementById('requester_name').value;
     //項目
     var demand = document.getElementById('demand_input').value;
+    //両替日時
+    var exchangeDate = document.getElementById('exchange').value;
     //処理内容
     var process_content = document.getElementById('process_content').value;
 
-    //DBへ送信
-    db.collection('reports').add({
-        orderDate:orderDate,
-        storeName:storeName,
-        requesterName:requesterName,
-        demand:demand,
-        process_content:process_content,
-        CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-    });
-    var collectAlert = document.getElementById('collectAlert');
-    collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
-    setTimeout("location.reload()",2000);
+    if(storeName == ""){
+        collectAlert.innerHTML = '<div class="alert alert-danger" role="alert">店舗名は必須項目です。</div>';
+        //ボタン押せるようにする
+        button.disabled = false;
+    }else{
+        //DBへ送信
+        db.collection('reports').add({
+            orderDate:orderDate,
+            storeName:storeName,
+            requesterName:requesterName,
+            demand:demand,
+            exchangeDate:exchangeDate,
+            process_content:process_content,
+            CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        var collectAlert = document.getElementById('collectAlert');
+        collectAlert.innerHTML = '<div class="alert alert-success role="alert">送信完了！状態は下記のテーブルから確認してください。</div>';
+        setTimeout("location.reload()",2000);
+    }
 }
 
 //table表示
@@ -182,6 +205,14 @@ function editStatus(id){
         document.getElementById('requester_name_edit').value = carrentDB.get('requesterName');
         //項目
         document.getElementById('demand_input_edit').value = carrentDB.get('demand');
+        //両替時間
+        var exchangeForm = document.getElementById('exchangeForm_edit');
+        if(carrentDB.get('demand') == "両替"){
+            exchangeForm.style.display = "block";
+            document.getElementById('exchange_edit').value = carrentDB.get('exchangeDate');
+        }else{
+            exchangeForm.style.display = "none";
+        }
         //処理内容
         document.getElementById('process_content_edit').value = carrentDB.get('process_content');
         //編集送信ボタン生成
@@ -198,6 +229,8 @@ function EditUpdate(id){
     var requesterName = document.getElementById('requester_name_edit').value;
     //項目
     var demand = document.getElementById('demand_input_edit').value;
+    //両替時間
+    var exchangeDate = document.getElementById('exchange_edit').value;
     //処理内容
     var process_content = document.getElementById('process_content_edit').value;
 
@@ -205,6 +238,7 @@ function EditUpdate(id){
     db.collection('reports').doc(id).update({
         requesterName:requesterName,
         demand:demand,
+        exchangeDate:exchangeDate,
         process_content:process_content,
     });
 

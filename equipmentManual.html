@@ -42,9 +42,10 @@
             <form action="equipmentManual.html" method="POST">
             <div class="edit">
                 <p>作成日:<span id="today"></span></p>
-                <label for="">店舗名:</label>
-                <select id="store_name">
+                <label for="">追加店舗:</label>
+                <select id="store_name" onchange="addStore(this.value)">
                     <option value="">店舗を選択</option>
+                    <option value="全店共通">全店共通</option>
                     <option value="ワタナベ商事本部">ワタナベ商事本部</option>
                     <option value="池袋グランド">池袋グランド</option>
                     <option value="アトランタ">アトランタ</option>
@@ -84,6 +85,9 @@
                     <option value="HOTEL グランバリ">HOTEL グランバリ</option>
                     <option value="ZALA">ZALA</option>
                 </select>
+                <div id="addstoreList">
+                    <!-- 追加する店舗名リストを表示 -->
+                </div>
             </div>
             <div class="edit">
                 <label for="">タイトル:</label>
@@ -109,8 +113,9 @@
     <div class="search">
         <p>検索</p>
         <label for="">店舗名:</label>
-        <select id="store_name_search" onchange="search()">
+        <select id="store_name_search" onchange="search(this.value)">
             <option value="">店舗を選択</option>
+            <option value="全店共通">全店共通</option>
             <option value="ワタナベ商事本部">ワタナベ商事本部</option>
             <option value="池袋グランド">池袋グランド</option>
             <option value="アトランタ">アトランタ</option>

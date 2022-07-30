@@ -67,6 +67,12 @@
         <input type="date" name="" id="StartDate_search">から
         <input type="date" id="EndDate_search">まで 
         <br>
+        <div class="demand_search">
+            <label for="">項目でのソート：</label>
+            <input type="checkbox" id="add_purchase_search" value="追加購入"><label for="add_purchase_search">追加購入</label>
+            <input type="checkbox" id="forget_purchase_search" value="忘れ購入"><label for="forget_purchase_search">忘れ購入</label>
+            <input type="checkbox" id="nameplate_search" value="ネームプレート"><label for="nameplate_search">ネームプレート</label>
+        </div>
         <button class="btn btn-success" onclick="search()">検索</button>
         <button class="btn btn-secondary" onclick="cancel()">検索リセット</button>
     </div>

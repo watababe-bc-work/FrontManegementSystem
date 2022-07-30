@@ -33,7 +33,7 @@
                 <input type="date" id="order_date">
             </div>
             <div class="edit">
-                <label for="">店舗名:</label>
+                <label for="">店舗名(必須):</label>
                 <input type="text" id="store_name" list="stores" placeholder="テキスト入力or検索">
                 <datalist id="stores">
                     <option value="池袋グランド">池袋グランド</option>
@@ -82,13 +82,16 @@
         
             <div class="edit">
                 <label for="">項目:</label>
-                <select name="" id="demand_input">
+                <select name="" id="demand_input" onchange="checkExchange();">
                     <option value="">項目を選択</option>
                     <option value="両替">両替</option>
                     <option value="小口">小口</option>
                 </select>
             </div>
-
+            <div class="edit" id="exchangeForm">
+                <label for="">両替時間：</label>
+                <input type="date" id="exchange">
+            </div>
             <div class="edit">
                 <label for="" class="process_content_label">処理内容：</label>
                 <textarea name="" cols="50" rows="5" id="process_content"></textarea>
@@ -96,7 +99,7 @@
         </form>
         <div id="collectAlert"></div>
         <div class="buttons">
-            <button type="submit" class="btn btn-success" onclick="Update()">保存する</button>
+            <button type="submit" class="btn btn-success" onclick="Update()" id="UpdateButton">保存する</button>
         </div>
     </div>
     <h2>報告 一覧</h2>
@@ -206,7 +209,10 @@
                         <option value="小口">小口</option>
                     </select>
                 </div>
-    
+                <div class="edit" id="exchangeForm_edit">
+                    <label for="">両替時間：</label>
+                    <input type="date" id="exchange_edit">
+                </div>
                 <div class="edit">
                     <label for="" class="process_content_label">処理内容：</label>
                     <textarea name="" cols="50" rows="5" id="process_content_edit"></textarea>

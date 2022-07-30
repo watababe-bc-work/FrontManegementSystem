@@ -457,12 +457,113 @@ function modalImages(id){
                     }
                 }
             }
+
+            //送信ボタン生成
+            document.getElementById('modalImgButton').innerHTML = '<button type="submit" class="btn btn-success" onclick="modalImgUpdate(\''+id+'\')">送信する</button>';
         } catch (err) {
         console.log(err);
         }
 
     })();
 };
+
+//画像/データ編集
+function modalImgUpdate(id){
+    (async () => {
+        try {
+            const carrentpopDemandDB = await db.collection('POPDemands').doc(id).get();
+            var orderCategory = carrentpopDemandDB.get('orderCategory');
+            var modalImgAlert = document.getElementById('modalImgAlert');
+            modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
+            //写真データ
+            var fileList = [];
+            var fileNameList = [];
+            
+            switch(orderCategory){
+                case 'POP':    
+                    //写真アップロード
+                    var uploads = [];
+                    var i = 0;
+                    //画像を配列に配置
+                    var files = document.getElementById('file_modal').files;
+                    for (let file of files) {
+                        if(fileNameList.includes(file.name)){
+        
+                        }else{
+                            fileList.push(file);
+                            fileNameList.push(file.name);
+                            console.log(fileList);
+                        }
+                    }
+                    for (var file of fileList) {
+                        //画像を圧縮する
+                        var img = new Compressor(file, {
+                            quality: 0.5,
+                            success(result) {
+                                console.log('圧縮完了');
+                                fileList[i] = result;
+                            },
+                            maxWidth:1000,
+                            maxHeight: 400,
+                            mimeType: 'image/png'
+                        });
+                        var storageRef = firebase.storage().ref('POPDemand/' + id + '/' + 'uploadImage' + i);
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
+                    }
+                    //すべての画像のアップロード完了を待つ
+                    Promise.all(uploads).then(function () {
+                        (async () => {
+                            try{
+                                console.log('アップロード完了');
+                                modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">追加完了!リロードします。</div>';
+                                setTimeout("location.reload()",2000);
+                            } catch(err){
+        
+                            }
+                        })();
+                    });
+                    break;
+                case 'Web':
+                    //storageへアップロード
+                    var uploads = [];
+                    var i = 0;
+                    //ファイルを配列に配置
+                    var files = document.getElementById('file_modal').files;
+                    for (let file of files) {
+                        if(fileNameList.includes(file.name)){
+        
+                        }else{
+                            fileList.push(file);
+                            fileNameList.push(file.name);
+                            console.log(fileList);
+                        }
+                    }
+                    for (var file of fileList) {
+                        var storageRef = firebase.storage().ref('POPDemand/' + id + '/' + 'uploadfile' + i);
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
+                    }
+                    //すべての画像のアップロード完了を待つ
+                    Promise.all(uploads).then(function () {
+                        (async () => {
+                            try{
+                                console.log('アップロード完了');
+                                modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+                                setTimeout("location.reload()",2000);
+                            } catch(err){
+        
+                            }
+                        })();
+                    });
+                    break;
+                default:break;    
+            }
+        } catch (err) {
+        console.log(err)
+        }
+    })();
+}
 
 //CSV出力＆ダウンロード
 function handleDownload(){

@@ -116,6 +116,15 @@ h1{
 
 .search{
     font-size: 15px;
+
+    .demand_search{
+        margin: 10px 0;
+        font-size: 15px;
+
+        label{
+            margin: 0 10px 0 5px;
+        }
+    }
 }
 
 .nextButton{

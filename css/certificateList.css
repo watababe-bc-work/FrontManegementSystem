@@ -121,6 +121,15 @@ h1 {
   font-size: 15px;
 }
 
+.search .demand_search {
+  margin: 10px 0;
+  font-size: 15px;
+}
+
+.search .demand_search label {
+  margin: 0 10px 0 5px;
+}
+
 .nextButton {
   text-align: left;
   margin-left: 5%;

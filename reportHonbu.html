@@ -21,7 +21,13 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
 </head>
 <body>
+    <div class="topMove">
+        <a href="honbu.php"><button type="button" class="btn btn-info">FMS TOP</button></a>
+    </div>
     <h2>報告 一覧</h2>
+    <div class="registerMove">
+        <a href="report.html" target="_blank" rel="noopener noreferrer"><button class="btn btn-primary registerMove">登録画面へ</button></a>
+    </div>
     <div class="table_select">
         <label for="">店舗検索:</label>
         <select id="store_name_search">
@@ -137,7 +143,8 @@
                 </div>
             
                 <div class="edit">
-
+                    <label for="">店舗名：</label>
+                    <p id="storeName_edit"></p>
                     <label for="status_choice_edit">項目:</label>
                     <select name="" id="demand_input_edit">
                         <option value="">項目を選択</option>
@@ -145,7 +152,10 @@
                         <option value="小口">小口</option>
                     </select>
                 </div>
-    
+                <div class="edit" id="exchangeForm_edit">
+                    <label for="">両替時間：</label>
+                    <input type="date" id="exchange_edit">
+                </div>
                 <div class="edit">
                     <label for="" class="process_content_label">処理内容：</label>
                     <textarea name="" cols="50" rows="5" id="process_content_edit"></textarea>

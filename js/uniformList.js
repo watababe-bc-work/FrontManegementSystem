@@ -29,7 +29,7 @@ document.getElementById('prevButton').style.visibility = 'hidden';
       // 省略 
       // (Cloud Firestoreのインスタンスを初期化してdbにセット)
   
-      query = await db.collection('uniforms').orderBy('createdAt', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+      query = await db.collection('uniforms').orderBy('createdAt', 'desc').limit(20) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
 
       //前回のDBとして保存
@@ -41,55 +41,56 @@ document.getElementById('prevButton').style.visibility = 'hidden';
         if(postDoc.get('demandStatus') == "追加購入"){
             switch(postDoc.get('status')){
                 //承認
-                  case 'approve':
+                  case 'approval':
                       var statusText = "完了";
-                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //発送済み     
                   case 'delivered':
                       var statusText = "対応済み";
-                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //未承認      
                   default:
                       var statusText = "未承認";
-                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
         }else if(postDoc.get('demandStatus') == "忘れ購入"){
             switch(postDoc.get('status')){
                 //承認
-                  case 'approve':
+                  case 'approval':
                       var statusText = "完了";
-                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //発送済み     
                   case 'delivered':
                       var statusText = "対応済み";
-                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //未承認      
                   default:
                       var statusText = "未承認";
-                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
+        //ネームプレート    
         }else{
             switch(postDoc.get('status')){
                 //承認
-                  case 'approve':
+                  case 'approval':
                       var statusText = "完了";
-                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //発送済み     
                   case 'delivered':
                       var statusText = "対応済み";
-                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;
                 //未承認      
                   default:
                       var statusText = "未承認";
-                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                      stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                       break;        
             }
         }
@@ -98,7 +99,7 @@ document.getElementById('prevButton').style.visibility = 'hidden';
       document.getElementById('table_list').innerHTML = stocklist;
 
       //後が無い場合に非表示
-      if(querySnapshot.docs.length < 10){
+      if(querySnapshot.docs.length < 20){
         document.getElementById('nextButton').style.visibility = "hidden";
       }
 
@@ -143,6 +144,22 @@ function search(){
                 }
             }
 
+            //項目でのソート
+            var demandList = [];
+            if(document.getElementById('add_purchase_search').checked){
+                demandList.push('追加購入');
+            };
+            if(document.getElementById('forget_purchase_search').checked){
+                demandList.push('忘れ購入');
+            };
+            if(document.getElementById('nameplate_search').checked){
+                demandList.push('ネームプレート');
+            };
+            console.log(demandList);
+            if(demandList.length > 0){
+                query = query.where('demandStatus','in',demandList);
+            }
+
             console.log(query);
             querySnapshot = await query.orderBy('orderDate', 'desc').orderBy('createdAt','desc').get();
 
@@ -152,58 +169,59 @@ function search(){
                 if(postDoc.get('demandStatus') == "追加購入"){
                     switch(postDoc.get('status')){
                         //承認
-                        case 'approve':
+                        case 'approval':
                             var statusText = "完了";
-                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                             break;
                         //発送済み     
                         case 'delivered':
                             var statusText = "対応済み";
-                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                             break;
                         //未承認      
                         default:
                             var statusText = "未承認";
-                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                             break;        
                     }
                 }else if(postDoc.get('demandStatus') == "忘れ購入"){
                     switch(postDoc.get('status')){
                         //承認
-                        case 'approve':
-                            var statusText = "完了";
-                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;
+                            case 'approval':
+                                var statusText = "完了";
+                                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;
                         //発送済み     
-                        case 'delivered':
-                            var statusText = "対応済み";
-                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;
+                            case 'delivered':
+                                var statusText = "対応済み";
+                                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;
                         //未承認      
-                        default:
-                            var statusText = "未承認";
-                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;        
+                            default:
+                                var statusText = "未承認";
+                                stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;      
                     }
-                }else{
-                    switch(postDoc.get('status')){
-                        //承認
-                        case 'approve':
-                            var statusText = "完了";
-                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;
-                        //発送済み     
-                        case 'delivered':
-                            var statusText = "対応済み";
-                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;
-                        //未承認      
-                        default:
-                            var statusText = "未承認";
-                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                            break;        
+                    //ネームプレート    
+                    }else{
+                        switch(postDoc.get('status')){
+                            //承認
+                            case 'approval':
+                                var statusText = "完了";
+                                stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;
+                            //発送済み     
+                            case 'delivered':
+                                var statusText = "対応済み";
+                                stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;
+                            //未承認      
+                            default:
+                                var statusText = "未承認";
+                                stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                                break;        
+                        }
                     }
-                }
             })
             stocklist += '</table>';
             document.getElementById('table_list').innerHTML = stocklist;
@@ -306,7 +324,7 @@ function editStatus(id){
         }
         //納品書
         var deliverySlip = document.getElementById('delivery_slip');
-        switch(carrentDB.get('delivery_slip')){
+        switch(carrentDB.get('deliverySlip')){
             case '○':
                 deliverySlip.options[1].selected = true;
             break;
@@ -319,7 +337,7 @@ function editStatus(id){
     } catch (err) {
     console.log(`Error: ${JSON.stringify(err)}`)
     }
-})();
+    })();
 }
 
 //次へ
@@ -332,11 +350,11 @@ function nextPegination(){
 
           console.log(currentQueryList);
 
-          query = query.limit(10).startAfter(querySnapshot.docs[9]);
+          query = query.limit(20).startAfter(querySnapshot.docs[19]);
           querySnapshot = await query.get();
 
           //後が無い場合に非表示
-          if(querySnapshot.docs.length < 10){
+          if(querySnapshot.docs.length < 20){
               document.getElementById('nextButton').style.visibility = "hidden";
           }
 
@@ -346,58 +364,59 @@ function nextPegination(){
             if(postDoc.get('demandStatus') == "追加購入"){
                 switch(postDoc.get('status')){
                     //承認
-                      case 'approve':
+                      case 'approval':
                           var statusText = "完了";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //発送済み     
                       case 'delivered':
                           var statusText = "対応済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;
                     //未承認      
                       default:
                           var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                           break;        
                 }
             }else if(postDoc.get('demandStatus') == "忘れ購入"){
                 switch(postDoc.get('status')){
                     //承認
-                      case 'approve':
-                          var statusText = "完了";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
                     //発送済み     
-                      case 'delivered':
-                          var statusText = "対応済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;
+                        case 'delivered':
+                            var statusText = "対応済み";
+                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
                     //未承認      
-                      default:
-                          var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;        
+                        default:
+                            var statusText = "未承認";
+                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;          
                 }
-            }else{
-                switch(postDoc.get('status')){
-                    //承認
-                      case 'approve':
-                          var statusText = "完了";
-                          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;
-                    //発送済み     
-                      case 'delivered':
-                          var statusText = "対応済み";
-                          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;
-                    //未承認      
-                      default:
-                          var statusText = "未承認";
-                          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                          break;        
+                //ネームプレート    
+                }else{
+                    switch(postDoc.get('status')){
+                        //承認
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
+                        //発送済み     
+                        case 'delivered':
+                            var statusText = "対応済み";
+                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
+                        //未承認      
+                        default:
+                            var statusText = "未承認";
+                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;        
+                    }
                 }
-            }
           })
           stocklist += '</table>';
           document.getElementById('table_list').innerHTML = stocklist;
@@ -419,58 +438,59 @@ function returnTable(){
     if(postDoc.get('demandStatus') == "追加購入"){
         switch(postDoc.get('status')){
             //承認
-              case 'approve':
+              case 'approval':
                   var statusText = "完了";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //発送済み     
               case 'delivered':
                   var statusText = "対応済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
         }
     }else if(postDoc.get('demandStatus') == "忘れ購入"){
         switch(postDoc.get('status')){
             //承認
-              case 'approve':
-                  var statusText = "完了";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;
+                case 'approval':
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;
             //発送済み     
-              case 'delivered':
-                  var statusText = "対応済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;
+                case 'delivered':
+                    var statusText = "対応済み";
+                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;
             //未承認      
-              default:
-                  var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;        
+                default:
+                    var statusText = "未承認";
+                    stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;           
         }
-    }else{
-        switch(postDoc.get('status')){
-            //承認
-              case 'approve':
-                  var statusText = "完了";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;
-            //発送済み     
-              case 'delivered':
-                  var statusText = "対応済み";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;
-            //未承認      
-              default:
-                  var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td class ="buy-td">' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
-                  break;        
+        //ネームプレート    
+        }else{
+            switch(postDoc.get('status')){
+                //承認
+                case 'approval':
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;
+                //発送済み     
+                case 'delivered':
+                    var statusText = "対応済み";
+                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;
+                //未承認      
+                default:
+                    var statusText = "未承認";
+                    stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                    break;        
+            }
         }
-    }
   })
   stocklist += '</table>';
   document.getElementById('table_list').innerHTML = stocklist;
@@ -514,9 +534,10 @@ function EditUpdate(id,status){
         var shiftName = document.getElementById('shiftName').value;
         var nameplateColor = document.getElementById('nameplateColor').value;
     }
-    //status
+    //共通項目
     var order_category = document.getElementById('order_category').value;
     var approver = document.getElementById('approver').value;
+    var deliverySlip = document.getElementById('delivery_slip').value;
     if(status == "追加購入"){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
@@ -537,6 +558,7 @@ function EditUpdate(id,status){
             fleece_blueL:fleece_blueL,
             fleece_blueXL:fleece_blueXL,
             sum:sum,
+            deliverySlip:deliverySlip,
             status:order_category,
             approver:approver,
         });
@@ -544,6 +566,7 @@ function EditUpdate(id,status){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
             category:category,
+            deliverySlip:deliverySlip,
             status:order_category,
             approver:approver,
         });
@@ -552,12 +575,14 @@ function EditUpdate(id,status){
         db.collection('uniforms').doc(id).update({
             shiftName:shiftName,
             nameplateColor:nameplateColor,
+            deliverySlip:deliverySlip,
             status:order_category,
             approver:approver,
         });
     }
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+    // setTimeout("$('.js-modal').fadeOut();f",2000);
     setTimeout("location.reload()",2000);
 }
 
@@ -621,7 +646,7 @@ function NormalPDF(id){
         //氏名
         var name = carrentDB.get('name');
         //申請日
-        var createdAt = carrentDB.get('createdAt');
+        var createdAt = carrentDB.get('orderDate');
         //店舗名
         var storeName = carrentDB.get('storeName');
         //それぞれの備品が1以上ある時合計金額を表示
@@ -939,7 +964,7 @@ function emergencyPDF(id){
         //氏名
         var name = carrentDB.get('name');
         //申請日
-        var createdAt = carrentDB.get('createdAt');
+        var createdAt = carrentDB.get('orderDate');
         //店舗名
         var storeName = carrentDB.get('storeName');
         //要望内容

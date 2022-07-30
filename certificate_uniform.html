@@ -218,6 +218,167 @@
                 </div>
             </div>
         </div>
+        <!-- 編集モーダルウィンドウ内容 -->
+        <div class="modal js-modal">
+            <div class="modal__bg js-modal-close"></div>
+            <div class="modal__content uniform">
+                <h2>申請回答</h2>
+                <form action="ptoAppList.html" method="POST">
+                    <div class="edit">
+                        <div>
+                            <label for="">依頼日時:</label>
+                            <p id="createdAt_edit"></p>
+                        </div>
+                        <div>
+                            <label for="">社員番号</label>
+                            <p id="stuffNum_edit"></p>
+                        </div>
+                        <div>
+                            <label for="">氏名:</label>
+                            <p id="name_edit"></p>
+                        </div>
+                    </div>
+                    <div id="normal_edit">
+                        <label for="">種類:</label>
+                        <br>
+                        <table>
+                            <tr>
+                                <td>ポロシャツ黒S</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blackS_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ黒M</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blackM_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ黒L</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blackL_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ黒LL</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blackLL_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ黒3L</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="black3L_edit">枚</td>
+                            </tr>
+                        </table>
+                        <table>
+                            <tr>
+                                <td>ポロシャツ青S</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blueS_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ青M</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blueM_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ青L</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blueL_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ青LL</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blueLL_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ポロシャツ青3L</td>
+                                <td>¥700</td>
+                                <td><input type="number" id="blue3L_edit">枚</td>
+                            </tr>
+                            <tr>
+                        </table>  
+                        <table>  
+                                <td>エプロン</td>
+                                <td>¥800</td>
+                                <td><input type="number" id="apron_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>ヘッドタオル</td>
+                                <td>¥400</td>
+                                <td><input type="number" id="head_towel_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>フリース青S</td>
+                                <td>¥2000</td>
+                                <td><input type="number" id="fleece_blueS_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>フリース青M</td>
+                                <td>¥2000</td>
+                                <td><input type="number" id="fleece_blueM_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>フリース青L</td>
+                                <td>¥2000</td>
+                                <td><input type="number" id="fleece_blueL_edit">枚</td>
+                            </tr>
+                            <tr>
+                                <td>フリース青XL</td>
+                                <td>¥2000</td>
+                                <td><input type="number" id="fleece_blueXL_edit">枚</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div id="emergency_edit">
+                        <label for="">種類：</label>
+                        <div class="edit_checkbox">
+                            <input type="checkbox" id="black_edit">
+                            <label for="black">ポロシャツ黒LL</label>
+                        </div>
+                        <div class="edit_checkbox">
+                            <input type="checkbox" id="blue_edit">
+                            <label for="blue">ポロシャツ青LL</label>
+                        </div>
+                    </div>
+                    <div id="nameplate_edit">
+                        <label for="">登録シフト名：</label>
+                        <input type="text" id="shiftName_edit">
+                        <label for="">種類：</label>
+                        <select id="nameplateColor_edit">
+                            <option value="">種類を選択</option>
+                            <option value="白">白</option>
+                            <option value="黒">黒</option>
+                            <option value="金">金(フロント)</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="edit">
+                        <label for="">処理：</label>
+                        <select name="" id="order_category_edit">
+                                <option value="unapproval">処理を選択する</option>
+                                <option value="delivered">対応済み</option>
+                                <option value="approval">完了</option>
+                            </select>
+                        <div>
+                            <label for="">承認者</label>
+                            <input type="text" id="approver_edit">
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <label for="">納品書</label>
+                        <select name="" id="delivery_slip_edit">
+                            <option value="">なし</option>
+                            <option value="○">有り</option>
+                        </select>
+                    </div>
+                </form>
+                <br>
+                <div id="collectAlert_edit">
+                    <!-- 編集完了のAlert -->
+                </div>
+                <div id="edit_submit_button"></div>
+                <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+            </div>
+        </div> 
         <div>
             <h1>ユニフォーム・ネームプレート申請 要望一覧</h1>
             <div class="certificate_checklist">
@@ -455,6 +616,7 @@
     <!-- bootstrapの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="js/modal.js"></script>
     <script src="js/certificate_uniform.js"></script>
     <script src="js/pdfMake/pdfmake.min.js"></script>
     <script src="js/pdfMake/vfs_fonts.js"></script>
