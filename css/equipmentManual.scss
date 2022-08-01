@@ -85,7 +85,7 @@ $breakpoint-down: (
             font-weight: bold;
         }
 
-        #title{
+        #title,#title_edit{
             width: 400px;
         }
 
@@ -101,13 +101,17 @@ $breakpoint-down: (
             vertical-align: top;
         }
 
-        #overview{
+        #overview,#overview_edit{
             font-size: 15px;
         }
     }
 
     .alert{
         font-size: 15px;
+    }
+
+    #addstoreList_edit{
+        width: 70%;
     }
 }
 
@@ -154,3 +158,4 @@ h1{
     text-align: center;
     font-size: 15px;
 }
+
