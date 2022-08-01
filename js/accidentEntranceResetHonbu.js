@@ -169,7 +169,7 @@ function editStatus(id){
       } catch (err) {
       console.log(err);
       }
-  })();
+    })();
 }
 
 //編集内容DB送信

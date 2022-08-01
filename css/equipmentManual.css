@@ -55,7 +55,7 @@
   font-weight: bold;
 }
 
-.modal form #title {
+.modal form #title, .modal form #title_edit {
   width: 400px;
 }
 
@@ -71,12 +71,16 @@
   vertical-align: top;
 }
 
-.modal form #overview {
+.modal form #overview, .modal form #overview_edit {
   font-size: 15px;
 }
 
 .modal .alert {
   font-size: 15px;
+}
+
+.modal #addstoreList_edit {
+  width: 70%;
 }
 
 h1 {

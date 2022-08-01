@@ -37,12 +37,8 @@ function addStore(e){
 function equipmentManualUpdate(){
     //タイトル
     var title = document.getElementById('title').value;
-    //全店が選択されているか
-    if(document.getElementById('allShop').checked){
-        var storename = "全店";
-    }else{
-        var storename = storeList;
-    }
+    //店舗名
+    var storename = storeList;
     //ファイル名
     var pdf = document.getElementById('pdfname').files[0];
     if(pdf != null){
@@ -64,10 +60,12 @@ function equipmentManualUpdate(){
             createdAt:firebase.firestore.FieldValue.serverTimestamp(),
         });
         var storageRef = firebase.storage().ref('equipmentManual/' + pdfname);
-        storageRef.put(pdf);
         var Alert = document.getElementById('Alert');
-        Alert.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました。リロードします。</div>';
-        setTimeout("location.reload()",2000);
+        Alert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
+        storageRef.put(pdf).then(function(){
+            Alert.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました。リロードします。</div>';
+            setTimeout("location.reload()",2000);
+        });
     }
 }
 
@@ -109,7 +107,7 @@ function showDB(){
           querySnapshot.forEach((postDoc) => {
             const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
             prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
-                stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
+                stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="editContent(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
                 document.getElementById('contentList').innerHTML = stocklist;
                 i++;
                 if(querySnapshot.length == i){
@@ -149,10 +147,9 @@ function search(e){
         // (Cloud Firestoreのインスタンスを初期化してdbにセット)
     
         query = await db.collection('equipmentManuals'); // firebase.firestore.QuerySnapshotのインスタンスを取得
-
         //店舗での検索
         if(e != ""){
-            query = query.where('storename','in',[e,'全店共通']);
+            query = query.where('storename','array-contains-any',[e,'全店共通']);
         }else{
         }
         console.log(query);
@@ -165,7 +162,7 @@ function search(e){
           const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
           var prevTask = Promise.resolve;
           prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
-              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
+              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="editContent(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
               document.getElementById('contentList').innerHTML = stocklist;
               i++;
               if(querySnapshot.length == i){
@@ -183,3 +180,74 @@ function search(e){
         }
     })();
 }
+
+var todayEdit = document.getElementById('today_edit');
+var addstoreListEdit = document.getElementById('addstoreList_edit');
+var titleEdit = document.getElementById('title_edit');
+var overviewEdit = document.getElementById('overview_edit');
+
+//編集用モーダルウィンドウ
+function editContent(id){
+    (async () => {
+        try {
+          const carrentDB = await db.collection('equipmentManuals').doc(id).get();
+          //発生日時
+          todayEdit.textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
+          //追加店舗
+          var storeListEdit = [];
+          storeListEdit.push(carrentDB.get('storename'));
+          addstoreListEdit.value = storeListEdit;
+          //タイトル
+          titleEdit.value = carrentDB.get('title');
+          //概要
+          overviewEdit.value = carrentDB.get('overview');
+          //編集送信ボタン生成
+          document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\')">送信する</button>';
+        } catch (err) {
+        console.log(err);
+        }
+    })();
+}
+
+//追加する店舗名リストを作成(編集用)
+function addStoreEdit(e){
+    storeListEdit.push(e);
+    addstoreListEdit.value = storeListEdit;
+    document.getElementById('store_name_edit').value = "";
+}
+
+//編集内容送信
+function EditUpdate(id){
+    //ファイル名
+    var pdfEdit = document.getElementById('pdfname_edit').files[0];
+    console.log(pdfEdit);
+    if(pdfEdit != undefined){
+        var pdfnameEdit = document.getElementById('pdfname_edit').files[0].name;
+        //DBへ送信
+        db.collection('equipmentManuals').doc(id).update({
+            title:titleEdit.value,
+            storename:addstoreListEdit.value,
+            pdfname:pdfnameEdit,
+            overview:overviewEdit.value,
+        });
+        var storageRefEdit = firebase.storage().ref('equipmentManual/' + pdfnameEdit);
+        var AlertEdit = document.getElementById('Alert_edit');
+        Alert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
+        storageRefEdit.put(pdfEdit).then(function(){
+            AlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました。リロードします。</div>';
+            setTimeout("location.reload()",2000);
+        });
+    }else{
+        //DBへ送信
+        db.collection('equipmentManuals').doc(id).update({
+            title:titleEdit.value,
+            storename:addstoreListEdit.value,
+            overview:overviewEdit.value,
+        });
+        var AlertEdit = document.getElementById('Alert_edit');
+        Alert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
+        AlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました。リロードします。</div>';
+        setTimeout("location.reload()",2000);
+    }
+}
+
