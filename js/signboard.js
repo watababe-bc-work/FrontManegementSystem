@@ -62,7 +62,6 @@ function update(){
                 var res = await db.collection('signboard').add({
                     storename:storenameAdd.value,
                     title:title.value,
-                    index:num.textContent,
                     lighting01:lighting01.value,
                     lighting02:lighting02.value,
                     size01:size01.value,
@@ -132,11 +131,15 @@ function showDB(e){
             var query = await db.collection('signboard').where('storename','==',e).orderBy('CreatedAt', 'asc'); 
             var querySnapshot = await query.get();
             var stocklist = "";
+            var index = 0;
+            var indexImage = 0;
 
             querySnapshot.forEach((postDoc) => {
-                const storageRef = firebase.storage().ref('/signboards/' + postDoc.id + "/indexImage" + postDoc.get('index'));
+                indexImage += 1;
+                const storageRef = firebase.storage().ref('/signboards/' + postDoc.id + "/indexImage" + indexImage);
                 prevTask = Promise.all([prevTask,storageRef.getDownloadURL()]).then(([_,url])=>{
-                    stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + postDoc.get('index') + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ url +'"><table><tbody><tr><th rowspan="2">照明</th><td>'+ postDoc.get('lighting01') +'</td></tr><tr><td>'+ postDoc.get('lighting02') +'</td></tr><tr><th rowspan="2">サイズ</th><td>'+ postDoc.get('size01') +'</td></tr><tr><td>'+ postDoc.get('size02') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open1"><button class="btn btn-primary" onclick = "editStatus(\''+postDoc.id+'\')">編集</button></a></div></div>';
+                    index += 1 ;
+                    stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + index + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ url +'"><table><tbody><tr><th rowspan="2">照明</th><td>'+ postDoc.get('lighting01') +'</td></tr><tr><td>'+ postDoc.get('lighting02') +'</td></tr><tr><th rowspan="2">サイズ</th><td>'+ postDoc.get('size01') +'</td></tr><tr><td>'+ postDoc.get('size02') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open1"><button class="btn btn-primary" onclick = "editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick = "deleteDB(\''+postDoc.id+'\',\''+index+'\')">削除</button></div></div>';
                     document.getElementById('contents').innerHTML = stocklist;
                 }).catch(error => {
                     console.log(error);
@@ -225,4 +228,23 @@ function EditUpdate(id){
         console.log(err);
         }
     })();
+}
+
+//削除機能
+function deleteDB(id,index){
+    var res = window.confirm(index + "番目の内容を削除しますか？");
+    if( res ) {
+        //storage内の写真を削除
+        var storageImageRef = firebase.storage().ref('/signboards/' + id + '/' + 'indexImage' + index);
+        storageImageRef.delete().then(function(){
+            //firestore内の内容を削除
+            db.collection('signboard').doc(id).delete();
+            alert("削除されました。");
+            setTimeout("location.reload()",2000);
+        });
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
 }
