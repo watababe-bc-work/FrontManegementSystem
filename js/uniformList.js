@@ -19,7 +19,8 @@ var query="";
 var querySnapshot="";
 var currentQuerySnapshot = "";
 var currentQueryList = [];
-var backQueryList = [];
+var reloadQuery = "";
+var reloadQuerySnapshot = "";
 document.getElementById('prevButton').style.visibility = 'hidden';
 
 
@@ -31,9 +32,6 @@ document.getElementById('prevButton').style.visibility = 'hidden';
   
       query = await db.collection('uniforms').orderBy('createdAt', 'desc').limit(20) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
-
-      //前回のDBとして保存
-      backQueryList.push(querySnapshot);
 
       var stocklist = '<table class="table table-striped" id="download_table">'
       stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>納品書</th><th>編集</th>';
@@ -240,106 +238,6 @@ function cancel(){
     setTimeout("location.reload()");
 }
 
-//編集用モーダルウィンドウ
-function editStatus(id){
-  (async () => {
-    try {
-        const carrentDB = await db.collection('uniforms').doc(id).get();
-
-        document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
-        document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
-        document.getElementById('name_edit').textContent = carrentDB.get('name');
-        var demandStatus = carrentDB.get('demandStatus');
-        if(demandStatus == '追加購入'){
-            document.getElementById('normal').style.display = "";
-            document.getElementById('emergency').style.display = "none";
-            document.getElementById('nameplate').style.display = "none";
-            document.getElementById('blackS').value = carrentDB.get('blackS');
-            document.getElementById('blackM').value = carrentDB.get('blackM');
-            document.getElementById('blackL').value = carrentDB.get('blackL');
-            document.getElementById('blackLL').value = carrentDB.get('blackLL');
-            document.getElementById('black3L').value = carrentDB.get('black3L');
-            document.getElementById('blueS').value = carrentDB.get('blueS');
-            document.getElementById('blueM').value = carrentDB.get('blueM');
-            document.getElementById('blueL').value = carrentDB.get('blueL');
-            document.getElementById('blueLL').value = carrentDB.get('blueLL');
-            document.getElementById('blue3L').value = carrentDB.get('blue3L');
-            document.getElementById('apron').value = carrentDB.get('apron');
-            document.getElementById('head_towel').value = carrentDB.get('head_towel');
-            document.getElementById('fleece_blueS').value = carrentDB.get('fleece_blueS');
-            document.getElementById('fleece_blueM').value = carrentDB.get('fleece_blueM');
-            document.getElementById('fleece_blueL').value = carrentDB.get('fleece_blueL');
-            document.getElementById('fleece_blueXL').value = carrentDB.get('fleece_blueXL');
-        }else if(demandStatus == "忘れ購入"){
-            document.getElementById('normal').style.display = "none";
-            document.getElementById('emergency').style.display = "";  
-            document.getElementById('nameplate').style.display = "none";
-            var category = carrentDB.get('category');
-            if(category == "ポロシャツ青LL"){
-                document.getElementById('blue').checked = true;
-                document.getElementById('black').checked = false;
-            }else{
-                document.getElementById('black').checked = true;
-                document.getElementById('blue').checked = false;
-            }
-        }else{
-            document.getElementById('normal').style.display = "none";
-            document.getElementById('emergency').style.display = "none";
-            document.getElementById('nameplate').style.display = "";
-            document.getElementById('shiftName').value = carrentDB.get('shiftName');
-            var nameplateColor = document.getElementById('nameplateColor');
-            switch(carrentDB.get('nameplateColor')){
-                case '白':
-                    nameplateColor.options[1].selected = true;
-                    break;
-                case '黒':
-                    nameplateColor.options[2].selected = true;
-                    break;
-                case '金':
-                    nameplateColor.options[3].selected = true;
-                    break;
-                default:
-                    order_category.options[0].selected = true;
-                    break;    
-            }
-        }
-
-        var approver = carrentDB.get('approver');
-        if(approver == null){
-            document.getElementById('approver').value = "";
-        }else{
-            document.getElementById('approver').value = approver;
-        }
-        var order_category = document.getElementById('order_category');
-        switch(carrentDB.get('status')){
-            case 'approval':
-                order_category.options[2].selected = true;
-                break;
-            case 'delivered':
-                order_category.options[1].selected = true;
-                break;
-            default:
-                order_category.options[0].selected = true;
-                break;    
-        }
-        //納品書
-        var deliverySlip = document.getElementById('delivery_slip');
-        switch(carrentDB.get('deliverySlip')){
-            case '○':
-                deliverySlip.options[1].selected = true;
-            break;
-            default:
-                deliverySlip.options[0].selected = true;
-            break;        
-        }
-        //編集送信ボタン生成
-        document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\',\''+ demandStatus +'\')">送信する</button>';
-    } catch (err) {
-    console.log(`Error: ${JSON.stringify(err)}`)
-    }
-    })();
-}
-
 //次へ
 function nextPegination(){
   document.getElementById('prevButton').style.visibility = 'visible';
@@ -348,10 +246,12 @@ function nextPegination(){
           //変更前のDB情報を保持しておく
           currentQueryList.push(querySnapshot);
 
-          console.log(currentQueryList);
 
           query = query.limit(20).startAfter(querySnapshot.docs[19]);
           querySnapshot = await query.get();
+
+          //現在のクエリとしてリロード時のために保存
+          reloadQuery = query;
 
           //後が無い場合に非表示
           if(querySnapshot.docs.length < 20){
@@ -427,10 +327,13 @@ function nextPegination(){
   })();
 }
 
-//前のテーブルを表示
+//前のテーブルを表示(戻るボタン)
 function returnTable(){
   document.getElementById('nextButton').style.visibility = 'visible';
   querySnapshot = currentQueryList.pop();
+
+    //現在のクエリとしてリロード時のために保存
+    reloadQuery = querySnapshot;    
 
   var stocklist = '<table class="table table-striped" id="download_table">'
   stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>納品書</th><th>編集</th>';
@@ -499,6 +402,184 @@ function returnTable(){
   if(currentQueryList.length < 1){
       document.getElementById('prevButton').style.visibility = 'hidden';
   }
+}
+
+//リロードのためにDB取得
+function reloadDB(){
+    (async () => {
+        try {
+            var stocklist = '<table class="table table-striped" id="download_table">'
+            stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>納品書</th><th>編集</th>';
+            console.log(reloadQuery);  
+            reloadQuerySnapshot = await reloadQuery.get();
+            reloadQuerySnapshot.forEach((postDoc) => {
+              if(postDoc.get('demandStatus') == "追加購入"){
+                  switch(postDoc.get('status')){
+                      //承認
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
+                      //発送済み     
+                        case 'delivered':
+                            var statusText = "対応済み";
+                            stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;
+                      //未承認      
+                        default:
+                            var statusText = "未承認";
+                            stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                            break;        
+                  }
+              }else if(postDoc.get('demandStatus') == "忘れ購入"){
+                  switch(postDoc.get('status')){
+                      //承認
+                          case 'approval':
+                              var statusText = "完了";
+                              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;
+                      //発送済み     
+                          case 'delivered':
+                              var statusText = "対応済み";
+                              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;
+                      //未承認      
+                          default:
+                              var statusText = "未承認";
+                              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;          
+                  }
+                  //ネームプレート    
+                  }else{
+                      switch(postDoc.get('status')){
+                          //承認
+                          case 'approval':
+                              var statusText = "完了";
+                              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;
+                          //発送済み     
+                          case 'delivered':
+                              var statusText = "対応済み";
+                              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ postDoc.get('approver') +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;
+                          //未承認      
+                          default:
+                              var statusText = "未承認";
+                              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('name') + '</td><td >' + postDoc.get('demandStatus') + '</td><td>'+ statusText +'</td><td>'+ '' +'</td><td>'+ postDoc.get('deliverySlip') +'</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                              break;        
+                      }
+                  }
+            })
+            stocklist += '</table>';
+            document.getElementById('table_list').innerHTML = stocklist;
+            console.log(stocklist);  
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
+
+
+//編集用モーダルウィンドウ
+function editStatus(id){
+    (async () => {
+      try {
+          var collectAlert = document.getElementById('collectAlert');
+          collectAlert.innerHTML = '<div></div>';
+          const carrentDB = await db.collection('uniforms').doc(id).get();
+  
+          document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
+          document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
+          document.getElementById('name_edit').textContent = carrentDB.get('name');
+          var demandStatus = carrentDB.get('demandStatus');
+          if(demandStatus == '追加購入'){
+              document.getElementById('normal').style.display = "";
+              document.getElementById('emergency').style.display = "none";
+              document.getElementById('nameplate').style.display = "none";
+              document.getElementById('blackS').value = carrentDB.get('blackS');
+              document.getElementById('blackM').value = carrentDB.get('blackM');
+              document.getElementById('blackL').value = carrentDB.get('blackL');
+              document.getElementById('blackLL').value = carrentDB.get('blackLL');
+              document.getElementById('black3L').value = carrentDB.get('black3L');
+              document.getElementById('blueS').value = carrentDB.get('blueS');
+              document.getElementById('blueM').value = carrentDB.get('blueM');
+              document.getElementById('blueL').value = carrentDB.get('blueL');
+              document.getElementById('blueLL').value = carrentDB.get('blueLL');
+              document.getElementById('blue3L').value = carrentDB.get('blue3L');
+              document.getElementById('apron').value = carrentDB.get('apron');
+              document.getElementById('head_towel').value = carrentDB.get('head_towel');
+              document.getElementById('fleece_blueS').value = carrentDB.get('fleece_blueS');
+              document.getElementById('fleece_blueM').value = carrentDB.get('fleece_blueM');
+              document.getElementById('fleece_blueL').value = carrentDB.get('fleece_blueL');
+              document.getElementById('fleece_blueXL').value = carrentDB.get('fleece_blueXL');
+          }else if(demandStatus == "忘れ購入"){
+              document.getElementById('normal').style.display = "none";
+              document.getElementById('emergency').style.display = "";  
+              document.getElementById('nameplate').style.display = "none";
+              var category = carrentDB.get('category');
+              if(category == "ポロシャツ青LL"){
+                  document.getElementById('blue').checked = true;
+                  document.getElementById('black').checked = false;
+              }else{
+                  document.getElementById('black').checked = true;
+                  document.getElementById('blue').checked = false;
+              }
+          }else{
+              document.getElementById('normal').style.display = "none";
+              document.getElementById('emergency').style.display = "none";
+              document.getElementById('nameplate').style.display = "";
+              document.getElementById('shiftName').value = carrentDB.get('shiftName');
+              var nameplateColor = document.getElementById('nameplateColor');
+              switch(carrentDB.get('nameplateColor')){
+                  case '白':
+                      nameplateColor.options[1].selected = true;
+                      break;
+                  case '黒':
+                      nameplateColor.options[2].selected = true;
+                      break;
+                  case '金':
+                      nameplateColor.options[3].selected = true;
+                      break;
+                  default:
+                      order_category.options[0].selected = true;
+                      break;    
+              }
+          }
+  
+          var approver = carrentDB.get('approver');
+          if(approver == null){
+              document.getElementById('approver').value = "";
+          }else{
+              document.getElementById('approver').value = approver;
+          }
+          var order_category = document.getElementById('order_category');
+          switch(carrentDB.get('status')){
+              case 'approval':
+                  order_category.options[2].selected = true;
+                  break;
+              case 'delivered':
+                  order_category.options[1].selected = true;
+                  break;
+              default:
+                  order_category.options[0].selected = true;
+                  break;    
+          }
+          //納品書
+          var deliverySlip = document.getElementById('delivery_slip');
+          switch(carrentDB.get('deliverySlip')){
+              case '○':
+                  deliverySlip.options[1].selected = true;
+              break;
+              default:
+                  deliverySlip.options[0].selected = true;
+              break;        
+          }
+          //編集送信ボタン生成
+          document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\',\''+ demandStatus +'\')">送信する</button>';
+      } catch (err) {
+      console.log(`Error: ${JSON.stringify(err)}`)
+      }
+    })();
 }
 
 //status編集
@@ -582,8 +663,9 @@ function EditUpdate(id,status){
     }
     var collectAlert = document.getElementById('collectAlert');
     collectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
-    // setTimeout("$('.js-modal').fadeOut();f",2000);
-    setTimeout("location.reload()",2000);
+    // setTimeout("location.reload()",2000);
+    setTimeout("$('.js-modal').fadeOut();",2000);
+    reloadDB();
 }
 
 //削除
