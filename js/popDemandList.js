@@ -215,7 +215,8 @@ function editStatus(id){
 
             }
           }else{
-              document.getElementById('web').style.display = "none";
+            document.getElementById('web').style.display = "none";
+            document.getElementById('pop').style.display = "";
               //出力
               var output = document.getElementById('output');
               switch(carrentpopDemandDB.get('output')){

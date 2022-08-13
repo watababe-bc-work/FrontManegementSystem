@@ -43,7 +43,7 @@ var year = "";
 function showProcess(date) {
     year = date.getFullYear();
     var month = date.getMonth();
-    document.querySelector('#header').innerHTML = "設備点検予定表 " + year + "年 " + (month + 1) + "月";
+    document.querySelector('#header').innerHTML = "店舗設備点検予定表 " + year + "年 " + (month + 1) + "月";
 
     var calendar = createProcess(year, month);
     document.querySelector('#calendar').innerHTML = calendar;
@@ -486,6 +486,7 @@ function search(storename){
     const item = document.getElementById('item_search').value;
     document.getElementById('search_button').textContent = "検索中...";
     document.getElementById('AllmemoContent').innerHTML = "<p>検索中...</p>";
+
     (async () => {
         try {
             var stocklist2 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
@@ -538,53 +539,61 @@ function search(storename){
     })();
 }
 
-// //検索(前)
-// function search(storename){
-//     const item = document.getElementById('item_search').value;
-//     document.getElementById('search_button').textContent = "検索中...";
-//     document.getElementById('AllmemoContent').innerHTML = "<p>検索中...</p>";
-//     (async () => {
-//         try {
-//             var stocklist2 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
-//             //プログラムDBを呼び出す
-//             query = await db.collection('program').get();
-//             var k = 0;
-//             //プログラムDB内にあるドキュメントを全て呼び出す
-//             query.forEach(async(postDoc) => {
-//                 //呼び出したドキュメント内のコレクションも全て呼び出す
-//                 for(var i = 1;i < 32;i++){
-//                     var subCollection = await db.collection('program').doc(postDoc.id).collection('Day' + i);
-//                     if(storename != ''){
-//                         subCollection = subCollection.where('storename','==',storename);
-//                         if(item != ''){
-//                             subCollection = subCollection.where('item','==',item);
-//                             document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename + "," + item;
-//                         }else{
-//                             document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename;
-//                         }
-//                     }else{
-//                         if(item != ''){
-//                             subCollection = subCollection.where('item','==',item);
-//                             document.getElementById('AllmemoTitle').textContent = "検索内容：" + item;
-//                         }
-//                     }
-//                     subCollection = await subCollection.get();
-//                     subCollection.forEach(async(postDoc1) => {
-//                         console.log(postDoc1.id);
-//                         stocklist2 += '<tr><td>'+ postDoc.id + '-' + i +'</td><td>' + postDoc1.get('storename') + '</td><td>' + postDoc1.get('item') + '</td><td>' + postDoc1.get('important') + '</td><td>' + postDoc1.get('startTimeInput') + '~' +  postDoc1.get('endTimeInput') + '</td><td>' + postDoc1.get('rep') + '</td></tr>';
-//                         k++;
-//                     });
-//                 };
-//                 if(k == 0){
-//                     document.getElementById('AllmemoContent').innerHTML = "<p>予定はありません。</p>";
-//                 }else{
-//                     document.getElementById('AllmemoContent').innerHTML = stocklist2;
-//                     document.getElementById('search_button').textContent = "検索する";
-//                 }
-//             });
+//検索
+function searchForm(){
+    const storename = document.getElementById('storename_search').value;
+    const item = document.getElementById('item_search').value;
+    document.getElementById('search_button').textContent = "検索中...";
+    document.getElementById('AllmemoContent').innerHTML = "<p>検索中...</p>";
 
-//         } catch (err) {
-//             console.log(err);
-//         }
-//     })();
-// }
+    (async () => {
+        try {
+            var stocklist2 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+            //プログラムDBを呼び出す
+            query = await db.collection('program').get();
+            var k = 0;
+            var subCollectionList = [];
+            //プログラムDB内にあるドキュメントを全て呼び出す
+            query.forEach(async(postDoc) => {
+                //呼び出したドキュメント内のコレクションも全て呼び出す
+                for(var i = 1;i < 32;i++){
+                    var subCollection = await db.collection('program').doc(postDoc.id).collection('Day' + i);
+                    if(storename != ''){
+                        subCollection = subCollection.where('storename','==',storename);
+                        if(item != ''){
+                            subCollection = subCollection.where('item','==',item);
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename + "," + item;
+                        }else{
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + storename;
+                        }
+                    }else{
+                        if(item != ''){
+                            subCollection = subCollection.where('item','==',item);
+                            document.getElementById('AllmemoTitle').textContent = "検索内容：" + item;
+                        }
+                    }
+                    subCollection = await subCollection.get();
+                    subCollection.forEach(async(postDoc1) => {
+                        //出力された値の日付ソートのための配列に格納
+                        subCollectionList.push([new Date(postDoc1.get('createdAt')),'<tr><td>'+ postDoc.id + '-' + i +'</td><td>' + postDoc1.get('storename') + '</td><td>' + postDoc1.get('item') + '</td><td>' + postDoc1.get('important') + '</td><td>' + postDoc1.get('startTimeInput') + '~' +  postDoc1.get('endTimeInput') + '</td><td>' + postDoc1.get('rep') + '</td></tr>']);
+                    });
+                };
+                if(subCollectionList.length == 0){
+                    document.getElementById('AllmemoContent').innerHTML = "<p>予定はありません。</p>";
+                }else{
+                    //日付と出力HTMLが入った配列を日付でソート
+                    subCollectionList.sort(function(a,b){return (a[0] < b[0] ? 1 : -1);});
+                    if(k < subCollectionList.length){
+                        stocklist2 += subCollectionList[k][1];
+                        console.log(stocklist2);
+                        document.getElementById('AllmemoContent').innerHTML = stocklist2;
+                        document.getElementById('search_button').textContent = "検索する";
+                    }
+                }
+                k++;
+            });
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
