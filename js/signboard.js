@@ -56,38 +56,46 @@ function update(){
         try {
             if(storenameAdd.value != "" && title.value != ""){
                 var collectAlert = document.getElementById('collectAlert');
+                collectAlert.innerHTML = '<div class="alert alert-success role="alert">送信中...</div>';
                 var num = document.getElementById('num');
 
-                //DBへ送信
-                var res = await db.collection('signboard').add({
-                    storename:storenameAdd.value,
-                    title:title.value,
-                    lighting01:lighting01.value,
-                    lighting02:lighting02.value,
-                    size01:size01.value,
-                    size02:size02.value,
-                    CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-                });
-
-                //写真アップロード
-                var img = new Compressor(imgfile.files[0], {
-                    quality: 0.5,
-                    success(result) {
-                        console.log('圧縮完了');
-                        imgfile.files[0] = result;
-                    },
-                    maxWidth:1000,
-                    maxHeight: 400,
-                    mimeType: 'image/png'
-                });
-                var storageRef = firebase.storage().ref('signboards/' + res.id + '/' + 'indexImage' + num.textContent);
-                storageRef.put(imgfile.files[0]);
-                                
-                //成功アラート
-                collectAlert.innerHTML = '<div class="alert alert-success role="alert">送信完了！</div>';
-                //編集をした店舗を表示させるためのリロード処理
-                window.history.replaceState('','','signboard.html?storename=' + storenameAdd.value)
-                setTimeout('location.reload()',2000);
+                var fileTypeList = ['png','jpg','jpeg'];
+                let file_type = imgfile.files[0].name.split('.').pop();
+                //拡張子が写真データでなければ排除
+                if(fileTypeList.includes(file_type)){
+                    //DBへ送信
+                    var res = await db.collection('signboard').add({
+                        storename:storenameAdd.value,
+                        title:title.value,
+                        lighting01:lighting01.value,
+                        lighting02:lighting02.value,
+                        size01:size01.value,
+                        size02:size02.value,
+                        CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    });
+                    
+                    //写真アップロード
+                    var img = new Compressor(imgfile.files[0], {
+                        quality: 0.5,
+                        success(result) {
+                            console.log('圧縮完了');
+                            imgfile.files[0] = result;
+                        },
+                        maxWidth:1000,
+                        maxHeight: 400,
+                        mimeType: 'image/png'
+                    });
+                    var storageRef = firebase.storage().ref('signboards/' + res.id + '/' + 'indexImage');
+                    storageRef.put(imgfile.files[0]).then(() => {
+                        //成功アラート
+                        collectAlert.innerHTML = '<div class="alert alert-success role="alert">送信完了！</div>';
+                        //編集をした店舗を表示させるためのリロード処理
+                        window.history.replaceState('','','signboard.html?storename=' + storenameAdd.value)
+                        setTimeout('location.reload()',2000);
+                    })
+                }else{
+                    collectAlert.innerHTML = '<div class="alert alert-danger role="alert">ファイルはpng,jpeg,jpgの写真データのみです。</div>';
+                }
             }else{
                 collectAlert.innerHTML = '<div class="alert alert-danger role="alert">店舗名、タイトルは必須項目です。</div>';
             }
@@ -136,9 +144,10 @@ function showDB(e){
 
             querySnapshot.forEach((postDoc) => {
                 indexImage += 1;
-                const storageRef = firebase.storage().ref('/signboards/' + postDoc.id + "/indexImage" + indexImage);
+                const storageRef = firebase.storage().ref('/signboards/' + postDoc.id + "/indexImage");
                 prevTask = Promise.all([prevTask,storageRef.getDownloadURL()]).then(([_,url])=>{
                     index += 1 ;
+                    console.log(postDoc.get('title'));
                     stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + index + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ url +'"><table><tbody><tr><th rowspan="2">照明</th><td>'+ postDoc.get('lighting01') +'</td></tr><tr><td>'+ postDoc.get('lighting02') +'</td></tr><tr><th rowspan="2">サイズ</th><td>'+ postDoc.get('size01') +'</td></tr><tr><td>'+ postDoc.get('size02') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open1"><button class="btn btn-primary" onclick = "editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick = "deleteDB(\''+postDoc.id+'\',\''+index+'\')">削除</button></div></div>';
                     document.getElementById('contents').innerHTML = stocklist;
                 }).catch(error => {
@@ -165,12 +174,10 @@ function editStatus(id){
     (async () => {
         try {
             const carrentDB = await db.collection('signboard').doc(id).get();
-            //店舗名
-            storenameedit.textContent = carrentDB.get('storename');
             //タイトル
             titleEdit.value = carrentDB.get('title');
-            //番号
-            numEdit.textContent = carrentDB.get('index');
+            //店舗名
+            storenameedit.textContent = carrentDB.get('storename');
             //照明1
             lighting01Edit.value = carrentDB.get('lighting01');
             //照明2
@@ -192,38 +199,61 @@ function editStatus(id){
 function EditUpdate(id){
     (async () => {
         try {
-            //DBへ送信
-            db.collection('signboard').doc(id).update({
-                storename:storenameedit.textContent,
-                title:titleEdit.value,
-                lighting01:lighting01Edit.value,
-                lighting02:lighting02Edit.value,
-                size01:size01Edit.value,
-                size02:size02Edit.value,
-            });
-
-            if(imgfileEdit.files[0] != undefined){
-                //写真アップロード
-                var img = new Compressor(imgfileEdit.files[0], {
-                    quality: 0.5,
-                    success(result) {
-                        console.log('圧縮完了');
-                        imgfileEdit.files[0] = result;
-                    },
-                    maxWidth:1000,
-                    maxHeight: 400,
-                    mimeType: 'image/png'
-                });
-                var storageRef = firebase.storage().ref('signboards/' + id + '/' + 'indexImage' + numEdit.textContent);
-                storageRef.put(imgfileEdit.files[0]);
-            }
-                            
-            //成功アラート
             var collectAlert = document.getElementById('collectAlert_edit');
-            collectAlert.innerHTML = '<div class="alert alert-success role="alert">編集完了！</div>';
-            //編集をした店舗を表示させるためのリロード処理
-            window.history.replaceState('','','signboard.html?storename=' + storenameedit.textContent)
-            setTimeout('location.reload()',2000);
+            collectAlert.innerHTML = '<div class="alert alert-success role="alert">送信中...</div>';
+
+            var fileTypeList = ['png','jpg','jpeg'];
+            if(imgfileEdit.files[0] != undefined){
+                let file_type = imgfileEdit.files[0].name.split('.').pop();
+                //拡張子が写真データでなければ排除
+                if(fileTypeList.includes(file_type)){
+                    //写真アップロード
+                    var img = new Compressor(imgfileEdit.files[0], {
+                        quality: 0.5,
+                        success(result) {
+                            console.log('圧縮完了');
+                            imgfileEdit.files[0] = result;
+                        },
+                        maxWidth:1000,
+                        maxHeight: 400,
+                        mimeType: 'image/png'
+                    });
+                    var storageRef = firebase.storage().ref('signboards/' + id + '/' + 'indexImage');
+                    storageRef.put(imgfileEdit.files[0]).then(() => {
+                        //DBへ送信
+                        db.collection('signboard').doc(id).update({
+                            storename:storenameedit.textContent,
+                            title:titleEdit.value,
+                            lighting01:lighting01Edit.value,
+                            lighting02:lighting02Edit.value,
+                            size01:size01Edit.value,
+                            size02:size02Edit.value,
+                        });
+                        //成功アラート
+                        collectAlert.innerHTML = '<div class="alert alert-success role="alert">編集完了！</div>';
+                        //編集をした店舗を表示させるためのリロード処理
+                        window.history.replaceState('','','signboard.html?storename=' + storenameedit.textContent)
+                        setTimeout('location.reload()',500);
+                    });
+                }else{
+                    collectAlert.innerHTML = '<div class="alert alert-danger role="alert">ファイルはpng,jpeg,jpgの写真データのみです。</div>';
+                }
+            }else{
+                //DBへ送信
+                db.collection('signboard').doc(id).update({
+                    storename:storenameedit.textContent,
+                    title:titleEdit.value,
+                    lighting01:lighting01Edit.value,
+                    lighting02:lighting02Edit.value,
+                    size01:size01Edit.value,
+                    size02:size02Edit.value,
+                });
+                //成功アラート
+                collectAlert.innerHTML = '<div class="alert alert-success role="alert">編集完了！</div>';
+                //編集をした店舗を表示させるためのリロード処理
+                window.history.replaceState('','','signboard.html?storename=' + storenameedit.textContent)
+                setTimeout('location.reload()',500);
+            }
         } catch (err) {
         console.log(err);
         }
@@ -235,7 +265,7 @@ function deleteDB(id,index){
     var res = window.confirm(index + "番目の内容を削除しますか？");
     if( res ) {
         //storage内の写真を削除
-        var storageImageRef = firebase.storage().ref('/signboards/' + id + '/' + 'indexImage' + index);
+        var storageImageRef = firebase.storage().ref('/signboards/' + id + '/' + 'indexImage');
         storageImageRef.delete().then(function(){
             //firestore内の内容を削除
             db.collection('signboard').doc(id).delete();

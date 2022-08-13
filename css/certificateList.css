@@ -62,32 +62,32 @@ h1 {
   margin: 10px;
 }
 
-.modal form .edit {
+.modal .form .edit {
   margin: 3% 5px;
   display: inline-block;
 }
 
-.modal form .edit div {
+.modal .form .edit div {
   display: inline-block;
 }
 
-.modal form .edit div label {
+.modal .form .edit div label {
   display: inline-block;
 }
 
-.modal form .edit div p {
+.modal .form .edit div p {
   display: inline-block;
 }
 
-.modal form label {
+.modal .form label {
   font-size: 15px;
 }
 
-.modal form input, .modal form select, .modal form textarea {
+.modal .form input, .modal .form select, .modal .form textarea {
   font-size: 15px;
 }
 
-.modal form #headquartersCommentLabel {
+.modal .form #headquartersCommentLabel {
   vertical-align: top;
 }
 

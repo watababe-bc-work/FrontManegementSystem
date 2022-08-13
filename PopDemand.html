@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>POP,Web,料金変更 申請</title>
+    <title>POP申請</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -27,8 +27,8 @@
     
 
  <h1>POP要望 新規作成</h1>
-    <a href="popDemandList.html"><button class="btn btn-info">要望一覧へ</button></a>
-    <div class="backwhite">
+    <button class="btn btn-info" onclick="showForm()">+要望登録する</button>
+    <div class="backwhite" id="addForm">
         <form action="popDemand.html" method="POST">
             <div class="edit">
                 <label for="">依頼区分：</label>
@@ -170,6 +170,154 @@
             <button class="btn btn-primary" onclick="createPDF()">PDFで印刷する</button>
         </div>
     </div>
+    <h1>POP要望 要望一覧</h1>
+    <div class="youbouTable">
+        <div id="table_list">
+            <!-- DB表示 -->
+        </div>
+    </div>
+    <!-- 新規登録モーダルウィンドウ内容 -->
+    <div class="modal js-modal">
+        <div class="modal__bg js-modal-close"></div>
+        <div class="modal__content">
+            <h2>状況変更</h2>
+            <form action="popDemandList.html" method="POST">
+                <div class="edit">
+                    <div>
+                        <label for="">区分：</label>
+                        <p id="orderCategory_edit"></p>
+                    </div>
+                    <div>
+                        <label for="">依頼日：</label>
+                        <p id="createdAt_edit"></p>
+                    </div>
+                    <div>
+                        <label for="">納品日：</label>
+                        <input type="date" id="preferredDate_edit">
+                    </div>
+                    <div>
+                        <label for="">店舗名：</label>
+                        <p id="store_name_edit"></p>
+                    </div>
+                </div>
+                <div class="edit">
+                    <label for="">件名：</label>
+                    <input type="text" id="subject_edit">
+                </div>
+                <div id="pop_edit">
+                    <div class="edit">
+                        <div>
+                            <label for="" id="outputs">出力：</label>
+                            <select name="" id="output_edit">
+                                <option value="">出力を選択する</option>
+                                <option value="塩ビシート(看板)">塩ビシート(看板)</option>
+                                <option value="内照シート(看板)">内照シート(看板)</option>
+                                <option value="普通紙">普通紙</option>
+                                <option value="内照紙">内照紙</option>
+                                <option value="シール紙">シール紙</option>
+                                <option value="その他">その他</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="" id="processings">加工：</label>
+                            <select name="" id="processing_edit">
+                                <option value="">加工を選択する</option>
+                                <option value="グロス">グロス</option>
+                                <option value="マット">マット</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="" id="numbers">枚数：</label>
+                            <input type="text" id="number_edit">
+                        </div>
+                    </div>
+                    <div class="edit">
+                        <div>
+                            <label for="">サイズ：</label>
+                            <select name="" id="size_checkBox_edit">
+                                <option value="">サイズを選択</option>
+                                <option value="名刺サイズ">名刺サイズ</option>
+                                <option value="A6">A6</option>
+                                <option value="A5">A5</option>
+                                <option value="A4">A4</option>
+                                <option value="A3">A3</option>
+                                <option value="A1">A1</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="" id="size_derection_edit">
+                                <option value="">向きを選択</option>
+                                <option value="縦">縦</option>
+                                <option value="横">横</option>
+                            </select>
+                            横<input type="text" id="horizontal_edit">mm × 縦<input type="text" id="vertical_edit">mm + 貼り代<input type="text" id="covering_fare_edit">mm
+                        </div>
+                    </div>
+                </div>
+                <div id="web_edit">
+                    <div class="edit">
+                        <label for="">Webサイト</label>
+                        <select name="" id="website_edit">
+                            <option value="">-</option>
+                            <option value="公式HP">公式HP</option>
+                            <option value="ハピホテ">ハピホテ</option>
+                            <option value="カップルズ">カップルズ</option>
+                            <option value="予約サイト">予約サイト</option>
+                            <option value="Twitter">Twitter</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="edit">
+                    <div>
+                        <label for="" id="demand_detail_label">要望詳細：</label>
+                        <textarea name="" cols="70" rows="10" id="demand_detail_edit"></textarea>
+                    </div>
+                </div>
+                <div class="edit">
+                    <div>
+                        <label for="">依頼者：</label>
+                        <input type="text" id="requesterName_edit">
+                    </div>
+                    <div>
+                        <label for="">対応者:</label>
+                        <input type="text" id="supportPerson_edit">
+                    </div>
+                    <div>
+                        <label for="">状況:</label>
+                        <select name="" id="status_edit">
+                            <option value="">状況を選択する</option>
+                            <option value="未完了">未完了</option>
+                            <option value="完了">完了</option>
+                            <option value="依頼中">依頼中</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <br>
+            <div id="collectAlert_edit">
+                <!-- 編集完了のAlert -->
+            </div>
+            <div id="edit_submit_button"></div>
+            <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
+    <!-- 画像モーダルウィンドウ内容 -->
+    <div class="modal js-modal2">
+        <div class="modal__bg js-modal-close2"></div>
+        <div class="modal__content">
+            <h2>画像/データファイル</h2>
+            <div id="modalImgs">
+                <!-- DBから画像を取得 -->
+            </div>
+            <div class="modalImgForm">
+                <label for="">ファイル追加：</label>
+                <input type="file" id="file_modal" multiple>
+                <div id="modalImgAlert"></div>
+            </div>
+            <div id="modalImgButton"></div>
+            <a class="js-modal-close2" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div> 
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -180,6 +328,7 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="js/popDemand.js"></script>
+    <script src="js/modal.js"></script>
     <script src="js/pdfmake/pdfmake.min.js"></script>
     <script src="js/pdfmake/vfs_fonts.js"></script>
     
