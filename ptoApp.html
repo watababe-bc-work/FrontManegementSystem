@@ -96,7 +96,7 @@
             <h1>年次有給休暇 要望一覧</h1>
             <div class="pto_table_select">
                 <label for="">自店舗を選択:</label>
-                <select id="store_name_search" onchange="showTable()">
+                <select id="store_name_search" onchange="showTable(this.value)">
                     <option value="">自店舗を選択</option>
                     <option value="ワタナベ商事本部">ワタナベ商事本部</option>
                     <option value="池袋グランド">池袋グランド</option>
@@ -221,7 +221,7 @@
             <h1>残業申請 要望一覧</h1>
             <div class="pto_table_select">
                 <label for="">自店舗を選択:</label>
-                <select id="store_name_ot_search" onchange="showTableOt()">
+                <select id="store_name_ot_search" onchange="showTableOt(this.value)">
                     <option value="">自店舗を選択</option>
                     <option value="ワタナベ商事本部">ワタナベ商事本部</option>
                     <option value="池袋グランド">池袋グランド</option>

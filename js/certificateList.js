@@ -127,6 +127,8 @@ function cancel(){
 function editStatus(id){
   (async () => {
     try {
+        var headquartersComment = document.getElementById('headquartersComment');
+        headquartersComment.textContent = "";
         const carrentDB = await db.collection('certificates').doc(id).get();
         document.getElementById('name_edit').textContent = carrentDB.get('name');
         document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt');

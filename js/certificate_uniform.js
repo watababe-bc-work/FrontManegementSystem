@@ -23,6 +23,11 @@ document.getElementById('payroll_input').style.display = "none";
 document.getElementById('wage_input').style.display = "none";
 document.getElementById('other_input').style.display = "none";
 
+var store_name_uni_search = document.getElementById('store_name_uni_search');
+var store_name_cert_search = document.getElementById('store_name_search');
+var store_name_uni = document.getElementById('store_name_uni');
+var store_name_cert = document.getElementById('store_name');
+
 //本日の日付を初期値に配置
 window.onload = function () {
     //今日の日時を表示
@@ -82,6 +87,29 @@ function paperInput(){
     }else{
         document.getElementById('other_input').style.display = "none";
     }
+}
+
+//パラメータでのDB表示
+const searchParams = decodeURI(window.location.search);
+console.log(searchParams);
+if(getParam('storename')){
+    showTableuni(getParam('storename'));
+    showTable(getParam('storename'));
+    store_name_uni_search.value = getParam('storename');
+    store_name_cert_search.value = getParam('storename');
+    store_name_uni.value = getParam('storename');
+    store_name_cert.value = getParam('storename');
+}
+
+//パラメータ取得
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 //証明書等
@@ -229,9 +257,7 @@ function certificateUpdate(){
 }
 
 //table表示
-function showTable(){
-    var store = document.getElementById('store_name_search').value;
-    console.log(store);
+function showTable(store){
     var query="";
     var querySnapshot="";
 
@@ -437,8 +463,7 @@ function uniformUpdate(){
 }
 
 //table表示
-function showTableuni(){
-    var store = document.getElementById('store_name_uni_search').value;
+function showTableuni(store){
     var query="";
     var querySnapshot="";
 
