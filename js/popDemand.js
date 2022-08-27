@@ -15,6 +15,7 @@ db.settings({
   timestampsInSnapshots: true
 });
 
+document.getElementById('pops').style.display = "none";
 document.getElementById('web').style.display = "none";
 document.getElementById('web_edit').style.display = "none";
 var addForm = document.getElementById('addForm');

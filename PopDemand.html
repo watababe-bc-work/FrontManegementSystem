@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>POP申請</title>
+    <title>POP要望</title>
 
     <!--FireBase-->
     <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
@@ -99,8 +99,12 @@
                 <label for="">件名：</label>
                 <input type="text" id="subject">
             </div>
-        
+            <div class="edit">
+                <label for="" id="demand_detail_label">要望詳細：</label>
+                <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
+            </div>
             <div class="edit" id="pops">
+                <h2>POP専用フォーム</h2>
                 <label for="" id="outputs">出力：</label>
                 <select name="" id="output">
                     <option value="">出力を選択する</option>
@@ -121,10 +125,29 @@
 
                 <label for="" id="numbers">枚数：</label>
                 <input type="text" id="number">
+                <div class="edit" id="sizes">
+                        <label for="">サイズ：</label>
+                        <select name="" id="size_checkBox">
+                            <option value="">サイズを選択・記入する</option>
+                            <option value="名刺サイズ">名刺サイズ</option>
+                            <option value="A6">A6</option>
+                            <option value="A5">A5</option>
+                            <option value="A4">A4</option>
+                            <option value="A3">A3</option>
+                            <option value="A1">A1</option>
+                        </select>
+                        <select name="" id="size_derection">
+                            <option value="">向きを選択</option>
+                            <option value="縦">縦</option>
+                            <option value="横">横</option>
+                        </select>
+                        横<input type="text" id="horizontal">mm × 縦<input type="text" id="vertical">mm + 貼り代<input type="text" id="covering_fare">mm
+                    </div>  
             </div>
 
             <div class="edit">
                 <div id="web">
+                    <h2>Web専用フォーム</h2>
                     <label for="">Webサイト</label>
                     <select name="" id="website">
                         <option value="">-</option>
@@ -135,30 +158,7 @@
                         <option value="Twitter">Twitter</option>
                     </select>
                 </div>
-            </div>
-        
-            <div class="edit" id="sizes">
-                <label for="">サイズ：</label>
-                <select name="" id="size_checkBox">
-                    <option value="">サイズを選択・記入する</option>
-                    <option value="名刺サイズ">名刺サイズ</option>
-                    <option value="A6">A6</option>
-                    <option value="A5">A5</option>
-                    <option value="A4">A4</option>
-                    <option value="A3">A3</option>
-                    <option value="A1">A1</option>
-                </select>
-                <select name="" id="size_derection">
-                    <option value="">向きを選択</option>
-                    <option value="縦">縦</option>
-                    <option value="横">横</option>
-                </select>
-                横<input type="text" id="horizontal">mm × 縦<input type="text" id="vertical">mm + 貼り代<input type="text" id="covering_fare">mm
-            </div>    
-            <div class="edit">
-                <label for="" id="demand_detail_label">要望詳細：</label>
-                <textarea name="" cols="70" rows="10" id="demand_detail"></textarea>
-            </div>
+            </div>  
             <div class="edit">
                 <label for="">ファイル添付</label>
                 <input type="file" id="file" multiple>
@@ -203,6 +203,12 @@
                 <div class="edit">
                     <label for="">件名：</label>
                     <input type="text" id="subject_edit">
+                </div>
+                <div class="edit">
+                    <div>
+                        <label for="" id="demand_detail_label">要望詳細：</label>
+                        <textarea name="" cols="70" rows="10" id="demand_detail_edit"></textarea>
+                    </div>
                 </div>
                 <div id="pop_edit">
                     <div class="edit">
@@ -265,12 +271,6 @@
                             <option value="予約サイト">予約サイト</option>
                             <option value="Twitter">Twitter</option>
                         </select>
-                    </div>
-                </div>
-                <div class="edit">
-                    <div>
-                        <label for="" id="demand_detail_label">要望詳細：</label>
-                        <textarea name="" cols="70" rows="10" id="demand_detail_edit"></textarea>
                     </div>
                 </div>
                 <div class="edit">

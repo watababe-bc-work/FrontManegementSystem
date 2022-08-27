@@ -17,6 +17,10 @@ db.settings({
 
 document.getElementById('addForm').style.display = "none";
 document.getElementById('addForm2').style.display = "none";
+var store_name_pto_search = document.getElementById('store_name_search');
+var store_name_ot_search = document.getElementById('store_name_ot_search');
+var store_name_pto = document.getElementById('store_name');
+var store_name_ot = document.getElementById('store_name_ot');
 
 //本日の日付を初期値に配置
 window.onload = function () {
@@ -35,6 +39,29 @@ function addOrderContent(){
 
 function addoverTimeContent(){
     document.getElementById('addForm2').style.display = "block";
+}
+
+//パラメータでのDB表示
+const searchParams = decodeURI(window.location.search);
+console.log(searchParams);
+if(getParam('storename')){
+    showTable(getParam('storename'));
+    showTableOt(getParam('storename'));
+    store_name_pto_search.value = getParam('storename');
+    store_name_ot_search.value = getParam('storename');
+    store_name_pto.value = getParam('storename');
+    store_name_ot.value = getParam('storename');
+}
+
+//パラメータ取得
+function getParam(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 //有休申請
@@ -78,8 +105,7 @@ function PtoUpdate(){
 }
 
 //table表示
-function showTable(){
-    var store = document.getElementById('store_name_search').value;
+function showTable(store){
     console.log(store);
     var query="";
     var querySnapshot="";
@@ -166,8 +192,7 @@ function overTimeUpdate(){
 }
 
 //table表示
-function showTableOt(){
-    var store = document.getElementById('store_name_ot_search').value;
+function showTableOt(store){
     var query="";
     var querySnapshot="";
 
