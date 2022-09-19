@@ -78,8 +78,6 @@ function PtoUpdate(){
     //日時
     var startDate = document.getElementById('startdate').value;
     var endDate = document.getElementById('enddate').value;
-    //電話承認者
-    var phoneApprover = document.getElementById('phoneApprover').value;
     //理由
     var reason = document.getElementById('reason_detail').value;
     if(staffNum == "" || name == "" || storeName == "" || startDate == "" || endDate == "" || reason == ""){
@@ -93,7 +91,6 @@ function PtoUpdate(){
             createdAt:createdAt,
             startDate:startDate,
             endDate:endDate,
-            phoneApprover:phoneApprover,
             reason:reason,
             storeName:storeName,
             status:"unapproved",

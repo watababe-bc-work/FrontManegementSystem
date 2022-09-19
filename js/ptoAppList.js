@@ -37,7 +37,7 @@ document.getElementById('disapproval_reason').style.display = "none";
       backQueryList.push(querySnapshot);
 
       var stocklist = '<table class="table table-striped" id="download_table">'
-      stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
+      stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
       querySnapshot.forEach((postDoc) => {
         switch(postDoc.get('status')){
         //承認
@@ -45,17 +45,17 @@ document.getElementById('disapproval_reason').style.display = "none";
               var statusText = "承認";
               //以下PDFで保存コード
               //<button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button>
-              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+              stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
         //不承認      
           case 'disapproval':
               var statusText = "不承認";
-              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+              stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;
         //未承認      
           default:
               var statusText = "未承認";
-              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+              stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
               break;        
         }
       })
@@ -93,23 +93,23 @@ function showTable(){
         backQueryList.push(querySnapshot);
 
         var stocklist = '<table class="table table-striped" id="download_table">'
-        stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
+        stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //不承認      
               case 'disapproval':
                   var statusText = "不承認";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
           })
@@ -152,12 +152,6 @@ function editStatus(id){
         document.getElementById('startDate_edit').value = carrentDB.get('startDate');
         document.getElementById('endDate_edit').value = carrentDB.get('endDate');
         document.getElementById('reason_detail').value = carrentDB.get('reason');
-        var phoneApprover =  carrentDB.get('phoneApprover');
-        if(phoneApprover == null){
-            document.getElementById('phoneApprover').value = '';
-        }else{
-            document.getElementById('phoneApprover').value = phoneApprover;
-        }
         var approvalPerson = carrentDB.get('approver');
         if(approvalPerson == null){
             document.getElementById('approvalPerson').value = '';
@@ -215,23 +209,23 @@ function nextPegination(){
           }
 
           var stocklist = '<table class="table table-striped" id="download_table">'
-          stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
+          stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
             //承認
               case 'approve':
                   var statusText = "承認";
-                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //不承認      
               case 'disapproval':
                   var statusText = "不承認";
-                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;
             //未承認      
               default:
                   var statusText = "未承認";
-                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+                  stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
                   break;        
             }
           })
@@ -250,23 +244,23 @@ function returnTable(){
   querySnapshot = currentQueryList.pop();
 
   var stocklist = '<table class="table table-striped" id="download_table">'
-  stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>電話承認者</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
+  stocklist += '<tr><th>依頼日時</th><th>店舗名</th><th>社員番号</th><th>氏名</th><th>申請期間</th><th>申請理由</th><th>FMS承認者</th><th>状態</th><th>編集</th>';
   querySnapshot.forEach((postDoc) => {
     switch(postDoc.get('status')){
     //承認
       case 'approve':
           var statusText = "承認";
-          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+          stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
     //不承認      
       case 'disapproval':
           var statusText = "不承認";
-          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+          stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('approver') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;
     //未承認      
       default:
           var statusText = "未承認";
-          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td>'+ postDoc.get('phoneApprover') +'</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
+          stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt') +'</td><td>'+ postDoc.get('storeName') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('startDate') + "から" + postDoc.get('endDate') + "まで" + '</td><td>' + postDoc.get('reason') + '</td><td></td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button></td></tr></tbody>';
           break;        
     }
   })
@@ -288,7 +282,6 @@ function EditUpdate(id){
     var startDate = document.getElementById('startDate_edit').value;
     var endDate = document.getElementById('endDate_edit').value;
     var reason = document.getElementById('reason_detail').value;
-    var phoneApprover = document.getElementById('phoneApprover').value;
     var approver = document.getElementById('approvalPerson').value;
     var order_category = document.getElementById('order_category').value;
     if(order_category == 'disapproval'){
@@ -307,7 +300,6 @@ function EditUpdate(id){
             status:order_category,
             disapprovalReason:disapproval_reason,
             note:note,
-            phoneApprover:phoneApprover,
             approver:approver,
         });
     }else{
@@ -320,7 +312,6 @@ function EditUpdate(id){
             reason:reason,
             status:order_category,
             note:note,
-            phoneApprover:phoneApprover,
             approver:approver,
         });
     };
