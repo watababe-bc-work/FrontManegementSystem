@@ -50,14 +50,14 @@ function equipmentManualUpdate(){
         Alert.innerHTML = '<div class="alert alert-danger" role="alert">項目は全て記入してください。</div>';
     }else{
         //DBへ送信
-        db.collection('equipmentManuals').add({
+        db.collection('guidelines').add({
             title:title,
             storename:storeList,
             pdfname:pdfname,
             overview:overview,
             createdAt:firebase.firestore.FieldValue.serverTimestamp(),
         });
-        var storageRef = firebase.storage().ref('equipmentManual/' + pdfname);
+        var storageRef = firebase.storage().ref('guidelines/' + pdfname);
         var Alert = document.getElementById('Alert');
         Alert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
         storageRef.put(pdf).then(function(){
@@ -97,13 +97,13 @@ function showDB(){
           // (Cloud Firestoreのインスタンスを初期化してdbにセット)
           document.getElementById('contentList').innerHTML = "<p class='loading'>ロード中...</p>"
           var prevTask = Promise.resolve;
-          query = await db.collection('equipmentManuals').orderBy('createdAt', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
+          query = await db.collection('guidelines').orderBy('createdAt', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
           querySnapshot = await query.get();
           var i = 0;
           var stocklist = '<table class="table table-striped">'
           stocklist += '<tr><th>作成日</th><th>店舗名</th><th>タイトル</th><th>概要</th><th>編集</th>';
           querySnapshot.forEach((postDoc) => {
-            const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
+            const userIconref = firebase.storage().ref('/guidelines/' + postDoc.get('pdfname'));
             prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
                 stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="editContent(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
                 document.getElementById('contentList').innerHTML = stocklist;
@@ -126,8 +126,8 @@ function showDB(){
 function deleteContent(id,name){
     var res = window.confirm(name + "の内容を削除しますか？");
     if( res ) {
-        db.collection('equipmentManuals').doc(id).delete();
-        firebase.storage().ref('/equipmentManual/' + name).delete();
+        db.collection('guidelines').doc(id).delete();
+        firebase.storage().ref('/guidelines/' + name).delete();
         alert("削除されました。");
         setTimeout("location.reload()",500);
     }
@@ -144,7 +144,7 @@ function search(e){
         // 省略 
         // (Cloud Firestoreのインスタンスを初期化してdbにセット)
     
-        query = await db.collection('equipmentManuals'); // firebase.firestore.QuerySnapshotのインスタンスを取得
+        query = await db.collection('guidelines'); // firebase.firestore.QuerySnapshotのインスタンスを取得
         //店舗での検索
         if(e != ""){
             query = query.where('storename','array-contains-any',[e,'全店共通']);
@@ -157,7 +157,7 @@ function search(e){
         var stocklist = '<table class="table table-striped">'
         stocklist += '<tr><th>作成日</th><th>店舗名</th><th>タイトル</th><th>概要</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
-          const userIconref = firebase.storage().ref('/equipmentManual/' + postDoc.get('pdfname'));
+          const userIconref = firebase.storage().ref('/guidelines/' + postDoc.get('pdfname'));
           var prevTask = Promise.resolve;
           prevTask = Promise.all([prevTask,userIconref.getDownloadURL()]).then(([_,url])=>{
               stocklist += '<tbody><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('title') + '</td><td>' + postDoc.get('overview') + '</td><td><a href="' + url + '" target = "_blank"><button class="btn btn-success">PDFファイル表示</button></a><a class="js-modal-open1"><button class="btn btn-primary" onclick="editContent(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('pdfname') +'\')">削除</button></td></tr></tbody>';
@@ -190,7 +190,7 @@ var storeListEdit = [];
 function editContent(id){
     (async () => {
         try {
-          const carrentDB = await db.collection('equipmentManuals').doc(id).get();
+          const carrentDB = await db.collection('guidelines').doc(id).get();
           //発生日時
           todayEdit.textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
           storeListEdit.push(carrentDB.get('storename'));
@@ -222,13 +222,13 @@ function EditUpdate(id){
     if(pdfEdit != undefined){
         var pdfnameEdit = document.getElementById('pdfname_edit').files[0].name;
         //DBへ送信
-        db.collection('equipmentManuals').doc(id).update({
+        db.collection('guidelines').doc(id).update({
             title:titleEdit.value,
             storename:addstoreListEdit.value,
             pdfname:pdfnameEdit,
             overview:overviewEdit.value,
         });
-        var storageRefEdit = firebase.storage().ref('equipmentManual/' + pdfnameEdit);
+        var storageRefEdit = firebase.storage().ref('guidelines/' + pdfnameEdit);
         var AlertEdit = document.getElementById('Alert_edit');
         Alert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
         storageRefEdit.put(pdfEdit).then(function(){
@@ -237,7 +237,7 @@ function EditUpdate(id){
         });
     }else{
         //DBへ送信
-        db.collection('equipmentManuals').doc(id).update({
+        db.collection('guidelines').doc(id).update({
             title:titleEdit.value,
             storename:addstoreListEdit.value,
             overview:overviewEdit.value,

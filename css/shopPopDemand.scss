@@ -1,0 +1,207 @@
+body{
+    text-align: center;
+    background: #d3d3d3;
+}
+
+h1{
+    margin: 30px 0;
+    color: #696969;
+}
+
+.backwhite{
+    margin: 20px 10%;
+    padding: 10px 0;
+    border-radius: 20px;
+    box-shadow: #666666 10px 5px 5px;
+    background: white;
+}
+
+.search{
+    font-size: 15px;
+    margin: 20px 0 0 0;
+}
+
+.youbouTable{
+    background: white;
+    margin: 30px 0 10px 0;
+    padding: 20px 0;
+    border-radius: 20px;
+
+    th,td{
+        font-size: 15px;
+        vertical-align: middle;
+    }
+
+    button{
+        margin: 0 5px;
+    }
+
+    .collectBack{
+        background: #91B87E;
+        color: white;
+    }
+
+    .orderBack{
+        background: #E1DBCD;
+    }
+}
+
+form{
+    font-size: 15px;
+
+    .edit{
+        margin: 25px 0;
+        label{
+            margin-left:20px;
+        }
+
+        input{
+            margin: 0 auto;
+        }
+    }
+
+    #title,#title_edit{
+        width: 50%;
+    }
+
+    #addstoreList,#addstoreEditList{
+        font-weight: 600;
+    }
+
+    #demand_detail_label{
+        vertical-align: top;
+    }
+
+    #demand_detail{
+        max-width: 50%;
+    }
+}
+
+.btn{
+    font-size: 15px;
+    margin: 0 5px;
+}
+
+.select-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto;
+}
+
+.btn.btn-select {
+    color: #708090;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, "sans-serif";
+    font-weight: bold;
+    font-size: 50px;
+    background-color: #afeeee;
+    border-radius: 50%;
+    height: 200px;
+    margin: 30px;
+    padding: 50px;
+    -webkit-box-shadow: 0 10px 0 #add8e6;
+    box-shadow: 0 10px 0 #add8e6;
+}
+
+.modal{
+    display: none;
+    position: fixed;
+    height: 100vh;
+    top: 0;
+    width: 100%;
+    text-align: center;
+    overflow: auto;
+    overflow: scroll;
+
+    h2{
+        font-size: 25px;
+        margin: 20px 0;
+    }
+
+    button{
+        width: 150px;
+        height: 40px;
+        margin: 5px 20px;
+        font-size: 15px;
+    }
+
+    p{
+        font-size: 15px;
+        margin: 20px;
+    }
+
+    form{
+        .edit{
+            margin: 3% 5px;
+            font-size: 15px;
+
+            div{
+                display: inline-block;
+                margin-right: 10px;
+
+                p{
+                    display: inline-block;
+                }
+            }
+        }
+
+        #subject,#subject_edit{
+            width: 60%;
+        }
+
+        #number,#number_edit{
+            width: 50px;
+        }
+
+        #horizontal,#vertical,#covering_fare,#horizontal_edit,#vertical_edit,#covering_fare_edit{
+            width: 80px;
+        }
+
+        #demand_detail_label{
+            vertical-align: top;
+        }
+    }
+
+    .alert{
+        font-size: 15px;
+    }
+
+    .modal__bg{
+        background: rgba(0,0,0,0.8);
+        height: 100%;
+        position: absolute;
+        width: 100%;
+    }
+    .modal__content{
+        background: #fff;
+        left: 50%;
+        padding: 40px;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        width: 60%;
+    }
+
+    #modalImgs{
+        img{
+            width: 400px;
+            height: 300px;
+            object-fit: cover;
+            margin: 0 0 10px 0;
+        }
+    
+        p{
+            font-size: 20px;
+        }
+    }
+    
+    .modalImgForm{
+        text-align: center;
+        font-size: 15px;
+        margin: 10px 0;
+        input{
+            margin: 0 auto;
+        }
+    }
+}
+

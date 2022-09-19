@@ -32,6 +32,9 @@ document.getElementById('prevButton').style.visibility = 'hidden';
   
       query = await db.collection('uniforms').orderBy('createdAt', 'desc').limit(20) // firebase.firestore.QuerySnapshotのインスタンスを取得
       querySnapshot = await query.get();
+      
+      //現在のクエリとしてリロード時のために保存
+      reloadQuery = query;
 
       var stocklist = '<table class="table table-striped" id="download_table">'
       stocklist += '<tr><th>申請日</th><th>社員番号</th><th>店舗名</th><th>氏名</th><th>種類</th><th>状態</th><th>承認者</th><th>納品書</th><th>編集</th>';
