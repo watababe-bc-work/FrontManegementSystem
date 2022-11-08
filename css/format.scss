@@ -32,8 +32,7 @@ $breakpoint-down: (
 
 body{
     text-align: center;
-    background: #f5deb3;
-    padding-top: 2%;
+    background: #d3d3d3;
 }
 
 h1{
@@ -49,26 +48,108 @@ h1{
     background: white;
 }
 
-.certificate{
-    background: whitesmoke;
-    padding: 10px 0;
-    margin: 0 5%;
-    margin-bottom: 10%;
-    border-radius: 10px;
+.search{
+    font-size: 15px;
+    margin: 20px 0 0 0;
+}
 
-    &_checklist{
-        p{
+#contents{
+    text-align: center;
+    font-size: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+
+    margin: 3% 0 0 30px;
+
+    table{
+        margin: 20px auto 0 auto; 
+        width: 100%;
+        background: white;
+
+        th,td{
+            border: 1px solid #666666;
+            padding: 5px 0;
+            height: 35px;
+
+            @include mq-up('lg') {
+                height: 20px;
+            }
+        }
+
+        @include mq-up('lg') {
             font-size: 15px;
         }
     }
 }
 
-.uniform{
-    background: whitesmoke;
-    padding: 10px 0;
-    margin: 0 5%;
-    margin-bottom: 5%;
-    border-radius: 10px;
+.contents{
+    &-item{
+        width: 20%;
+        margin: 0 2% 0 2%;
+        min-height: 600px;
+
+        @include mq-up('lg') {
+            width: 30%;
+            margin: 0 1% 0 1%;
+        }
+
+        @include mq-up('md'){
+            width: 40%;  
+            min-height: 400px;
+        }
+
+        @include mq-up('sm'){
+            width: 300px;  
+        }
+
+        img,iframe{
+            width: 100%;
+            height: 50%;
+            object-fit: contain;
+        }
+    }
+
+    &-title{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        font-size: 20px;
+        height: 65px;
+
+        @include mq-up('lg'){
+            height: auto;
+            font-size: 15px;
+        }
+    
+        &-num{
+            position: absolute;  // 追記
+            left: 5px;    
+        }
+
+        &-text{
+            width: 80%;
+        }
+    }
+}
+
+#editButton{
+    margin: 20px 0 0;
+}
+
+.dropdown{
+    display: inline-block;
+
+    .dropdown-menu{
+        li{
+            button{
+                width: 100%;
+                margin: 5px 0;
+                padding: 5px 0;
+                font-weight: 600;
+            }
+        }
+    }
 }
 
 form{
@@ -76,95 +157,29 @@ form{
 
     .edit{
         margin: 25px 0;
+        label{
+            margin-left:20px;
+        }
 
-        .checkboxes{
-            p{
-                font-weight: 600;
-            }
-            label{
-                margin-right: 10px;
-            }
+        input{
+            margin: 0 auto;
         }
     }
-    #subject{
+
+    #title,#title_edit{
         width: 50%;
     }
 
-    #horizontal,#vertical,#covering_fare{
-        width: 100px;
-        text-align: right;
+    #addstoreList{
+        font-weight: 600;
     }
 
-    #reason_label{
+    #demand_detail_label{
         vertical-align: top;
     }
 
-    #reason_label_ot{
-        vertical-align: top;
-    }
-
-    #note_label{
-        vertical-align: top;
-    }
-
-    #date_ot{
-        @include mq-up('sm') {
-            width: 70%;
-        }
-    }
-
-    #reason_detail{
+    #demand_detail{
         max-width: 50%;
-        @include mq-up('sm') {
-            max-width: 90%;
-        }
-    }
-
-    #reason_detail_ot{
-        @include mq-up('sm') {
-            max-width: 90%;
-        }
-    }
-
-    #note_detail{
-        max-width: 50%;
-        @include mq-up('sm') {
-            max-width: 90%;
-        }
-    }
-
-    #paper{
-        display: inline-block;
-    }
-
-    #paper_input{
-        display: inline-block;
-        #tax_withholding{
-            width: 30px;
-            margin-left: 10px;
-        }
-    }
-
-    #required_number{
-        width: 50px;
-    }
-
-    #submission_target{
-        width: 50%;
-    }
-
-    .note{
-        border: 3px double gray;
-        margin-left: 10%;
-        margin-right: 10%;
-        padding: 20px 0;
-    }
-
-    table{
-        margin: 0 auto;
-        td{
-            padding: 10px;
-        }
     }
 }
 
@@ -173,62 +188,25 @@ form{
     margin: 0 5px;
 }
 
-.alert{
-    font-size: 15px;
+.select-c {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto;
 }
 
-.addCertificate_button{
-    background: orange;
-    color: white;
-    border-radius: 50px;
-    font-size: 15px;
-    border: none;
-    margin: 5px 0;
-    padding: 5px 10px;
-}
-
-.adduniformContent_button{
-    background: green;
-    color: white;
-    border-radius: 50px;
-    font-size: 15px;
-    border: none;
-    margin: 5px 0;
-    padding: 5px 10px;
-}
-
-.certificate_table{
-    text-align: center;
-    &_select{
-        font-size: 15px; 
-    }
-}
-
-table{
-    margin: 10px 0;
-    font-size: 15px;
-    @include mq-up('sm') {
-        font-size: 10px;
-    }
-}
-
-.table>tbody>tr>td{
-    @include mq-up('sm') {
-        padding: 5px;
-    }
-}
-
-.collectBack{
-    background: #91B87E;
-    color: white;
-}
-
-.orderBack{
-    background: #E1DBCD;
-}
-
-.yetBack{
-    background: white;
+.btn.btn-select {
+    color: #708090;
+    font-family: "Hiragino Sans", "Hiragino Kaku Gothic ProN", Meiryo, "sans-serif";
+    font-weight: bold;
+    font-size: 50px;
+    background-color: #afeeee;
+    border-radius: 50%;
+    height: 200px;
+    margin: 30px;
+    padding: 50px;
+    -webkit-box-shadow: 0 10px 0 #add8e6;
+    box-shadow: 0 10px 0 #add8e6;
 }
 
 .modal{
@@ -255,44 +233,38 @@ table{
 
     p{
         font-size: 15px;
-        margin: 10px;
+        margin: 20px;
     }
 
     form{
         .edit{
-            margin: 2% 5px;
-            display: inline-block;
+            margin: 3% 5px;
+            font-size: 15px;
+
             div{
                 display: inline-block;
-                label{
-                    display: inline-block;
-                }
+                margin-right: 10px;
+
                 p{
                     display: inline-block;
                 }
             }
         }
 
-        label{
-            font-size: 15px;
+        #subject,#subject_edit{
+            width: 60%;
         }
 
-        input,select,textarea{
-            font-size: 15px;
+        #number,#number_edit{
+            width: 50px;
         }
 
-        #headquartersCommentLabel{
+        #horizontal,#vertical,#covering_fare,#horizontal_edit,#vertical_edit,#covering_fare_edit{
+            width: 80px;
+        }
+
+        #demand_detail_label{
             vertical-align: top;
-        }
-
-        table{
-            display: inline-block;
-
-            td{
-                input{
-                    width: 40px;
-                }
-            }
         }
     }
 
@@ -316,22 +288,40 @@ table{
         width: 60%;
     }
 
-    .vertical{
-        vertical-align: top;
+    #modalImgs{
+        img{
+            width: 400px;
+            height: 300px;
+            object-fit: cover;
+            margin: 0 0 10px 0;
+        }
+    
+        p{
+            font-size: 20px;
+        }
+    }
+    
+    .modalImgForm{
+        text-align: center;
+        font-size: 15px;
+        margin: 10px 0;
+        input{
+            margin: 0 auto;
+        }
     }
 }
 
 .nextButton{
     text-align: left;
-    margin-left: 5%;
+    margin: 2% 5%;
+    display: flex;
+    justify-content: space-between;
     .btn,
     a.btn,
     button.btn {
       font-size: 1.6rem;
       font-weight: 700;
       line-height: 1.5;
-      position: relative;
-      display: inline-block;
       padding: 1rem 4rem;
       cursor: pointer;
       -webkit-user-select: none;
@@ -366,6 +356,3 @@ table{
     }
 }
 
-#vertical{
-    vertical-align: top;
-}

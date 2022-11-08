@@ -245,6 +245,19 @@
   vertical-align: top;
 }
 
+.attendance_management .Allmemo #AllmemoTitle {
+  margin: 1rem;
+}
+
+.attendance_management .Allmemo #AllmemoContent {
+  max-height: 50em;
+  overflow: scroll;
+}
+
+.attendance_management .Allmemo #AllmemoContent p {
+  font-size: 15px;
+}
+
 .attendance_management .Allmemo td {
   font-size: 12px;
   padding: 5px 10px;

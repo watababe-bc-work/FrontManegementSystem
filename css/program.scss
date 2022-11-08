@@ -250,6 +250,19 @@ $breakpoint-down: (
         padding: 10px;
         vertical-align: top;
 
+        #AllmemoTitle{
+            margin: 1rem;
+        }
+
+        #AllmemoContent{
+            max-height: 50em;
+            overflow: scroll;
+
+            p{
+                font-size: 15px;
+            }
+        }
+
         td{
             font-size: 12px;
             padding: 5px 10px;

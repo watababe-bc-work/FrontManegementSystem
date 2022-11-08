@@ -38,14 +38,15 @@ function next(){
     showProcess(showDate);
 }
 
+let ShowMonth;
+
 // カレンダー表示
 var year = "";
 function showProcess(date) {
     year = date.getFullYear();
-    var month = date.getMonth();
-    document.querySelector('#header').innerHTML = "店舗設備点検予定表 " + year + "年 " + (month + 1) + "月";
-
-    var calendar = createProcess(year, month);
+    ShowMonth = date.getMonth();
+    document.querySelector('#header').innerHTML = "店舗設備点検予定表 " + year + "年 " + (ShowMonth + 1) + "月";
+    var calendar = createProcess(year, ShowMonth);
     document.querySelector('#calendar').innerHTML = calendar;
 }
 
@@ -114,17 +115,18 @@ function getParam(name, url) {
     return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
+
+
 //今日の予定を表示
 function showDB(){
     (async () => {
         try {
+            //選択した月のドキュメントが存在するかの確認
             var date = new Date(); 
             var year = date.getFullYear();
             var month = date.getMonth() + 1;
             var day = date.getDate();
-    
-            //選択した月のドキュメントが存在するかの確認
-            var monthlyDB = await db.collection('program').doc(year + '-' + (month)).get();
+            var monthlyDB = await db.collection('program').doc(year + '-' + month).get();
             if(monthlyDB.exists){
                 //選択した日のコレクションが存在するかの確認
                 var daylyDB = await db.collection('program').doc(year + '-' + (month)).collection('Day' + day).doc('firstData').get();
@@ -161,72 +163,88 @@ function showDB(){
                     document.getElementById('dairyContent').innerHTML = "<p>予定はありません</p>" + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
                     document.getElementById('dairyTitle').textContent = month + '月' + day + "日の内容";
                 }
-    
-                //今週の予定を表示
-                var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
-                var k = 0;
-                var nextmonthList = [];
-                var nextdayList = [];
-                for(var i = 1;i < 8; i++){
-                    date.setDate(date.getDate() + 1);
-                    var nextmonth = date.getMonth() + 1;
-                    var nextday = date.getDate();
-                    nextmonthList.push(nextmonth);
-                    nextdayList.push(nextday);
-                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
-                    querySnapshot1.forEach((postDoc) => {
-                        if(postDoc.id == "firstData"){
-    
-                        }else{
-                            stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
-                            k++;
-                        }
-                    })
-                }
-                stocklist1 += '</table>';
-                document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
-                if(k == 0){
-                    document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
-                }else{
-                    document.getElementById('AllmemoContent').innerHTML = stocklist1;
-                }
+                showWeekDB();
             }else{
+                showWeekDB();
                 //ドキュメントを作成
                 db.collection('program').doc(year + '-' + (month + 1)).set({});
                 document.getElementById('dairyContent').innerHTML = '<p>予定はありません。</p>' + '<a class="js-modal-open"><button class="btn btn-success" onClick="AdddairyContent(\''+day+'\',\''+ month +'\')">追加する</button></a>';
                 document.getElementById('dairyTitle').textContent = month + '月' + day + "日の内容";
-                //今週の予定を表示
-                var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
-                var k = 0;
-                var nextmonthList = [];
-                var nextdayList = [];
-                for(var i = 1;i < 8; i++){
-                    date.setDate(date.getDate() + 1);
-                    var nextmonth = date.getMonth() + 1;
-                    var nextday = date.getDate();
-                    nextmonthList.push(nextmonth);
-                    nextdayList.push(nextday);
-                    querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
-                    querySnapshot1.forEach((postDoc) => {
-                        if(postDoc.id == "firstData"){
-    
-                        }else{
-                            stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
-                            k++;
-                        }
-                    })
-                }
-                stocklist1 += '</table>';
-                document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
-                if(k == 0){
-                    document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
-                }else{
-                    document.getElementById('AllmemoContent').innerHTML = stocklist1;
-                }
             }
         } catch (err) {
-        console.log(`Error: ${JSON.stringify(err)}`)
+            console.log(err);
         }
+    })();
+}
+
+//今週１週間の予定を表示
+function showWeekDB(){
+    (async () => {
+        try{
+            date = new Date(); 
+            year = date.getFullYear();
+            var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+            var k = 0;
+            var nextmonthList = [];
+            var nextdayList = [];
+            for(var i = 1;i < 8; i++){
+                date.setDate(date.getDate() + 1);
+                var nextmonth = date.getMonth() + 1;
+                var nextday = date.getDate();
+                nextmonthList.push(nextmonth);
+                nextdayList.push(nextday);
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (nextmonth)).collection('Day' + nextday).orderBy('startTimeInput','asc').get();
+                querySnapshot1.forEach((postDoc) => {
+                    if(postDoc.id == "firstData"){
+                    }else{
+                        stocklist1 += '<tr><td>'+ nextmonth + '/' + nextday +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                        k++;
+                    }
+                })
+            }
+            stocklist1 += '</table>';
+            document.getElementById('AllmemoTitle').textContent = nextmonthList.shift() + "/" + nextdayList.shift() + "~" + nextmonthList.pop() + "/" + nextdayList.pop() + "の予定";
+            if(k == 0){
+                document.getElementById('AllmemoContent').innerHTML = "<p>今週の予定はありません。</p>";
+            }else{
+                document.getElementById('AllmemoContent').innerHTML = stocklist1;
+            }
+        }catch (err) {
+            console.log(err);
+        }    
+    })();
+}
+
+//一ヶ月ごとの予定を表示
+function showMonthDB(){
+    (async () => {
+        try{
+            date = new Date(); 
+            year = date.getFullYear();
+            document.getElementById('AllmemoTitle').textContent = (ShowMonth + 1) + "月の予定";
+            document.getElementById('AllmemoContent').innerHTML = "<p>検索中...</p>";
+            var stocklist1 = '<table><tr><th>日付</th><th>店舗名</th><th>項目</th><th>重要事項</th><th>時間</th><th>担当者</th></tr>';
+            var k = 0;
+            for(var i = 1;i < 31; i++){
+                querySnapshot1 = await db.collection('program').doc(year + '-' + (ShowMonth + 1)).collection('Day' + i).orderBy('startTimeInput','asc').get();
+                querySnapshot1.forEach((postDoc) => {
+                    if(postDoc.id == "firstData"){
+
+                    }else{
+                        stocklist1 += '<tr><td>'+ (ShowMonth + 1) + '/' + i +'</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('item') + '</td><td>' + postDoc.get('important') + '</td><td>' + postDoc.get('startTimeInput') + '~' +  postDoc.get('endTimeInput') + '</td><td>' + postDoc.get('rep') + '</td></tr>';
+                        k++;
+                    }
+                })
+            }
+            stocklist1 += '</table>';
+            if(k == 0){
+                document.getElementById('AllmemoContent').innerHTML = "<p>"+ (ShowMonth + 1) +"月の予定はありません。</p>";
+            }else{
+                document.getElementById('AllmemoContent').innerHTML = stocklist1;
+            }
+        }catch (err) {
+            console.log(err);
+        }    
     })();
 }
 
@@ -235,9 +253,8 @@ function showDB(){
 function dairyShow(day,month){
     (async () => {
         try {
-            var date = new Date(); 
-            var TodaysMonth = date.getMonth() + 1;
-            var TodaysDay = date.getDate();
+            date = new Date(); 
+            year = date.getFullYear();
             const monthTrue = Number(month) + 1;
             //選択した月のドキュメントが存在するかの確認
             var monthlyDB = await db.collection('program').doc(year + '-' + (monthTrue)).get();
