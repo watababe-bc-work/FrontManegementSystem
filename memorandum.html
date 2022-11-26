@@ -11,6 +11,8 @@
     <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth__ja.js"></script>
     <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css"/>
     <script src="https://www.gstatic.com/firebasejs/8.5.0/firebase-auth.js"></script>
+    <script src='https://www.gstatic.com/firebasejs/8.6.2/firebase-storage.js'></script>
+    <script src="https://cdn.jsdelivr.net/gh/fengyuanchen/compressorjs/dist/compressor.min.js"></script>
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -22,6 +24,8 @@
 </head>
 <body>
     <div class="addButton">
+        <a href="pdf/memorandum.pdf" target="_blank" rel="noopener noreferrer"><button id="download_button">念書PDFをダウンロードする</button></a>
+        <br>
         <a class="js-modal-open"><button class="btn btn-success">新規追加</button></a>
     </div>
     <!-- 新規登録モーダルウィンドウ内容 -->
@@ -30,76 +34,106 @@
         <div class="modal__content">
             <h2>新規登録</h2>
             <form action="memorandum.html" method="POST">
-                <div class="edit">
-                    <label for="">発生日(必須)：</label>
-                    <input type="date" id="occurrence_date">
-                    <label for="">支払い予定日(必須)：</label>
-                    <input type="date" id="due_date">
-                    <label for="">店舗名(必須)：</label>
-                    <select id="store_name_add">
-                        <option value="">店舗を選択</option>
-                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
-                        <option value="池袋グランド">池袋グランド</option>
-                        <option value="アトランタ">アトランタ</option>
-                        <option value="アメジスト">アメジスト</option>
-                        <option value="池袋バリバリ">池袋バリバリ</option>
-                        <option value="ウエストワン">ウエストワン</option>
-                        <option value="サード">サード</option>
-                        <option value="クイーン">クイーン</option>
-                        <option value="池袋セントラル">池袋セントラル</option>
-                        <option value="パークサイド">パークサイド</option>
-                        <option value="グランヴィラ">グランヴィラ</option>
-                        <option value="ブルゾン">ブルゾン</option>
-                        <option value="ピュア">ピュア</option>
-                        <option value="松戸グランド">松戸グランド</option>
-                        <option value="カップルズインハッピー">カップルズインハッピー</option>
-                        <option value="トニーワン">トニーワン</option>
-                        <option value="サーティワン">サーティワン</option>
-                        <option value="センチュリー">センチュリー</option>
-                        <option value="ガーネット">ガーネット</option>
-                        <option value="リトルバリ">リトルバリ</option>
-                        <option value="アジアンリゾート">アジアンリゾート</option>
-                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
-                        <option value="ロックス新宿">ロックス新宿</option>
-                        <option value="ブレス">ブレス</option>
-                        <option value="チェルシー">チェルシー</option>
-                        <option value="エルメ">エルメ</option>
-                        <option value="パリス">パリス</option>
-                        <option value="ダイヤモンド">ダイヤモンド</option>
-                        <option value="エイジア">エイジア</option>
-                        <option value="オニキス">オニキス</option>
-                        <option value="アモーレ">アモーレ</option>
-                        <option value="IF">IF</option>
-                        <option value="ココバリ">ココバリ</option>
-                        <option value="エメラルド">エメラルド</option>
-                        <option value="五反田バリバリ">五反田バリバリ</option>
-                        <option value="バリバリANNEX">バリバリANNEX</option>
-                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
-                        <option value="ZALA">ZALA</option>
-                    </select>
+                <div class="create_edit">
+                    <div>
+                        <label for="">発生日(必須)：</label>
+                        <input type="date" id="occurrence_date">
+                    </div>
+                    <div>
+                        <label for="">支払い予定日(必須)：</label>
+                        <input type="date" id="due_date">
+                    </div>
+                    <div>
+                        <label for="">店舗名(必須)：</label>
+                        <select id="store_name_add">
+                            <option value="">店舗を選択</option>
+                            <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                            <option value="池袋グランド">池袋グランド</option>
+                            <option value="アトランタ">アトランタ</option>
+                            <option value="アメジスト">アメジスト</option>
+                            <option value="池袋バリバリ">池袋バリバリ</option>
+                            <option value="ウエストワン">ウエストワン</option>
+                            <option value="サード">サード</option>
+                            <option value="クイーン">クイーン</option>
+                            <option value="池袋セントラル">池袋セントラル</option>
+                            <option value="パークサイド">パークサイド</option>
+                            <option value="グランヴィラ">グランヴィラ</option>
+                            <option value="ブルゾン">ブルゾン</option>
+                            <option value="ピュア">ピュア</option>
+                            <option value="松戸グランド">松戸グランド</option>
+                            <option value="カップルズインハッピー">カップルズインハッピー</option>
+                            <option value="トニーワン">トニーワン</option>
+                            <option value="サーティワン">サーティワン</option>
+                            <option value="センチュリー">センチュリー</option>
+                            <option value="ガーネット">ガーネット</option>
+                            <option value="リトルバリ">リトルバリ</option>
+                            <option value="アジアンリゾート">アジアンリゾート</option>
+                            <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                            <option value="ロックス新宿">ロックス新宿</option>
+                            <option value="ブレス">ブレス</option>
+                            <option value="チェルシー">チェルシー</option>
+                            <option value="エルメ">エルメ</option>
+                            <option value="パリス">パリス</option>
+                            <option value="ダイヤモンド">ダイヤモンド</option>
+                            <option value="エイジア">エイジア</option>
+                            <option value="オニキス">オニキス</option>
+                            <option value="アモーレ">アモーレ</option>
+                            <option value="IF">IF</option>
+                            <option value="ココバリ">ココバリ</option>
+                            <option value="エメラルド">エメラルド</option>
+                            <option value="五反田バリバリ">五反田バリバリ</option>
+                            <option value="バリバリANNEX">バリバリANNEX</option>
+                            <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                            <option value="ZALA">ZALA</option>
+                            <option value="バリバリ伊勢佐木">バリバリ伊勢佐木</option>
+                            <option value="クイーンANNEX">クイーンANNEX</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="edit">
-                    <label for="">フロント名：</label>
-                    <input type="text" id="frontName">
-                    <label for="">金額：</label>
-                    ¥<input type="text" id="price">
+                <div class="create_edit">
+                    <div>
+                        <label for="">フロント対応者：</label>
+                        <input type="text" id="frontName">
+                    </div>
+                    <div>
+                        <label for="">未払い発生日承認者：</label>
+                        <input type="text" id="generationDate_approver">
+                    </div>
+                    <div>
+                        <label for="">金額：</label>
+                        ¥<input type="text" id="price">
+                    </div>
                 </div>
-                <div class="edit">
-                    <label for="">お客様名：</label>
-                    <input type="text" id="guest_name">
-                    <label for="">電話番号1：</label>
-                    <input type="tel" id="phoneNumber1">
-                    <label for="">電話番号2：</label>
-                    <input type="tel" id="phoneNumber2">
+                <div class="create_edit">
+                    <div>
+                        <label for="">お客様名：</label>
+                        <input type="text" id="guest_name">
+                    </div>
+                    <div>
+                        <label for="">電話番号1：</label>
+                        <input type="tel" id="phoneNumber1">
+                    </div>
+                    <div>
+                        <label for="">電話番号2：</label>
+                        <input type="tel" id="phoneNumber2">
+                    </div>
                 </div>
-                <div class="edit">
-                    <label for="" class="fix_label">対応及び経過情報(必須)：</label>
-                    <textarea name="" id="fix" cols="70" rows="5"></textarea>
+                <div class="create_edit">
+                    <div>
+                        <label for="" class="fix_label">備考(必須)：</label>
+                        <textarea name="" id="fix" cols="70" rows="5"></textarea>
+                    </div>
+                </div>
+                <div class="create_edit">
+                    <div>
+                        <label for="">念書画像追加：</label>
+                        <input type="file" id="file_add" multiple>
+                    </div>
                 </div>
             </form>
             <br>
             <div id="collectAlert">
-                <!-- 編集完了のAlert -->
+                <!-- 新規登録完了のAlert -->
             </div>
             <button class="btn btn-success" onclick="update()">登録する</button>
             <a class="js-modal-close" href=""><button class="btn btn-outline-info">閉じる</button></a>
@@ -148,106 +182,201 @@
             <option value="バリバリANNEX">バリバリANNEX</option>
             <option value="HOTEL グランバリ">HOTEL グランバリ</option>
             <option value="ZALA">ZALA</option>
+            <option value="バリバリ伊勢佐木">バリバリ伊勢佐木</option>
+            <option value="クイーンANNEX">クイーンANNEX</option>
         </select>
+    </div>
+    <div class="addButton">
+        <button class="btn btn-secondary" onclick="changeStatus('plan')">未払いリストだけを表示する</button>
+        <select name="" id="change_status_select" class="btn btn-primary" onchange="changeStatus(this.value)">
+            <option value="">経過を絞り込む</option>
+            <option value="plan">支払い予定</option>
+            <option value="false">未回収</option>
+            <option value="true">回収済み</option>
+        </select>
+        <br>
+        <button class="btn btn-info" id="back_search" onclick="returnTable();">前ページに戻る</button>
     </div>
     <div id="contents">
         <!-- 取得したDB情報 -->
     </div>
+    <div class="nextButton">
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="prevButton" onclick="returnTable();"><i class="fas fa-angle-left fa-position-left"></i>前へ</a>
+        <a href="javascript:void(0);" class="btn btn-radius-solid" id="nextButton" onclick="nextPegination();">次へ<i class="fas fa-angle-right fa-position-right"></i></a>
+    </div>
     <!-- 編集用モーダルウィンドウ内容 -->
     <div class="modal js-modal1">
-        <div class="modal__bg js-modal-close1"></div>
-        <div class="modal__content">
-            <h2>編集</h2>
+        <div class="modal__bg_edit js-modal-close1"></div>
+        <div class="modal__content_edit">
+            <h2>詳細・編集</h2>
             <form action="memorandum.html" method="POST">
-                <div class="edit">
-                    <label for="">発生日(必須)：</label>
-                    <input type="date" id="occurrence_date_edit">
-                    <label for="">支払い予定日(必須)：</label>
-                    <input type="date" id="due_date_edit">
-                    <label for="">店舗名(必須)：</label>
-                    <select id="store_name_edit">
-                        <option value="">店舗を選択</option>
-                        <option value="ワタナベ商事本部">ワタナベ商事本部</option>
-                        <option value="池袋グランド">池袋グランド</option>
-                        <option value="アトランタ">アトランタ</option>
-                        <option value="アメジスト">アメジスト</option>
-                        <option value="池袋バリバリ">池袋バリバリ</option>
-                        <option value="ウエストワン">ウエストワン</option>
-                        <option value="サード">サード</option>
-                        <option value="クイーン">クイーン</option>
-                        <option value="池袋セントラル">池袋セントラル</option>
-                        <option value="パークサイド">パークサイド</option>
-                        <option value="グランヴィラ">グランヴィラ</option>
-                        <option value="ブルゾン">ブルゾン</option>
-                        <option value="ピュア">ピュア</option>
-                        <option value="松戸グランド">松戸グランド</option>
-                        <option value="カップルズインハッピー">カップルズインハッピー</option>
-                        <option value="トニーワン">トニーワン</option>
-                        <option value="サーティワン">サーティワン</option>
-                        <option value="センチュリー">センチュリー</option>
-                        <option value="ガーネット">ガーネット</option>
-                        <option value="リトルバリ">リトルバリ</option>
-                        <option value="アジアンリゾート">アジアンリゾート</option>
-                        <option value="ファイアーホテルNW">ファイアーホテルNW</option>
-                        <option value="ロックス新宿">ロックス新宿</option>
-                        <option value="ブレス">ブレス</option>
-                        <option value="チェルシー">チェルシー</option>
-                        <option value="エルメ">エルメ</option>
-                        <option value="パリス">パリス</option>
-                        <option value="ダイヤモンド">ダイヤモンド</option>
-                        <option value="エイジア">エイジア</option>
-                        <option value="オニキス">オニキス</option>
-                        <option value="アモーレ">アモーレ</option>
-                        <option value="IF">IF</option>
-                        <option value="ココバリ">ココバリ</option>
-                        <option value="エメラルド">エメラルド</option>
-                        <option value="五反田バリバリ">五反田バリバリ</option>
-                        <option value="バリバリANNEX">バリバリANNEX</option>
-                        <option value="HOTEL グランバリ">HOTEL グランバリ</option>
-                        <option value="ZALA">ZALA</option>
-                    </select>
-                </div>
-                <div class="edit">
-                    <label for="">フロント名：</label>
-                    <input type="text" id="frontName_edit">
-                    <label for="">金額：</label>
-                    ¥<input type="text" id="price_edit">
-                </div>
-                <div class="edit">
-                    <label for="">お客様名：</label>
-                    <input type="text" id="guest_name_edit">
-                    <label for="">電話番号1：</label>
-                    <input type="tel" id="phoneNumber1_edit">
-                    <label for="">電話番号2：</label>
-                    <input type="tel" id="phoneNumber2_edit">
-                </div>
-                <div class="edit">
-                    <label for="" class="fix_label">対応及び経過情報(必須)：</label>
-                    <textarea name="" id="fix_edit" cols="70" rows="5"></textarea>
-                </div>
-                <div class="edit">
-                    <label for="">承認者：</label>
-                    <input type="text" id="approver">
-                    <label for="">対応者：</label>
-                    <input type="text" id="supported_person">
-                    <label for="">回収日：</label>
-                    <input type="date" id="collection_date">
-                </div>
-                <div class="edit">
-                    <label for="" class="fix_label">本部コメント：</label>
-                    <textarea name="" id="head_comment" cols="70" rows="5"></textarea>
-                </div>
+                <table class="edit">
+                    <tr>
+                        <th>店舗名</th>
+                        <td>
+                            <select id="store_name_edit">
+                                    <option value="">店舗を選択</option>
+                                    <option value="ワタナベ商事本部">ワタナベ商事本部</option>
+                                    <option value="池袋グランド">池袋グランド</option>
+                                    <option value="アトランタ">アトランタ</option>
+                                    <option value="アメジスト">アメジスト</option>
+                                    <option value="池袋バリバリ">池袋バリバリ</option>
+                                    <option value="ウエストワン">ウエストワン</option>
+                                    <option value="サード">サード</option>
+                                    <option value="クイーン">クイーン</option>
+                                    <option value="池袋セントラル">池袋セントラル</option>
+                                    <option value="パークサイド">パークサイド</option>
+                                    <option value="グランヴィラ">グランヴィラ</option>
+                                    <option value="ブルゾン">ブルゾン</option>
+                                    <option value="ピュア">ピュア</option>
+                                    <option value="松戸グランド">松戸グランド</option>
+                                    <option value="カップルズインハッピー">カップルズインハッピー</option>
+                                    <option value="トニーワン">トニーワン</option>
+                                    <option value="サーティワン">サーティワン</option>
+                                    <option value="センチュリー">センチュリー</option>
+                                    <option value="ガーネット">ガーネット</option>
+                                    <option value="リトルバリ">リトルバリ</option>
+                                    <option value="アジアンリゾート">アジアンリゾート</option>
+                                    <option value="ファイアーホテルNW">ファイアーホテルNW</option>
+                                    <option value="ロックス新宿">ロックス新宿</option>
+                                    <option value="ブレス">ブレス</option>
+                                    <option value="チェルシー">チェルシー</option>
+                                    <option value="エルメ">エルメ</option>
+                                    <option value="パリス">パリス</option>
+                                    <option value="ダイヤモンド">ダイヤモンド</option>
+                                    <option value="エイジア">エイジア</option>
+                                    <option value="オニキス">オニキス</option>
+                                    <option value="アモーレ">アモーレ</option>
+                                    <option value="IF">IF</option>
+                                    <option value="ココバリ">ココバリ</option>
+                                    <option value="エメラルド">エメラルド</option>
+                                    <option value="五反田バリバリ">五反田バリバリ</option>
+                                    <option value="バリバリANNEX">バリバリANNEX</option>
+                                    <option value="HOTEL グランバリ">HOTEL グランバリ</option>
+                                    <option value="ZALA">ZALA</option>
+                                    <option value="バリバリ伊勢佐木">バリバリ伊勢佐木</option>
+                                    <option value="クイーンANNEX">クイーンANNEX</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>発生日</th>
+                        <td>
+                            <input type="date" id="occurrence_date_edit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>金額</th>
+                        <td>
+                            ¥<input type="text" id="price_edit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>フロント名</th>
+                        <td>
+                            <input type="text" id="frontName_edit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>未払い発生日承認者</th>
+                        <td>
+                            <input type="text" id="generationDate_approver_edit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>お客様名</th>
+                        <td>
+                            <input type="text" id="guest_name_edit">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>電話番号1</th>
+                        <td>
+                            <input type="tel" id="phoneNumber1_edit">  
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>電話番号2</th>
+                        <td>
+                            <input type="tel" id="phoneNumber2_edit">  
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>支払い予定日</th>
+                        <td>
+                            <input type="date" id="due_date_edit">    
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>経過</th>
+                        <td>
+                            <select name="" id="iscollect">
+                                <option value="plan">支払い予定</option>
+                                <option value="false">未回収</option>
+                                <option value="true">回収済み</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>回収完了日</th>
+                        <td>
+                            <input type="date" id="collection_date">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>回収時対応者</th>
+                        <td>
+                            <input type="text" id="supported_person">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>回収時承認者</th>
+                        <td>
+                            <input type="text" id="approver">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>備考</th>
+                        <td>
+                            <textarea name="" id="fix_edit" cols="70" rows="4"></textarea>
+                        </td>
+                    </tr>
+                </table>
             </form>
-            <br>
             <div id="collectAlert_edit">
                 <!-- 編集完了のAlert -->
             </div>
-            <div id="edit_submit_button">
+            <div class="modalButtons" id="edit_photo_button">
+                <!-- 写真表示用ボタン -->
+                </div>
+            <div class="modalButtons" id="edit_submit_button">
                 <!-- 送信用ボタン -->
             </div>
             <a class="js-modal-close1" href=""><button class="btn btn-outline-info">閉じる</button></a>
         </div>
     </div> 
+    <!-- 画像モーダルウィンドウ内容 -->
+    <div class="modal js-modal2">
+        <div class="modal__bg js-modal-close2"></div>
+        <div class="modal__content">
+            <h2>画像/データファイル</h2>
+            <div id="modalImgs">
+                <!-- DBから画像を取得 -->
+            </div>
+            <div class="modalImgForm">
+                <label for="">念書画像追加・編集：</label>
+                <input type="file" id="file_modal" multiple>
+                <div id="modalImgAlert"></div>
+            </div>
+            <div class="modalButtons" id="modalImgButton">
+                <!-- 送信ボタン表示 -->
+            </div>
+            <div class="modalButtons" id="modalImgDeleteButton">
+                <!-- 写真削除ボタン表示 -->
+            </div>
+            <a class="js-modal-close2" href=""><button class="btn btn-outline-info">閉じる</button></a>
+        </div>
+    </div>  
     <!-- jqueryの読み込み -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

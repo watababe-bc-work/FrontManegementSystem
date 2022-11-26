@@ -286,9 +286,10 @@ function EditUpdate(id){
 function deleteContent(id,name){
     var res = window.confirm(name + "さんの申請を削除しますか？");
     if( res ) {
-        db.collection('certificates').doc(id).delete();
-        alert("削除されました。");
-        setTimeout("location.reload()",500);
+        db.collection('certificates').doc(id).delete().then(function (){
+            alert("削除されました。");
+            setTimeout("location.reload()",500);
+        });
     }
     else {
         // キャンセルならアラートボックスを表示

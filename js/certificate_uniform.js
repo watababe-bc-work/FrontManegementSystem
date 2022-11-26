@@ -271,23 +271,23 @@ function showTable(store){
         querySnapshot = await query.get();
 
         var stocklist = '<table class="table table-striped">'
-        stocklist += '<tr><th>申請日</th><th>社員番号</th><th>氏名</th><th>必要書類</th><th>希望期日</th><th>状態</th>';
+        stocklist += '<tr><th>申請日</th><th>社員番号</th><th>氏名</th><th>必要書類</th><th>希望期日</th><th>状態</th><th>編集</th>';
         querySnapshot.forEach((postDoc) => {
             switch(postDoc.get('status')){
                 //承認
                 case 'approve':
-                    var statusText = "承認";
-                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open1"><button class="btn btn-info" onclick="editCertificateStatus(\''+postDoc.id+'\')">編集</button></a></td></tr><tr><td colspan = "7">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;
                 //発送済み      
                 case 'delivered':
                     var statusText = "発送済み";
-                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+                    stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open1"><button class="btn btn-info" onclick="editCertificateStatus(\''+postDoc.id+'\')">編集</button></a></td></tr><tr><td colspan = "7">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;
                 //未承認      
                 default:
                     var statusText = "未承認";
-                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td></tr><tr><td colspan = "6">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
+                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt') +'</td><td>' + postDoc.get('staffNum') + '</td><td>' + postDoc.get('name') + '</td><td>' + postDoc.get('paper') + '</td><td>'+ postDoc.get('endDate') +'</td><td>'+ statusText +'</td><td><a class="js-modal-open1"><button class="btn btn-info" onclick="editCertificateStatus(\''+postDoc.id+'\')">編集</button></a></td></tr><tr><td colspan = "7">'+ postDoc.get('headquartersComment') +'</td></tr></tbody>';
                     break;        
             }
         })
@@ -300,10 +300,46 @@ function showTable(store){
     })();
 }
 
+//編集用モーダル
+var certificateOrderCategoryEdit = document.getElementById('certificate_order_category_edit');
+function editCertificateStatus(id){
+    (async () => {
+        try{
+            const carrentDB = await db.collection('certificates').doc(id).get();
+            console.log(carrentDB.get('status'));
+            certificateOrderCategoryEdit.value = carrentDB.get('status');
+            //編集送信ボタン生成
+            document.getElementById('certificate_edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="certificateEditUpdate(\''+id+'\')">送信する</button>';
+        }catch(err){
+            console.log(err);
+        }
+    })();
+}
+
+//編集DB送信
+function certificateEditUpdate(id){
+    db.collection('certificates').doc(id).update({
+        status:certificateOrderCategoryEdit.value,
+    }).then(function (){
+        var certificateCollectAlert = document.getElementById('certificateCollectAlert_edit');
+        certificateCollectAlert.innerHTML = '<div class="alert alert-success" role="alert">編集完了!リロードします。</div>';
+        setTimeout("location.reload()",2000);
+    });
+}
+
 //ユニフォーム申請
 document.getElementById('normal').style.display = "none";
 document.getElementById('emergency').style.display = "none";
 document.getElementById('nameplate').style.display = "none";
+
+var query="";
+var querySnapshot="";
+var currentQuerySnapshot = "";
+var currentQueryList = [];
+var backQueryList = [];
+document.getElementById('prevButton').style.visibility = 'hidden';
+//デフォルトである全店表示を行う
+showDefaultTableuni();
 
 //種類別の表示非表示
 function demandChange(){
@@ -331,16 +367,22 @@ function demandChange(){
 function uniformUpdate(){
     //申請日
     var orderDate = document.getElementById('order_date2').value;
-    //社員番号
-    var stuffNum = document.getElementById('stuffNum_uni').value;
-    //氏名
-    var name = document.getElementById('name_uni').value;
     //店舗名
     var storeName = document.getElementById('store_name_uni').value;
-    //種類
+    //社員番号
+    var stuffNum = document.getElementById('stuffNum_uni').value;
+    //シフト名
+    var name = document.getElementById('name_uni').value;
+    //発送準備
+    var deliveryPreparation = document.getElementById('delivery_preparation').value;
+    //本部発送者
+    var headerDeliveryPerson = document.getElementById('header_delivery_person').value;
+    //本人へ渡した人
+    var passedPerson = document.getElementById('passed_person').value;
+    //備考
+    var note = document.getElementById('note').value;
+    //要望内容
     var demandStatus = document.getElementById('demand_uni').value;
-    //納品書
-    var deliverySlip = document.getElementById('delivery_slip').value;
     switch(demandStatus){
         case "追加購入":
             var blackS = Number(document.getElementById('blackS').value);
@@ -372,6 +414,10 @@ function uniformUpdate(){
                     name:name,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     storeName:storeName,
+                    deliveryPreparation:deliveryPreparation,
+                    headerDeliveryPerson:headerDeliveryPerson,
+                    passedPerson:passedPerson,
+                    note:note,
                     demandStatus:demandStatus,
                     blackS:blackS,
                     blackM:blackM,
@@ -391,7 +437,6 @@ function uniformUpdate(){
                     fleece_blueXL:fleece_blueXL,
                     sum:sum,
                     status:"unapproved",
-                    deliverySlip:deliverySlip,
                 });
                 var Alert = document.getElementById('Alert2');
                 Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
@@ -419,10 +464,13 @@ function uniformUpdate(){
                     name:name,
                     createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                     storeName:storeName,
+                    deliveryPreparation:deliveryPreparation,
+                    headerDeliveryPerson:headerDeliveryPerson,
+                    passedPerson:passedPerson,
+                    note:note,
                     demandStatus:demandStatus,
                     category:category,
                     status:"unapproved",
-                    deliverySlip:deliverySlip,
                 });
                 var Alert = document.getElementById('Alert2');
                 Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
@@ -444,11 +492,14 @@ function uniformUpdate(){
                     name:name,
                     createdAt:firebase.firestore.FieldValue.serverTimestamp(),
                     storeName:storeName,
+                    deliveryPreparation:deliveryPreparation,
+                    headerDeliveryPerson:headerDeliveryPerson,
+                    passedPerson:passedPerson,
+                    note:note,
                     demandStatus:demandStatus,
                     shiftName:shiftName,
                     nameplateColor:nameplateColor,
                     status:"unapproved",
-                    deliverySlip:deliverySlip,
                 });
                 var Alert = document.getElementById('Alert2');
                 Alert.innerHTML = '<div class="alert alert-success" role="alert">申請が完了しました。状態は下記の一覧表から確認してください。</div>';
@@ -462,7 +513,205 @@ function uniformUpdate(){
     }
 }
 
-//table表示
+//テーブル表示(初期値)
+function showDefaultTableuni(){
+    (async () => {
+        try {
+        // 省略 
+        // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+        document.getElementById('nextButton').style.visibility = '';
+    
+        query = await db.collection('uniforms').orderBy('createdAt', 'desc').limit(10) // firebase.firestore.QuerySnapshotのインスタンスを取得
+        querySnapshot = await query.get();
+    
+        var stocklist = '<table class="table table-striped">'
+        stocklist += '<tr><th>申請日</th><th>店舗名</th><th>社員番号</th><th>シフト名</th><th>要望内容</th><th>発送準備</th><th>本部発送者</th><th>本人へ渡した者</th><th>状態</th><th>編集</th><th>備考</th>';
+        querySnapshot.forEach((postDoc) => {
+            if(postDoc.get('demandStatus') == '追加購入'){
+                switch(postDoc.get('status')){
+                    //完了
+                    case 'approval':
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;
+                    //未対応     
+                    default:
+                        var statusText = "未完了";
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;        
+                }
+            }else if(postDoc.get('demandStatus') == '忘れ購入'){
+                switch(postDoc.get('status')){
+                    //完了
+                    case 'approval':
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;
+                    //未対応     
+                    default:
+                        var statusText = "未完了";
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;               
+                }
+            }else{
+                switch(postDoc.get('status')){
+                    //完了
+                    case 'approval':
+                        var statusText = "完了";
+                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;
+                    //未対応     
+                    default:
+                        var statusText = "未完了";
+                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                        break;                
+                }
+            }
+        })
+        stocklist += '</table>';
+        document.getElementById('table_list2').innerHTML = stocklist;
+    
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+}
+
+
+//次へ
+function nextPegination(){
+    document.getElementById('prevButton').style.visibility = 'visible';
+    (async () => {
+        try {
+            //変更前のDB情報を保持しておく
+            currentQueryList.push(querySnapshot);
+  
+  
+            query = query.limit(10).startAfter(querySnapshot.docs[9]);
+            querySnapshot = await query.get();
+  
+            //現在のクエリとしてリロード時のために保存
+            reloadQuery = query;
+  
+            //後が無い場合に非表示
+            if(querySnapshot.docs.length < 10){
+                document.getElementById('nextButton').style.visibility = "hidden";
+            }
+  
+            var stocklist = '<table class="table table-striped">'
+            stocklist += '<tr><th>申請日</th><th>店舗名</th><th>社員番号</th><th>シフト名</th><th>要望内容</th><th>発送準備</th><th>本部発送者</th><th>本人へ渡した者</th><th>状態</th><th>編集</th><th>備考</th>';
+            querySnapshot.forEach((postDoc) => {
+                if(postDoc.get('demandStatus') == '追加購入'){
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;        
+                    }
+                }else if(postDoc.get('demandStatus') == '忘れ購入'){
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;               
+                    }
+                }else{
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;                
+                    }
+                }
+            })
+            stocklist += '</table>';
+            document.getElementById('table_list2').innerHTML = stocklist;
+
+    
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+  }
+  
+  //前のテーブルを表示(戻るボタン)
+  function returnTable(){
+    document.getElementById('nextButton').style.visibility = 'visible';
+    querySnapshot = currentQueryList.pop(); 
+  
+    var stocklist = '<table class="table table-striped">'
+    stocklist += '<tr><th>申請日</th><th>店舗名</th><th>社員番号</th><th>シフト名</th><th>要望内容</th><th>発送準備</th><th>本部発送者</th><th>本人へ渡した者</th><th>状態</th><th>編集</th><th>備考</th>';
+    querySnapshot.forEach((postDoc) => {
+        if(postDoc.get('demandStatus') == '追加購入'){
+            switch(postDoc.get('status')){
+                //完了
+                case 'approval':
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;
+                //未対応     
+                default:
+                    var statusText = "未完了";
+                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;        
+            }
+        }else if(postDoc.get('demandStatus') == '忘れ購入'){
+            switch(postDoc.get('status')){
+                //完了
+                case 'approval':
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;
+                //未対応     
+                default:
+                    var statusText = "未完了";
+                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;               
+            }
+        }else{
+            switch(postDoc.get('status')){
+                //完了
+                case 'approval':
+                    var statusText = "完了";
+                    stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;
+                //未対応     
+                default:
+                    var statusText = "未完了";
+                    stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                    break;                
+            }
+        }
+    })
+    stocklist += '</table>';
+    document.getElementById('table_list2').innerHTML = stocklist;
+
+  
+    //前が無くなったら前へを非表示
+    if(currentQueryList.length < 1){
+        document.getElementById('prevButton').style.visibility = 'hidden';
+    }
+  }
+
+//検索バー表示
 function showTableuni(store){
     var query="";
     var querySnapshot="";
@@ -472,72 +721,63 @@ function showTableuni(store){
         try {
         // 省略 
         // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+
+        if(store == "全店表示"){
+            showDefaultTableuni();
+        }else{
+            query = await db.collection('uniforms').where('storeName','==',store).orderBy('createdAt', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
+            querySnapshot = await query.get();
     
-        query = await db.collection('uniforms').where('storeName','==',store).orderBy('createdAt', 'desc') // firebase.firestore.QuerySnapshotのインスタンスを取得
-        querySnapshot = await query.get();
-
-        var stocklist = '<table class="table table-striped">'
-        stocklist += '<tr><th>申請日</th><th>社員番号</th><th>氏名</th><th>要望内容</th><th>状態</th><th>PDF</th>';
-        querySnapshot.forEach((postDoc) => {
-            if(postDoc.get('demandStatus') == '追加購入'){
-                switch(postDoc.get('status')){
-                    //承認
-                    case 'approval':
-                        var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;
-                    //不承認      
-                    case 'delivered':
-                        var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;
-                    //未承認      
-                    default:
-                        var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;        
+            var stocklist = '<table class="table table-striped">'
+            stocklist += '<tr><th>申請日</th><th>店舗名</th><th>社員番号</th><th>シフト名</th><th>要望内容</th><th>発送準備</th><th>本部発送者</th><th>本人へ渡した者</th><th>状態</th><th>編集</th><th>備考</th>';
+            querySnapshot.forEach((postDoc) => {
+                if(postDoc.get('demandStatus') == '追加購入'){
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;        
                     }
-            }else if(postDoc.get('demandStatus') == '忘れ購入'){
-                switch(postDoc.get('status')){
-                    //承認
-                    case 'approval':
-                        var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;
-                    //不承認      
-                    case 'delivered':
-                        var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;
-                    //未承認      
-                    default:
-                        var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('category') +'</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">PDFで印刷</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a>' +'</td></tr></tbody>';
-                        break;        
+                }else if(postDoc.get('demandStatus') == '忘れ購入'){
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="emergencyPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;               
+                    }
+                }else{
+                    switch(postDoc.get('status')){
+                        //完了
+                        case 'approval':
+                            var statusText = "完了";
+                            stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;
+                        //未対応     
+                        default:
+                            var statusText = "未完了";
+                            stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('storeName') + '</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ postDoc.get('demandStatus') +'</td><td>' + postDoc.get('deliveryPreparation') + '</td><td>' + postDoc.get('headerDeliveryPerson') + '</td><td>' + postDoc.get('passedPerson') + '</td><td>' + statusText + '</td><td>'+ '<button class="btn btn-success" onclick="NormalPDF(\''+postDoc.id+'\')">納品書作成</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('name') +'\')">削除</button>' +'</td><td>'+ postDoc.get('note') +'</td></tr></tbody>';
+                            break;                
+                    }
                 }
-            }else{
-                switch(postDoc.get('status')){
-                    //承認
-                    case 'approval':
-                        var statusText = "完了";
-                        stocklist += '<tbody class="collectBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
-                        break;
-                    //不承認      
-                    case 'delivered':
-                        var statusText = "対応済み";
-                        stocklist += '<tbody class="orderBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
-                        break;
-                    //未承認      
-                    default:
-                        var statusText = "未承認";
-                        stocklist += '<tbody class="yetBack"><tr><td>'+ postDoc.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'}) +'</td><td>' + postDoc.get('stuffNum') + '</td><td>' + postDoc.get('name') + '</td><td>'+ 'ネームプレート' + postDoc.get('nameplateColor') +'</td><td>' + statusText + '</td><td><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\',\''+ postDoc.get('demandStatus') +'\')">状態を変更</button></a></td></tr></tbody>';
-                        break;        
-                }
-            }
-        })
-        stocklist += '</table>';
-        document.getElementById('table_list2').innerHTML = stocklist;
-
+            })
+            stocklist += '</table>';
+            document.getElementById('table_list2').innerHTML = stocklist;
+    
+            //検索なので次を表示しない
+            document.getElementById('nextButton').style.visibility = "hidden";
+        }
         } catch (err) {
             console.log(err);
         }
@@ -550,9 +790,12 @@ function editStatus(id){
     (async () => {
       try {
           const carrentDB = await db.collection('uniforms').doc(id).get();
-  
+
+          //依頼日時
           document.getElementById('createdAt_edit').textContent = carrentDB.get('createdAt').toDate().toLocaleString('ja-JP', {year:'numeric',month:'numeric',day:'numeric'});
+          //社員番号
           document.getElementById('stuffNum_edit').textContent = carrentDB.get('stuffNum');
+          //シフト名
           document.getElementById('name_edit').textContent = carrentDB.get('name');
           var demandStatus = carrentDB.get('demandStatus');
           if(demandStatus == '追加購入'){
@@ -608,17 +851,20 @@ function editStatus(id){
                       break;    
               }
           }
-  
-          var approver = carrentDB.get('approver');
-          if(approver == null){
-              document.getElementById('approver_edit').value = "";
-          }else{
-              document.getElementById('approver_edit').value = approver;
-          }
+
+          //発送準備
+          document.getElementById('delivery_preparation_edit').value = carrentDB.get('deliveryPreparation');
+          //本部発送者
+          document.getElementById('header_delivery_person_edit').value = carrentDB.get('headerDeliveryPerson');
+          //本人へ渡した者
+          document.getElementById('passed_person_edit').value = carrentDB.get('passedPerson');
+          //備考
+          document.getElementById('note_edit').value = carrentDB.get('note');
+          //状態
           var order_category = document.getElementById('order_category_edit');
           switch(carrentDB.get('status')){
               case 'approval':
-                  order_category.options[2].selected = true;
+                  order_category.options[1].selected = true;
                   break;
               case 'delivered':
                   order_category.options[1].selected = true;
@@ -626,16 +872,6 @@ function editStatus(id){
               default:
                   order_category.options[0].selected = true;
                   break;    
-          }
-          //納品書
-          var deliverySlip = document.getElementById('delivery_slip_edit');
-          switch(carrentDB.get('deliverySlip')){
-              case '○':
-                  deliverySlip.options[1].selected = true;
-              break;
-              default:
-                  deliverySlip.options[0].selected = true;
-              break;        
           }
           //編集送信ボタン生成
           document.getElementById('edit_submit_button').innerHTML = '<button type="submit" class="btn btn-success" onclick="EditUpdate(\''+id+'\',\''+ demandStatus +'\')">送信する</button>';
@@ -679,9 +915,16 @@ function EditUpdate(id,status){
         var nameplateColor = document.getElementById('nameplateColor_edit').value;
     }
     //共通項目
+    //発送準備
+    var deliveryPreparationEdit = document.getElementById('delivery_preparation_edit').value;
+    //本部発送者
+    var headerDeliveryPersonEdit = document.getElementById('header_delivery_person_edit').value;
+    //本人へ渡した者
+    var passedPersonEdit = document.getElementById('passed_person_edit').value;
+    //備考
+    var noteEdit = document.getElementById('note_edit').value;
+    //状態
     var order_category = document.getElementById('order_category_edit').value;
-    var approver = document.getElementById('approver_edit').value;
-    var deliverySlip = document.getElementById('delivery_slip_edit').value;
     if(status == "追加購入"){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
@@ -702,26 +945,32 @@ function EditUpdate(id,status){
             fleece_blueL:fleece_blueL,
             fleece_blueXL:fleece_blueXL,
             sum:sum,
-            deliverySlip:deliverySlip,
             status:order_category,
-            approver:approver,
+            deliveryPreparation:deliveryPreparationEdit,
+            headerDeliveryPerson:headerDeliveryPersonEdit,
+            passedPerson:passedPersonEdit,
+            note:noteEdit
         });
     }else if(status == '忘れ購入'){
         //DBへ送信
         db.collection('uniforms').doc(id).update({
             category:category,
-            deliverySlip:deliverySlip,
             status:order_category,
-            approver:approver,
+            deliveryPreparation:deliveryPreparationEdit,
+            headerDeliveryPerson:headerDeliveryPersonEdit,
+            passedPerson:passedPersonEdit,
+            note:noteEdit
         });
     }else{
         //DBへ送信
         db.collection('uniforms').doc(id).update({
             shiftName:shiftName,
             nameplateColor:nameplateColor,
-            deliverySlip:deliverySlip,
             status:order_category,
-            approver:approver,
+            deliveryPreparation:deliveryPreparationEdit,
+            headerDeliveryPerson:headerDeliveryPersonEdit,
+            passedPerson:passedPersonEdit,
+            note:noteEdit
         });
     }
     var collectAlert = document.getElementById('collectAlert_edit');
@@ -730,7 +979,21 @@ function EditUpdate(id,status){
     setTimeout("location.reload()",2000);
 }
 
-
+//削除
+function deleteContent(id,name){
+    var res = window.confirm(name + "さんの内容を削除しますか？");
+    if( res ) {
+        db.collection('uniforms').doc(id).delete()
+        .then(() => {
+            alert("削除されました。");
+            setTimeout("location.reload()",500);
+        });
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+};
 
 //追加購入PDF作成
 function NormalPDF(id){
@@ -877,7 +1140,7 @@ function NormalPDF(id){
                       columns: [
                           {
                               width: '*',
-                              text: 'ユニフォーム申請書',
+                              text: 'ユニフォーム申請書 兼 納品書',
                               margin: [ 0, 0, 0, 10 ],
                               style: ['center','border'],
                               fontSize: 20
@@ -1011,17 +1274,7 @@ function NormalPDF(id){
                             }
                         ],
                         columnGap: 10
-                    },
-                    {
-                        columns: [
-                            {
-                                width: '*',
-                                text: '※入社時にポロシャツ2枚とエプロン1枚(女性のみ)を支給しますが、\n1ヶ月以内に退社の場合は有償となり、上記合計金額が給与から天引きとなります。',
-                                style: ['left'],
-                                fontSize: 10
-                            }
-                        ],
-                    },
+                    }
                 ],
                 styles:{
                     center:{

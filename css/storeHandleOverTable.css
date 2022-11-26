@@ -1,0 +1,32 @@
+body {
+  text-align: center;
+  background: #d3d3d3;
+}
+
+h1 {
+  margin: 30px 0;
+  color: #696969;
+  letter-spacing: 1px;
+  font-weight: 500;
+  font-size: 2rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+.area {
+  width: 80%;
+  margin: 2% auto;
+  padding: 20px 0;
+  background: white;
+  font-size: 20px;
+  color: black;
+  border-radius: 5px;
+}
+
+.area:hover {
+  background: #87ceeb;
+  color: white;
+}
+/*# sourceMappingURL=storeHandleOverTable.css.map */

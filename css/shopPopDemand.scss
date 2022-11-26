@@ -1,3 +1,35 @@
+@charset "utf-8";
+
+// media
+$sizes: xl, lg, md, sm, xs;
+
+$breakpoint-up: (
+    'xs': 'screen and (max-width: 576px)',
+    'sm': 'screen and (max-width: 768px)',
+    'md': 'screen and (max-width: 992px)',
+    'lg': 'screen and (max-width: 1200px)',
+    'xl': 'screen and (max-width: 1400px)',
+);
+
+$breakpoint-down: (
+    'xs': 'screen and (min-width: 577px)',
+    'sm': 'screen and (min-width: 769px)',
+    'md': 'screen and (min-width: 993px)',
+    'lg': 'screen and (min-width: 1201px)',
+    'xl': 'screen and (min-width: 1401px)',
+);
+
+@mixin mq-up($breakpoint: md) {
+    @media #{map-get($breakpoint-up, $breakpoint)} {
+        @content;
+    }
+}
+@mixin mq-dwn($breakpoint: md) {
+    @media #{map-get($breakpoint-down, $breakpoint)} {
+        @content;
+    }
+}
+
 body{
     text-align: center;
     background: #d3d3d3;
@@ -21,28 +53,102 @@ h1{
     margin: 20px 0 0 0;
 }
 
-.youbouTable{
-    background: white;
-    margin: 30px 0 10px 0;
-    padding: 20px 0;
-    border-radius: 20px;
+#contents{
+    text-align: center;
+    font-size: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 
-    th,td{
-        font-size: 15px;
-        vertical-align: middle;
+    margin: 3% 0 0 30px;
+
+    table{
+        margin: 20px auto 0 auto; 
+        width: 100%;
+        background: white;
+
+        th,td{
+            border: 1px solid #666666;
+            padding: 5px 0;
+            height: 35px;
+
+            @include mq-up('lg') {
+                height: 20px;
+            }
+        }
+
+        @include mq-up('lg') {
+            font-size: 15px;
+        }
+    }
+}
+
+.contents{
+    &-item{
+        width: 28%;
+        margin: 0 2% 0 2%;
+        min-height: 600px;
+
+        @include mq-up('lg') {
+            width: 30%;
+            margin: 0 1% 0 1%;
+        }
+
+        @include mq-up('md'){
+            width: 40%;  
+            min-height: 400px;
+        }
+
+        @include mq-up('sm'){
+            width: 300px;  
+        }
+
+        img,iframe{
+            width: 100%;
+            height: 50%;
+            object-fit: contain;
+        }
     }
 
-    button{
-        margin: 0 5px;
-    }
+    &-title{
+        display: flex;
+        justify-content: center;
+        position: relative;
+        font-size: 20px;
+        height: 65px;
 
-    .collectBack{
-        background: #91B87E;
-        color: white;
-    }
+        @include mq-up('lg'){
+            height: auto;
+            font-size: 15px;
+        }
+    
+        &-num{
+            position: absolute;  // 追記
+            left: 5px;    
+        }
 
-    .orderBack{
-        background: #E1DBCD;
+        &-text{
+            width: 80%;
+        }
+    }
+}
+
+#editButton{
+    margin: 20px 0 0;
+}
+
+.dropdown{
+    display: inline-block;
+
+    .dropdown-menu{
+        li{
+            button{
+                width: 100%;
+                margin: 5px 0;
+                padding: 5px 0;
+                font-weight: 600;
+            }
+        }
     }
 }
 
@@ -64,7 +170,7 @@ form{
         width: 50%;
     }
 
-    #addstoreList,#addstoreEditList{
+    #addstoreList{
         font-weight: 600;
     }
 
@@ -202,6 +308,51 @@ form{
         input{
             margin: 0 auto;
         }
+    }
+}
+
+.nextButton{
+    text-align: left;
+    margin: 2% 5%;
+    display: flex;
+    justify-content: space-between;
+    .btn,
+    a.btn,
+    button.btn {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1.5;
+      padding: 1rem 4rem;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-transition: all 0.3s;
+      transition: all 0.3s;
+      text-align: center;
+      vertical-align: middle;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      color: #212529;
+      border-radius: 0.5rem;
+      margin-bottom: 3%;
+    }
+
+    a.btn-radius-solid {
+        border: 1px solid #ccc;
+        background: #f1e767;
+        background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(top, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+        -webkit-box-shadow: inset 1px 1px 1px #fff;
+        box-shadow: inset 1px 1px 1px #fff;
+      }
+      
+      a.btn-radius-solid:hover {
+        background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+        background: -webkit-linear-gradient(bottom, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
     }
 }
 

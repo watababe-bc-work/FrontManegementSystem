@@ -61,7 +61,7 @@ h1 {
 }
 
 .contents-item {
-  width: 28%;
+  width: 20%;
   margin: 0 2% 0 2%;
   min-height: 600px;
 }
@@ -349,4 +349,4 @@ form #demand_detail {
   background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
   background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
 }
-/*# sourceMappingURL=shopPopDemand.css.map */
+/*# sourceMappingURL=format.css.map */

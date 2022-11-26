@@ -20,6 +20,18 @@ addForm.style.display = "none";
 
 var addButton = document.getElementById('addButton');
 
+//DB初期値等
+var query="";
+var querySnapshot="";
+var currentQuerySnapshot = "";
+var currentQueryList = [];
+var reloadQuery = "";
+var reloadQuerySnapshot = "";
+document.getElementById('prevButton').style.visibility = 'hidden';
+document.getElementById('prevButton_bottom').style.visibility = 'hidden';
+var ImagePrevTask = Promise.resolve;
+var contentIndexCarrent = 0;
+
 //フォーム表示非表示
 function showForm(){
     if(addForm.style.display == ""){
@@ -47,9 +59,7 @@ function resetStore(){
 
 var title = document.getElementById('title');
 var noticeTime = document.getElementById('notice_time');
-var noticePeriod = document.getElementById('notice_period');
 var storename = document.getElementById('addstoreList');
-var size = document.getElementById('size');
 var demandDetail = document.getElementById('demand_detail');
 //写真データ
 var fileList = [];
@@ -82,24 +92,27 @@ function shopPopDemandUpdate(){
         try{
             if(storename != "" || files != ""){
                 var files = document.getElementById('file').files;
-                //画像を配列に配置
+                var pdfs = document.getElementById('pdf').files;
+                //画像・PDFを配列に配置
                 for (let file of files) {
-                    if(fileNameList.includes(file.name)){
-                    }else{
-                        fileList.push(file);
-                        fileNameList.push(file.name);
-                        console.log(fileList);
-                    }
+                    //画像
+                    fileList.push(file);
+                    fileNameList.push(file.name);
+                }
+                for (let pdf of pdfs) {
+                    //PDF
+                    fileList.push(pdf);
+                    fileNameList.push(pdf.name);
+                    console.log(pdf.name);
                 }
                 //DBへ送信
                 var res = await db.collection('shopPOPDemand').add({
                     title:title.value,
                     noticeTime:noticeTime.value,
-                    noticePeriod:noticePeriod.value,
                     storename:storeList,
-                    size:size.value,
                     demandDetail:demandDetail.value,
                     CreatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isPDF: false,
                 });    
                 //アップロード
                 var uploads = [];
@@ -120,12 +133,19 @@ function shopPopDemandUpdate(){
                             maxHeight: 400,
                             mimeType: 'image/png'
                         });
+                        var storageRef = firebase.storage().ref('shopPOPDemand/' + res.id + '/uploadData');
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
+                    }else{
+                        db.collection('shopPOPDemand').doc(res.id).update({
+                            isPDF:true
+                        });
+                        var storageRef = firebase.storage().ref('shopPOPDemand/' + res.id + '/uploadPDF');
+                        uploads.push(storageRef.put(fileList[i])); 
+                        i += 1;
                     }
-                    var storageRef = firebase.storage().ref('shopPOPDemand/' + res.id + '/uploadData');
-                    uploads.push(storageRef.put(fileList[i])); 
-                    i += 1;
                 }
-                //すべての画像のアップロード完了を待つ
+                //すべての画像・PDFのアップロード完了を待つ
                 Promise.all(uploads).then(function () {
                     (async () => {
                         try{
@@ -150,68 +170,154 @@ function shopPopDemandUpdate(){
 function showDB(storename){
     (async () => {
         try {
-          // 省略 
-          // (Cloud Firestoreのインスタンスを初期化してdbにセット)
+            if(storename){
+                query = await db.collection('shopPOPDemand').where('storename','array-contains-any',[storename,'全店共通']).orderBy('CreatedAt', 'desc').limit(15); 
+                //DB情報を保持しておく
+                currentQueryList.push(querySnapshot);
+            }else{
+                query = await db.collection('shopPOPDemand').orderBy('CreatedAt', 'desc').limit(15); 
+            }
+            querySnapshot = await query.get();
 
-          if(storename){
-              var query = await db.collection('shopPOPDemand').where('storename','array-contains-any',[storename,'全店共通']).orderBy('CreatedAt', 'desc'); 
-          }else{
-              var query = await db.collection('shopPOPDemand').orderBy('CreatedAt', 'desc'); 
-          }
-      
-          var querySnapshot = await query.get();
-    
-          var i = 0;
-          var stocklist = '<table class="table table-striped" id="download_table">'
-          stocklist += '<tr><th>タイトル</th><th>掲示日時</th><th>掲示期間</th><th>掲載店舗</th><th>サイズ</th><th>詳細</th><th>編集</th></tr>';
-          querySnapshot.forEach((postDoc) => {
-            //pdf非表示中
-            //<button class="btn btn-success" onclick="createPDF(\''+postDoc.id+'\')">PDFで印刷</button>
-            stocklist += '<tbody><tr><td>'+ postDoc.get('title') +'</td><td>' + postDoc.get('noticeTime') + '</td><td>' + postDoc.get('noticePeriod') + '</td><td>' + postDoc.get('storename') + '</td><td>' + postDoc.get('size') + '</td><td>' + postDoc.get('demandDetail') + '</td><td><a class="js-modal-open2"><button class="btn btn-primary" onclick="modalImages(\''+postDoc.id+'\')">画像/データ</button></a><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">削除</button></td></tr></tbody>';
-          })
-          stocklist += '</table>';
-          document.getElementById('table_list').innerHTML = stocklist;
-    
+            var stocklist = "";
+            contentIndexCarrent = 0;
+            querySnapshot.forEach((postDoc) => {
+                const imageStorageRef = firebase.storage().ref('/shopPOPDemand/' + postDoc.id + "/uploadData");
+                ImagePrevTask = Promise.all([ImagePrevTask,imageStorageRef.getDownloadURL()]).then(([_,imageurl])=>{
+                    if(postDoc.get('isPDF') == true){
+                        contentIndexCarrent += 1 ;
+                        stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><button class="btn btn-success" onclick="showPDF(\''+postDoc.id+'\')">PDF</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><div class="dropdown"> <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">削除</button><ul class="dropdown-menu" role="menu"><li role="presentation"><button onclick="deletePDF(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">PDFのみを削除</button></li><li role="presentation"><button onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">全削除</button></li></ul></div></div></div>';
+                        document.getElementById('contents').innerHTML = stocklist;
+                    }else{
+                        contentIndexCarrent += 1 ;
+                        stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">削除</button></div></div>';
+                        document.getElementById('contents').innerHTML = stocklist;
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            });
+        } catch (err) {
+        console.log(err);
+        }
+    })();
+}
+
+//次へ
+function nextPegination(){
+    document.getElementById('prevButton').style.visibility = 'visible';
+    document.getElementById('prevButton_bottom').style.visibility = 'visible';
+    (async () => {
+        try {
+            //DB情報を保持しておく
+            currentQueryList.push(querySnapshot);
+
+            query = query.limit(15).startAfter(querySnapshot.docs[14]);
+            querySnapshot = await query.get();
+
+            //後が無い場合に非表示
+            if(querySnapshot.docs.length < 15){
+                document.getElementById('nextButton').style.visibility = "hidden";
+                document.getElementById('nextButton_bottom').style.visibility = "hidden";
+            }
+
+            var stocklist = "";
+            querySnapshot.forEach((postDoc) => {
+                const imageStorageRef = firebase.storage().ref('/shopPOPDemand/' + postDoc.id + "/uploadData");
+                ImagePrevTask = Promise.all([ImagePrevTask,imageStorageRef.getDownloadURL()]).then(([_,imageurl])=>{
+                    if(postDoc.get('isPDF') == true){
+                        contentIndexCarrent += 1 ;
+                        stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><button class="btn btn-success" onclick="showPDF(\''+postDoc.id+'\')">PDF</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><div class="dropdown"> <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">削除</button><ul class="dropdown-menu" role="menu"><li role="presentation"><button onclick="deletePDF(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">PDFのみを削除</button></li><li role="presentation"><button onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">全削除</button></li></ul></div></div></div>';
+                        document.getElementById('contents').innerHTML = stocklist;
+                    }else{
+                        contentIndexCarrent += 1 ;
+                        stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">削除</button></div></div>';
+                        document.getElementById('contents').innerHTML = stocklist;
+                    }
+                }).catch(error => {
+                    console.log(error);
+                })
+            });
         } catch (err) {
             console.log(err);
         }
     })();
 }
 
-//追加する店舗名リストを作成(編集)
-var storeListEdit = [];
-function addStoreEdit(e){
-    storeListEdit.push(e);
-    document.getElementById('addstoreEditList').innerHTML= "<p>送信店舗一覧:</p><p>" + storeListEdit + "</p>";
-    document.getElementById('store_name').value = "";
+//前のテーブルを表示(戻るボタン)
+function returnTable(){
+    document.getElementById('nextButton').style.visibility = 'visible';
+    document.getElementById('nextButton_bottom').style.visibility = 'visible';
+    //index番号を調整するための計算式
+    contentIndexCarrent = contentIndexCarrent - (15 + querySnapshot.docs.length);
+
+    querySnapshot = currentQueryList.pop();   
+    var stocklist = "";
+    querySnapshot.forEach((postDoc) => {
+        const imageStorageRef = firebase.storage().ref('/shopPOPDemand/' + postDoc.id + "/uploadData");
+        ImagePrevTask = Promise.all([ImagePrevTask,imageStorageRef.getDownloadURL()]).then(([_,imageurl])=>{
+            if(postDoc.get('isPDF') == true){
+                contentIndexCarrent += 1 ;
+                stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><button class="btn btn-success" onclick="showPDF(\''+postDoc.id+'\')">PDF</button><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><div class="dropdown"> <button class="btn btn-danger dropdown-toggle" type="button" data-toggle="dropdown">削除</button><ul class="dropdown-menu" role="menu"><li role="presentation"><button onclick="deletePDF(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">PDFのみを削除</button></li><li role="presentation"><button onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">全削除</button></li></ul></div></div></div>';
+                document.getElementById('contents').innerHTML = stocklist;
+            }else{
+                contentIndexCarrent += 1 ;
+                stocklist += '<div class="contents-item"><div class="contents-title"><p class="contents-title-num">' + contentIndexCarrent + '</p><p class="contents-title-text">' + postDoc.get('title') + '</p></div><img src = "'+ imageurl +'"><table><tbody><tr><th>掲載店舗</th><td>'+ postDoc.get('storename') +'</td></tr><tr><th>掲示日時</th><td>'+ postDoc.get('noticeTime') +'</td></tr><tr><th>要望詳細</th><td>'+ postDoc.get('demandDetail') +'</td></tr></tbody></table><div id="editButton"><a class="js-modal-open"><button class="btn btn-info" onclick="editStatus(\''+postDoc.id+'\')">編集</button></a><button class="btn btn-danger" onclick="deleteContent(\''+postDoc.id+'\',\''+ postDoc.get('title') +'\')">削除</button></div></div>';
+                document.getElementById('contents').innerHTML = stocklist;
+            }
+        }).catch(error => {
+            console.log(error);
+        })
+    });
+  
+    //前が無くなったら前へを非表示
+    if(currentQueryList.length < 1){
+        document.getElementById('prevButton').style.visibility = 'hidden';
+        document.getElementById('prevButton_bottom').style.visibility = 'hidden';
+    }
 }
 
 var titleEdit = document.getElementById('title_edit');
 var noticeTimeEdit = document.getElementById('notice_time_edit');
-var noticePeriodEdit = document.getElementById('notice_period_edit');
 var storenameEdit = document.getElementById('addstoreEditList');
-var sizeEdit = document.getElementById('size_edit');
 var demandDetailEdit = document.getElementById('demand_detail_edit');
+var addstoreEditList = document.getElementById('addstoreEditList');
+var storeListEdit = [];
 //写真データ
 var fileListEdit = [];
 var fileNameListEdit = [];
 var collectAlertEdit = document.getElementById('collectAlert_edit');
 
+//追加する店舗名リストを作成(編集)
+function addStoreEdit(e){
+    storeListEdit.push(e);
+    console.log(storeListEdit);
+    addstoreEditList.textContent = storeListEdit;
+    document.getElementById('store_name_edit').value = "";
+}
+
+//編集の掲載店舗をリセット
+function addStoreEditReset(){
+    document.getElementById('shopPopDemandForm').onsubmit = function(){return false};
+    storeListEdit.splice(0);
+    addstoreEditList.textContent = '';
+}
+
 //Status編集用モーダルウィンドウ
 function editStatus(id){
     (async () => {
       try {
+        console.log(storeListEdit);
           const carrentpopDemandDB = await db.collection('shopPOPDemand').doc(id).get();
           //タイトル
           titleEdit.value = carrentpopDemandDB.get('title');
           //掲示日時
           noticeTimeEdit.value = carrentpopDemandDB.get('noticeTime');
-          //掲示期限
-          noticePeriodEdit.value = carrentpopDemandDB.get('noticePeriod');
           //店舗名
-          storenameEdit.innerHTML = '<p>送信店舗一覧:</p><p>' +  carrentpopDemandDB.get('storename') + '</p>';
-          //サイズ
-          sizeEdit.value = carrentpopDemandDB.get('size');
+          storeListEdit.splice(0);
+          storeListEdit = carrentpopDemandDB.get('storename');
+          console.log(storeListEdit);
+          addstoreEditList.textContent = storeListEdit;
           //要望詳細
           demandDetailEdit.value = carrentpopDemandDB.get('demandDetail');
 
@@ -226,119 +332,118 @@ function editStatus(id){
 
 //status編集
 function EditUpdate(id){
+    collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存中・・・</div>';
     //DBへ送信
     db.collection('shopPOPDemand').doc(id).update({
         title:titleEdit.value,
         noticeTime:noticeTimeEdit.value,
-        noticePeriod:noticePeriodEdit.value,
         storename:storeListEdit,
-        size:sizeEdit.value,
         demandDetail:demandDetailEdit.value,
     });
-    collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
-    setTimeout("location.reload()",2000);
-}
-
-//画像/データモーダル
-function modalImages(id){
-    var prevTask = Promise.resolve;
-    (async () => {
-        try { 
-            var storageImageRef = firebase.storage().ref('/shopPOPDemand/' + id + '/uploadData');
-            var metaData = await storageImageRef.getMetadata();
-            console.log(metaData);
-            if(metaData.contentType == 'application/pdf'){
-                document.getElementById('modalImgs').innerHTML = '<p>データリストをロード中...</p>';  
-                var stocklist = "";
-                prevTask = Promise.all([prevTask,storageImageRef.getDownloadURL()]).then(([_,url])=>{
-                    stocklist += "<a href = " + "'" + url + "' target='_blank'" + "><p>"+ metaData.name +"</p></a>";
-                    document.getElementById('modalImgs').innerHTML = stocklist;
-                }).catch(error => {
-                }).catch(() => {});
-            }else{
-                document.getElementById('modalImgs').innerHTML = '<p>画像ロード中...</p>';  
-                var stocklist = "";
-                prevTask = Promise.all([prevTask,storageImageRef.getDownloadURL()]).then(([_,url])=>{
-                    stocklist += "<img src = " + "'" + url + "'" + "></img>";
-                    document.getElementById('modalImgs').innerHTML = stocklist;
-                }).catch(error => {
-                }).catch(() => {});
-            }
-
-            //送信ボタン生成
-            document.getElementById('modalImgButton').innerHTML = '<button type="submit" class="btn btn-success" onclick="modalImgUpdate(\''+id+'\')">送信する</button>';
-        } catch (err) {
-        console.log(err);
-        }
-
-    })();
-};
-
-//画像/データ編集
-function modalImgUpdate(id){
-    (async () => {
-        try {
-            var modalImgAlert = document.getElementById('modalImgAlert');
-            modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">送信中...</div>';
-            var fileModal = document.getElementById('file_modal').files;
-            //アップロード
-            var uploadsModal = [];
-            var fileTypeList = ['png','jpg','jpeg'];
-            var i = 0;
+    //storage写真を変更
+    var i = 0;
+    var fileModal = document.getElementById('file_modal').files;
+    var pdfEdit = document.getElementById('pdf_edit').files;
+    if(fileModal.length == 0 && pdfEdit.length == 0){
+        //画像・pdfともに変更なし
+        console.log('アップロード完了');
+        collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
+        setTimeout("location.reload()",2000);
+    }else{
+        if(fileModal.length != 0 && pdfEdit.length != 0){
+            //画像・pdfともに変更あり
             for (var file of fileModal) {
-                let file_type = file.name.split('.').pop();
-                //拡張子が写真データでなければ圧縮しない
-                if(fileTypeList.includes(file_type)){
-                    //画像を圧縮する
-                    var img = new Compressor(file, {
-                        quality: 0.5,
-                        success(result) {
-                            console.log('圧縮完了');
-                            fileListEdit[i] = result;
-                            var storageRefModal = firebase.storage().ref('shopPOPDemand/' + id + '/uploadData');
-                            storageRefModal.put(fileListEdit[i]).then(function(){
-                                console.log('アップロード完了');
-                                modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">追加完了!リロードします。</div>';
-                                setTimeout("location.reload()",2000);
-                            })
-                            console.log(fileListEdit[i]);
-                            i += 1;
-                        },
-                        maxWidth:1000,
-                        maxHeight: 400,
-                        mimeType: 'image/png'
-                    });
-                }else{
-                    var storageRefModal = firebase.storage().ref('shopPOPDemand/' + id + '/uploadData');
-                    storageRefModal.put(fileListEdit[i]).then(function(){
-                        console.log('アップロード完了');
-                        modalImgAlert.innerHTML = '<div class="alert alert-success" role="alert">追加完了!リロードします。</div>';
-                        setTimeout("location.reload()",2000);
-                    })
-                    console.log(fileListEdit[i]);
-                    i += 1;
-                }
+                //画像を圧縮する
+                var img = new Compressor(file, {
+                    quality: 0.5,
+                    success(result) {
+                        console.log('圧縮完了');
+                        fileListEdit[i] = result;
+                        var storageRefModal = firebase.storage().ref('shopPOPDemand/' + id + '/uploadData');
+                        storageRefModal.put(fileListEdit[i]).then(function(){
+                            //pdfを変更
+                            var storageRefpdf = firebase.storage().ref('shopPOPDemand/' + id + '/uploadPDF');
+                            storageRefpdf.put(pdfEdit[0]).then(function(){
+                                db.collection('shopPOPDemand').doc(id).update({
+                                    isPDF:true
+                                }).then(function (){
+                                    console.log('アップロード完了');
+                                    collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
+                                    setTimeout("location.reload()",2000);
+                                });
+                            });   
+                        }).catch(error => {
+                            console.log(error);
+                        })
+                        console.log(fileListEdit[i]);
+                        i += 1;
+                    },
+                    maxWidth:1000,
+                    maxHeight: 400,
+                    mimeType: 'image/png'
+                });
             }
-        } catch (err) {
-        console.log(err)
+        }else if(fileModal.length != 0){
+            //画像のみ変更あり
+            for (var file of fileModal) {
+                //画像を圧縮する
+                var img = new Compressor(file, {
+                    quality: 0.5,
+                    success(result) {
+                        console.log('圧縮完了');
+                        fileListEdit[i] = result;
+                        var storageRefModal = firebase.storage().ref('shopPOPDemand/' + id + '/uploadData');
+                        storageRefModal.put(fileListEdit[i]).then(function(){
+                            console.log('アップロード完了');
+                            collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
+                            setTimeout("location.reload()",2000);
+                        }).catch(error => {
+                            console.log(error);
+                        })
+                        console.log(fileListEdit[i]);
+                        i += 1;
+                    },
+                    maxWidth:1000,
+                    maxHeight: 400,
+                    mimeType: 'image/png'
+                });
+            }
+        }else{
+            //PDFのみ変更あり
+            var storageRefpdf = firebase.storage().ref('shopPOPDemand/' + id + '/uploadPDF');
+            storageRefpdf.put(pdfEdit[0]).then(function(){
+                db.collection('shopPOPDemand').doc(id).update({
+                    isPDF:true
+                }).then(function (){
+                    console.log('アップロード完了');
+                    collectAlertEdit.innerHTML = '<div class="alert alert-success" role="alert">保存が完了しました</div>';
+                    setTimeout("location.reload()",2000);
+                });
+            });   
         }
-    })();
+    }
 }
 
-
-//削除
+//全削除
 function deleteContent(id,title){
-    var res = window.confirm("タイトル：" + title + "の内容を削除しますか？");
+    var res = window.confirm("タイトル：" + title + "の内容を全削除しますか？");
     if( res ) {
         (async () => {
             try {
-                //削除するフォルダへの参照を作成
-                var storageImageRef = firebase.storage().ref('/shopPOPDemand/' + id + '/' + 'uploadData');
-                storageImageRef.delete();
-                //firestoreを削除
-                db.collection('shopPOPDemand').doc(id).delete();
-                alert("削除されました。");
-                setTimeout("location.reload()",500);
+                //storageを削除
+                var storageRef = firebase.storage().ref('shopPOPDemand/' + id);
+                storageRef.listAll().then( (res) => {
+                    res.items.forEach( (itemRef) =>  {
+                        itemRef.delete();
+                    });
+                    //firestoreを削除
+                    db.collection('shopPOPDemand').doc(id).delete().then(function(){
+                        alert("削除されました。");
+                        setTimeout("location.reload()",500);
+                    }).catch(error => {
+                        console.log(error);
+                    });
+                });
             } catch (err) {
             console.log(err);
             }
@@ -351,525 +456,43 @@ function deleteContent(id,title){
     } 
 };
 
-// //pdf出力
-// function createPDF(){
-//     //依頼区分
-//     var orderCategory = document.getElementById('order_category').value;
-//     //依頼日
-//     var orderDate = document.getElementById('order_date').value;
-//     //納品日
-//     var preferredDate = document.getElementById('preferred_date').value;
-//     //店舗名
-//     var storeName = document.getElementById('store_name').value;
-//     //依頼者氏名
-//     var requesterName = document.getElementById('requester_name').value;
-//     //件名
-//     var subject = document.getElementById('subject').value;
-//     //出力
-//     var output = document.getElementById('output').value;
-//     //加工
-//     var processing = document.getElementById('processing').value;
-//     //枚数
-//     var number = document.getElementById('number').value;
-//     //webサイト
-//     var WebSite = document.getElementById('website').value;
-//     //サイズ
-//     var sizeCheckBox = document.getElementById('size_checkBox').value;
-//     var sizeDerection = document.getElementById('size_derection').value;
-//     var horizontal = document.getElementById('horizontal').value;
-//     var vertical = document.getElementById('vertical').value;
-//     var coveringFare = document.getElementById('covering_fare').value;
-//     //要望詳細
-//     var demandDetail = document.getElementById('demand_detail').value;
-
-//     if(sizeCheckBox == ''){
-//         var size = '縦' + horizontal + 'mm × 横' + vertical + 'mm + 貼り代' + coveringFare + 'mm';
-//     }else{
-//         var size = sizeCheckBox + ' ' + sizeDerection;
-//     }
-
-// //要望詳細の1行の文字数を指定
-// var textLimit = 34;//ここだけ設定
-// var tmp = demandDetail.split("\n");
-
-// var kaigyouBody = [];
-
-
-// for (var key in tmp) {
-
-//     if(tmp[key] != ""){
-
-//         if(tmp[key].length >= textLimit){
-
-//             let oneSplit = tmp[key].split('');
-//             let oneBody = [];
-
-//             for (var key2 in oneSplit) {
-
-//             //key2 1文字目でなく、さらに textLimit の倍数の数値なら改行コードを挿入
-//             if(key2 != 0 && key2%textLimit == 0){
-//                 oneBody.push("\n");
-//             }
-
-//             oneBody.push(oneSplit[key2]);
-
-//         }
-
-//             kaigyouBody.push(oneBody.join(""));
-
-//         } else {
-//             kaigyouBody.push(tmp[key]);
-//         }
-
-//     }
-
-// }
-
-
-// var demandDetail = kaigyouBody.join("\n");
-
-// console.log(demandDetail);
-
-
-//     //日本語フォント読み込み
-//     pdfMake.fonts = {
-//         GenShin: {
-//         normal: 'GenShinGothic-Normal-Sub.ttf',
-//         bold: 'GenShinGothic-Normal-Sub.ttf',
-//         italics: 'GenShinGothic-Normal-Sub.ttf',
-//         bolditalics: 'GenShinGothic-Normal-Sub.ttf'
-//         }
-//     };
-
-//     if(orderCategory == "POP"){
-//         //PDF作成処理
-//         var docDef = {
-//             content: [
-//                 {
-//                     columns: [
-//                         {
-//                             width: 'auto',
-//                             text:  orderCategory + '要望',
-//                             fontSize: 25
-//                         },
-//                         {
-//                             width: '*',
-//                             text: '所属長印',
-//                             style: ['center','border'],
-//                             fontSize: 20
-//                         }
-//                     ],
-//                     columnGap: 10
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: ['*', '*',220,'*'],
-//                         body: [
-//                             ['依頼日', '納品日', '店舗名','依頼者氏名'],
-//                             [{text:orderDate,fontSize:15},{text:preferredDate,fontSize:15},{text:storeName,fontSize:15},{text:requesterName,fontSize:15}],
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: [50, '*'],
-//                         body: [
-//                             ['件名',{text:subject,fontSize:15}],
-//                             ['サイズ',{text:size,fontSize:20}]
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: ['*', '*', '*'],
-//                         body: [
-//                             ['出力', '加工', '枚数'],
-//                             [{text:output,fontSize:20},{text:processing,fontSize:20},{text:number,fontSize:20}]
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: ['*'],
-//                         body: [
-//                             ['要望詳細'],
-//                             [{text:demandDetail,fontSize:15}]
-//                         ]
-//                     }
-//                 },
-//             ],
-//             styles:{
-//                 center:{
-//                     alignment: 'center'
-//                 },
-//                 border:{
-//                     decorationStyle:'dashed'
-//                 }
-//             },
-//             defaultStyle: {
-//                 font: 'GenShin',
-//             },
-//         };
-//     }else{
-//         //PDF作成処理
-//         var docDef = {
-//             content: [
-//                 {
-//                     columns: [
-//                         {
-//                             width: 'auto',
-//                             text:  orderCategory + '要望',
-//                             fontSize: 25
-//                         },
-//                         {
-//                             width: '*',
-//                             text: '所属長印',
-//                             style: ['center','border'],
-//                             fontSize: 20
-//                         }
-//                     ],
-//                     columnGap: 10
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: ['*', '*',220,'*'],
-//                         body: [
-//                             ['依頼日', '納品日', '店舗名','依頼者氏名'],
-//                             [{text:orderDate,fontSize:15},{text:preferredDate,fontSize:15},{text:storeName,fontSize:15},{text:requesterName,fontSize:15}],
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: [60, '*'],
-//                         body: [
-//                             ['件名',{text:subject,fontSize:15}]
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: [60, '*'],
-//                         body: [
-//                             ['Webサイト',{text:WebSite,fontSize:15}]
-//                         ]
-//                     }
-//                 },
-//                 {
-//                     table: {
-//                         headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                         widths: ['*'],
-//                         body: [
-//                             ['要望詳細'],
-//                             [{text:demandDetail,fontSize:15}]
-//                         ]
-//                     }
-//                 },
-//             ],
-//             styles:{
-//                 center:{
-//                     alignment: 'center'
-//                 },
-//                 border:{
-//                     decorationStyle:'dashed'
-//                 }
-//             },
-//             defaultStyle: {
-//                 font: 'GenShin',
-//             },
-//         };
-//     }
+//PDFのみの削除
+function deletePDF(id,title){
+    var res = window.confirm("タイトル：" + title + "のPDFを削除しますか？");
+    if( res ) {
+        (async () => {
+            try {
+                //storageを削除
+                firebase.storage().ref('shopPOPDemand/' + id + '/uploadPDF').delete().then(function(){
+                    //firestoreのisPDFをfalseにする
+                    db.collection('shopPOPDemand').doc(id).update({
+                        isPDF:false
+                    }).then(function (){
+                        alert("削除されました。");
+                        setTimeout("location.reload()",500);
+                    });
+                }).catch(error => {
+                    console.log(error);
+                });
+            } catch (err) {
+            console.log(err);
+            }
     
-//     pdfMake.createPdf(docDef).download(orderCategory + "要望.pdf");
-// }
+        })();
+    }
+    else {
+        // キャンセルならアラートボックスを表示
+        alert("キャンセルしました。");
+    } 
+}
 
-// //PDF作成
-// function createPDF(id){
-//     (async () => {
-//       try {
-//         const carrentpopDemandDB = await db.collection('POPDemands').doc(id).get();
-//         //依頼区分
-//         var orderCategory = carrentpopDemandDB.get('orderCategory');
-//         //依頼日
-//         var orderDate = carrentpopDemandDB.get('orderDate');
-//         //納品日
-//         var preferredDate = carrentpopDemandDB.get('preferredDate');
-//         //店舗名
-//         var storeName = carrentpopDemandDB.get('storeName');
-//         //依頼者氏名
-//         var requesterName = carrentpopDemandDB.get('requesterName');
-//         //件名
-//         var subject = carrentpopDemandDB.get('subject');
-//         //要望詳細
-//         var demandDetail = carrentpopDemandDB.get('demandDetail');
-  
-//         if(orderCategory == "web"){
-//           //webサイト
-//           var WebSite = carrentpopDemandDB.get('WebSite');
-//         }else{
-//           //出力
-//           var output = carrentpopDemandDB.get('output');
-//           //加工
-//           var processing = carrentpopDemandDB.get('processing');
-//           //枚数
-//           var number = carrentpopDemandDB.get('number');
-//           //サイズ
-//           var sizeCheckBox = carrentpopDemandDB.get('sizeCheckBox');
-//           var sizeDerection = carrentpopDemandDB.get('sizeDerection');
-//           var horizontal = carrentpopDemandDB.get('horizontal');
-//           var vertical = carrentpopDemandDB.get('vertical');
-//           var coveringFare = carrentpopDemandDB.get('coveringFare');
-//           if(sizeCheckBox == ''){
-//             var size = '縦' + horizontal + 'mm × 横' + vertical + 'mm + 貼り代' + coveringFare + 'mm';
-//           }else{
-//               var size = sizeCheckBox + ' ' + sizeDerection;
-//           }
-//         }
-  
-//         //要望詳細の1行の文字数を指定
-//         var textLimit = 34;//ここだけ設定
-//         var tmp = demandDetail.split("\n");
-  
-//         var kaigyouBody = [];
-  
-  
-//         for (var key in tmp) {
-  
-//             if(tmp[key] != ""){
-  
-//                 if(tmp[key].length >= textLimit){
-  
-//                     let oneSplit = tmp[key].split('');
-//                     let oneBody = [];
-  
-//                     for (var key2 in oneSplit) {
-  
-//                     //key2 1文字目でなく、さらに textLimit の倍数の数値なら改行コードを挿入
-//                     if(key2 != 0 && key2%textLimit == 0){
-//                         oneBody.push("\n");
-//                     }
-  
-//                     oneBody.push(oneSplit[key2]);
-  
-//                 }
-  
-//                     kaigyouBody.push(oneBody.join(""));
-  
-//                 } else {
-//                     kaigyouBody.push(tmp[key]);
-//                 }
-  
-//             }
-  
-//         }
-  
-  
-//         var demandDetail = kaigyouBody.join("\n");
-  
-//         console.log(demandDetail);
-  
-  
-//             //日本語フォント読み込み
-//             pdfMake.fonts = {
-//                 GenShin: {
-//                 normal: 'GenShinGothic-Normal-Sub.ttf',
-//                 bold: 'GenShinGothic-Normal-Sub.ttf',
-//                 italics: 'GenShinGothic-Normal-Sub.ttf',
-//                 bolditalics: 'GenShinGothic-Normal-Sub.ttf'
-//                 }
-//             };
-  
-//             if(orderCategory == "POP"){
-//                 //PDF作成処理
-//                 var docDef = {
-//                     content: [
-//                         {
-//                             columns: [
-//                                 {
-//                                     width: 'auto',
-//                                     text:  orderCategory + '要望',
-//                                     fontSize: 25
-//                                 },
-//                                 {
-//                                     width: '*',
-//                                     text: '所属長印',
-//                                     style: ['center','border'],
-//                                     fontSize: 20
-//                                 }
-//                             ],
-//                             columnGap: 10
-//                         },
-//                         {
-//                           columns: [
-//                               {
-//                                   width: '*',
-//                                   height:100,
-//                                   text: ' ',
-//                                   style: ['center'],
-//                                   fontSize: 10
-//                               }
-//                           ],
-//                           columnGap: 10
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: ['*', '*',220,'*'],
-//                                 body: [
-//                                     ['依頼日', '納品日', '店舗名','依頼者氏名'],
-//                                     [{text:orderDate,fontSize:15},{text:preferredDate,fontSize:15},{text:storeName,fontSize:15},{text:requesterName,fontSize:15}],
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                           columns: [
-//                               {
-//                                   width: '*',
-//                                   height:100,
-//                                   text: ' ',
-//                                   style: ['center'],
-//                                   fontSize: 10
-//                               }
-//                           ],
-//                           columnGap: 10
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: [50, '*'],
-//                                 body: [
-//                                     ['件名',{text:subject,fontSize:15}],
-//                                     ['サイズ',{text:size,fontSize:20}]
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: ['*', '*', '*'],
-//                                 body: [
-//                                     ['出力', '加工', '枚数'],
-//                                     [{text:output,fontSize:20},{text:processing,fontSize:20},{text:number,fontSize:20}]
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                           columns: [
-//                               {
-//                                   width: '*',
-//                                   height:100,
-//                                   text: ' ',
-//                                   style: ['center'],
-//                                   fontSize: 10
-//                               }
-//                           ],
-//                           columnGap: 10
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: ['*'],
-//                                 body: [
-//                                     ['要望詳細'],
-//                                     [{text:demandDetail,fontSize:15}]
-//                                 ]
-//                             }
-//                         },
-//                     ],
-//                     styles:{
-//                         center:{
-//                             alignment: 'center'
-//                         },
-//                         border:{
-//                             decorationStyle:'dashed'
-//                         }
-//                     },
-//                     defaultStyle: {
-//                         font: 'GenShin',
-//                     },
-//                 };
-//             }else{
-//                 //PDF作成処理
-//                 var docDef = {
-//                     content: [
-//                         {
-//                             columns: [
-//                                 {
-//                                     width: 'auto',
-//                                     text:  orderCategory + '要望',
-//                                     fontSize: 25
-//                                 },
-//                                 {
-//                                     width: '*',
-//                                     text: '所属長印',
-//                                     style: ['center','border'],
-//                                     fontSize: 20
-//                                 }
-//                             ],
-//                             columnGap: 10
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: ['*', '*',220,'*'],
-//                                 body: [
-//                                     ['依頼日', '納品日', '店舗名','依頼者氏名'],
-//                                     [{text:orderDate,fontSize:15},{text:preferredDate,fontSize:15},{text:storeName,fontSize:15},{text:requesterName,fontSize:15}],
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: [60, '*'],
-//                                 body: [
-//                                     ['件名',{text:subject,fontSize:15}]
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: [60, '*'],
-//                                 body: [
-//                                     ['Webサイト',{text:WebSite,fontSize:15}]
-//                                 ]
-//                             }
-//                         },
-//                         {
-//                             table: {
-//                                 headerRows: 1, // tableが複数ページにまたがる場合に、ヘッダーとして扱う行数を指定
-//                                 widths: ['*'],
-//                                 body: [
-//                                     ['要望詳細'],
-//                                     [{text:demandDetail,fontSize:15}]
-//                                 ]
-//                             }
-//                         },
-//                     ],
-//                     styles:{
-//                         center:{
-//                             alignment: 'center'
-//                         },
-//                         border:{
-//                             decorationStyle:'dashed'
-//                         }
-//                     },
-//                     defaultStyle: {
-//                         font: 'GenShin',
-//                     },
-//                 };
-//             }
-//             pdfMake.createPdf(docDef).print();
-//       } catch (err) {
-//       console.log(`Error: ${JSON.stringify(err)}`)
-//       }
-//   })();
-// }
+//pdf出力
+function showPDF(id){
+    var pdfPrevTask = Promise.resolve;
+    const pdfStorageRef = firebase.storage().ref('/shopPOPDemand/' + id + "/uploadPDF");
+    pdfPrevTask = Promise.all([pdfPrevTask,pdfStorageRef.getDownloadURL()]).then(([_,pdfurl])=>{
+        window.open(pdfurl, '_blank');
+    }).catch(error => {
+        console.log(error);
+    })
+}

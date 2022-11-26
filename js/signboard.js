@@ -113,17 +113,6 @@ if(getParam('storename')){
     storenameSearch.value = getParam('storename');
 }
 
-//パラメータ取得
-function getParam(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-
 //selectBoxからのDB表示
 function selectGetDB(e){
     //パラメータに他の店舗名があるとややこしいので、素のURLにしておく

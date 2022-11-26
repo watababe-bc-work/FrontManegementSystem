@@ -7,14 +7,22 @@ body {
   margin: 10px 0 0 0;
 }
 
-.addButton a {
-  font-size: 20px;
+.addButton button, .addButton select {
+  font-size: 15px;
+  padding: 5px 20px;
+  margin: 0 0 10px 0;
+}
+
+.addButton #download_button {
+  color: white;
+  background: #333c5e;
+  border: none;
 }
 
 .title {
   font-size: 25px;
   text-align: center;
-  margin: 3% 0 0 0;
+  margin: 1% 0 0 0;
 }
 
 .search {
@@ -34,11 +42,6 @@ body {
   margin: 0 auto;
 }
 
-#contents th {
-  background: #6ed688;
-  color: white;
-}
-
 #contents th, #contents td {
   font-size: 15px;
 }
@@ -50,6 +53,10 @@ body {
 #contents .alertBack {
   background: red;
   color: white;
+}
+
+#contents .alreadyBack {
+  background: #c0c0c0;
 }
 
 .fix_label {
@@ -92,13 +99,70 @@ body {
   font-size: 15px;
 }
 
-.modal .edit {
-  margin: 20px 0;
+.modal .create_edit {
   font-size: 15px;
+}
+
+@media screen and (max-width: 992px) {
+  .modal .create_edit {
+    font-size: 12px;
+  }
+}
+
+.modal .create_edit div {
+  display: inline-block;
+  margin: 20px 0 0;
+}
+
+@media screen and (max-width: 992px) {
+  .modal .create_edit div {
+    margin: 10px 0 0;
+  }
+}
+
+.modal .create_edit input {
+  margin: 0 auto;
+}
+
+.modal .create_edit label {
+  margin: 0 0 0 5px;
+}
+
+@media screen and (max-width: 992px) {
+  .modal .create_edit textarea {
+    width: 80%;
+  }
+}
+
+.modal form {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.modal .edit {
+  width: 80%;
+  margin: 20px auto;
+  font-size: 12px;
+}
+
+@media screen and (max-width: 992px) {
+  .modal .edit textarea {
+    width: 100%;
+  }
+}
+
+.modal .edit th, .modal .edit td {
+  text-align: left;
+  padding: 5px 0 5px 5px;
+  border: 1px solid black;
 }
 
 .modal .edit input {
   margin: 0 auto;
+}
+
+.modal .edit label {
+  margin: 0 0 0 5px;
 }
 
 .modal #indexNum {
@@ -115,14 +179,39 @@ body {
   font-size: 15px;
 }
 
-.modal .modal__bg {
+.modal__bg {
   background: rgba(0, 0, 0, 0.8);
   height: 100%;
   position: absolute;
   width: 100%;
 }
 
-.modal .modal__content {
+@media screen and (max-width: 768px) {
+  .modal__bg {
+    height: 140%;
+  }
+}
+
+.modal__bg_edit {
+  background: rgba(0, 0, 0, 0.8);
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .modal__bg_edit {
+    height: 120%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modal__bg_edit {
+    height: 240%;
+  }
+}
+
+.modal__content {
   background: #fff;
   left: 50%;
   padding: 20px;
@@ -131,9 +220,113 @@ body {
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
   width: 80%;
+  height: 90%;
+}
+
+@media screen and (max-width: 768px) {
+  .modal__content {
+    top: 60%;
+    height: 120%;
+  }
+}
+
+.modal__content_edit {
+  background: #fff;
+  left: 50%;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 80%;
+  height: 90%;
+}
+
+@media screen and (max-width: 1200px) {
+  .modal__content_edit {
+    height: 110%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .modal__content_edit {
+    top: 115%;
+    height: 220%;
+  }
 }
 
 .modal .vertical {
   vertical-align: top;
+}
+
+.modal #modalImgs p {
+  font-size: 15px;
+  margin: 3% 0;
+}
+
+.modal #modalImgs img {
+  width: 30%;
+}
+
+.modal .modalImgForm {
+  margin: 3% 0;
+  font-size: 15px;
+}
+
+.modal #file_modal {
+  margin: 0 auto;
+}
+
+.modalButtons {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.nextButton {
+  text-align: left;
+  margin: 2% 5%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.nextButton .btn,
+.nextButton a.btn,
+.nextButton button.btn {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 1rem 4rem;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  color: #212529;
+  border-radius: 0.5rem;
+  margin-bottom: 3%;
+}
+
+.nextButton a.btn-radius-solid {
+  border: 1px solid #ccc;
+  background: #f1e767;
+  background: -webkit-gradient(linear, left top, left bottom, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to bottom, #fdfbfb 0%, #ebedee 100%);
+  -webkit-box-shadow: inset 1px 1px 1px #fff;
+  box-shadow: inset 1px 1px 1px #fff;
+}
+
+.nextButton a.btn-radius-solid:hover {
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfb), to(#ebedee));
+  background: linear-gradient(to top, #fdfbfb 0%, #ebedee 100%);
 }
 /*# sourceMappingURL=memorandum.css.map */

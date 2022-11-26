@@ -126,10 +126,12 @@ function showDB(){
 function deleteContent(id,name){
     var res = window.confirm(name + "の内容を削除しますか？");
     if( res ) {
-        db.collection('equipmentManuals').doc(id).delete();
-        firebase.storage().ref('/equipmentManual/' + name).delete();
-        alert("削除されました。");
-        setTimeout("location.reload()",500);
+        db.collection('equipmentManuals').doc(id).delete().then(() => {
+            firebase.storage().ref('/equipmentManual/' + name).delete().then(() => {
+                alert("削除されました。");
+                setTimeout("location.reload()",500);
+            });
+        });
     }
     else {
         // キャンセルならアラートボックスを表示
